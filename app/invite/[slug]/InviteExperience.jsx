@@ -18,7 +18,7 @@ export default function InviteExperience({ guest }) {
         }
       : {
           background:
-            "radial-gradient(circle at center, rgba(61, 10, 17, 0.85) 0%, rgba(8, 1, 2, 0.95) 100%), url('/welcome-bg.jpg')",
+            "radial-gradient(circle at center, rgba(80, 10, 20, 0.9) 0%, rgba(20, 2, 5, 0.98) 100%), url('/welcome-bg.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -34,9 +34,9 @@ export default function InviteExperience({ guest }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: step === 'welcome' ? 'space-between' : 'center',
-        fontFamily: "'Playfair Display', 'Cinzel', 'Georgia', serif",
+        fontFamily: "'Cinzel', 'Playfair Display', 'Georgia', serif",
         overflowY: 'auto',
-        backgroundColor: '#0a0203',
+        backgroundColor: '#120205',
       }}
     >
       {/* Dynamic Background Image Layer */}
@@ -104,79 +104,63 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* STEP 2: MAROON VELVET & GOLD INVITATION CARD */}
+      {/* STEP 2: ROYAL MAROON & GOLD ARCH INVITATION CARD */}
       {step === 'details' && (
         <div
           style={{
             zIndex: 1,
             margin: '40px 20px',
-            maxWidth: '560px',
+            maxWidth: '520px',
             width: '90%',
             position: 'relative',
-            backgroundColor: '#EAE1CE',
-            border: '3px double #C2A052',
-            boxShadow: '0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(184, 134, 11, 0.15)',
-            overflow: 'hidden',
+            background: 'linear-gradient(180deg, #420a13 0%, #29040a 50%, #170105 100%)',
+            border: '8px solid #D4AF37', // Heavy gold frame
+            outline: '2px solid #5C0E1A',
+            borderRadius: '4px',
+            boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95), inset 0 0 50px rgba(0, 0, 0, 0.8)',
+            padding: '16px',
           }}
         >
-          {/* MAROON VELVET DRAPE - LEFT SIDE */}
+          {/* Inner Decorative Arch Border */}
           <div
             style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              bottom: 0,
-              width: '42px',
-              background: 'linear-gradient(90deg, #3d000a 0%, #610515 40%, #2b0007 80%, #C2A052 100%)',
-              borderRight: '2px solid #C2A052',
-              boxShadow: '3px 0 10px rgba(0,0,0,0.5)',
-              zIndex: 2,
+              border: '2px solid #E6CA65',
+              borderRadius: '220px 220px 4px 4px', // Creates the arched top
+              padding: '40px 28px 36px 28px',
+              textAlign: 'center',
+              position: 'relative',
+              background: 'radial-gradient(circle at top, #4A0B15 0%, #240308 80%)',
+              boxShadow: 'inset 0 0 25px rgba(212, 175, 55, 0.2)',
             }}
-          />
-
-          {/* MAROON VELVET DRAPE - RIGHT SIDE */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              bottom: 0,
-              width: '42px',
-              background: 'linear-gradient(-90deg, #3d000a 0%, #610515 40%, #2b0007 80%, #C2A052 100%)',
-              borderLeft: '2px solid #C2A052',
-              boxShadow: '-3px 0 10px rgba(0,0,0,0.5)',
-              zIndex: 2,
-            }}
-          />
-
-          {/* CARD INNER CONTENT */}
-          <div style={{ padding: '48px 56px 40px 56px', textAlign: 'center', color: '#5B4332', position: 'relative', zIndex: 1 }}>
-            
-            <div style={{ color: '#B8860B', fontSize: '22px', marginBottom: '12px', letterSpacing: '4px' }}>
+          >
+            {/* Top Ornamental Mandala / Arch Motif */}
+            <div style={{ color: '#E6CA65', fontSize: '24px', marginBottom: '16px', letterSpacing: '4px' }}>
               ❖ ⚜ ❖
             </div>
 
+            {/* Arabic Calligraphy */}
             <p
               style={{
-                fontSize: '24px',
-                margin: '0 0 18px 0',
-                color: '#610515',
+                fontSize: '22px',
+                margin: '0 0 20px 0',
+                color: '#F3E5AB', // Soft gold text
                 fontFamily: 'serif',
-                lineHeight: '1.4',
-                fontWeight: '600',
+                lineHeight: '1.5',
+                textShadow: '0 2px 4px rgba(0,0,0,0.6)',
               }}
             >
               بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
             </p>
 
+            {/* Host Text */}
             <p
               style={{
-                fontSize: '14px',
+                fontSize: '13px',
                 lineHeight: '1.7',
-                color: '#5B4332',
+                color: '#D4C391',
                 margin: '0 0 20px 0',
-                fontStyle: 'italic',
-                fontWeight: '500',
+                letterSpacing: '1px',
+                textTransform: 'uppercase',
               }}
             >
               Mr. and Mrs. Syed Abrar-ul Hussain<br />
@@ -184,87 +168,106 @@ export default function InviteExperience({ guest }) {
               and reception of their daughter
             </p>
 
-            <div style={{ color: '#C2A052', fontSize: '14px', margin: '0 0 20px 0', letterSpacing: '6px' }}>
+            {/* Filigree Divider */}
+            <div style={{ color: '#D4AF37', fontSize: '14px', margin: '0 0 22px 0', letterSpacing: '6px' }}>
               ─── ❖ ───
             </div>
 
+            {/* Bride Name */}
             <h1
               style={{
-                fontSize: '38px',
-                fontFamily: "'Great Vibes', 'Alex Brush', 'Playfair Display', cursive",
-                color: '#610515',
-                margin: '0 0 4px 0',
-                fontWeight: 'normal',
-                letterSpacing: '1px',
+                fontSize: '32px',
+                color: '#FFFFFF',
+                margin: '0 0 6px 0',
+                fontWeight: '600',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                textShadow: '0 2px 8px rgba(0,0,0,0.8)',
               }}
             >
               Ayesha Syeda Hussain
             </h1>
 
-            <p style={{ fontSize: '15px', color: '#B8860B', margin: '8px 0', fontStyle: 'italic', letterSpacing: '2px' }}>
-              — with —
+            {/* Connector */}
+            <p
+              style={{
+                fontSize: '20px',
+                color: '#E6CA65',
+                margin: '6px 0',
+                fontFamily: "'Playfair Display', serif",
+                fontStyle: 'italic',
+              }}
+            >
+              &amp;
             </p>
 
+            {/* Groom Name */}
             <h1
               style={{
-                fontSize: '38px',
-                fontFamily: "'Great Vibes', 'Alex Brush', 'Playfair Display', cursive",
-                color: '#610515',
+                fontSize: '32px',
+                color: '#FFFFFF',
                 margin: '0 0 24px 0',
-                fontWeight: 'normal',
-                letterSpacing: '1px',
+                fontWeight: '600',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                textShadow: '0 2px 8px rgba(0,0,0,0.8)',
               }}
             >
               Owais Hasan Sayeed
             </h1>
 
-            <div style={{ color: '#C2A052', fontSize: '14px', margin: '0 0 24px 0', letterSpacing: '6px' }}>
+            {/* Filigree Divider */}
+            <div style={{ color: '#D4AF37', fontSize: '14px', margin: '0 0 24px 0', letterSpacing: '6px' }}>
               ─── ❖ ───
             </div>
 
+            {/* Event Details */}
             <h2
               style={{
-                fontSize: '17px',
-                letterSpacing: '3px',
-                color: '#5B4332',
-                margin: '0 0 14px 0',
-                fontWeight: '700',
+                fontSize: '16px',
+                letterSpacing: '2px',
+                color: '#F3E5AB',
+                margin: '0 0 12px 0',
+                fontWeight: '600',
               }}
             >
               DECEMBER 26, 2026
             </h2>
 
-            <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0', fontWeight: '700' }}>
+            <p style={{ fontSize: '13px', letterSpacing: '2px', color: '#E6CA65', margin: '4px 0', fontWeight: '500' }}>
               NIKAH AT 4 PM
             </p>
-            <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0 24px 0', fontWeight: '700' }}>
+            <p style={{ fontSize: '13px', letterSpacing: '2px', color: '#E6CA65', margin: '4px 0 24px 0', fontWeight: '500' }}>
               RECEPTION AT 6 PM
             </p>
 
-            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5B4332', margin: '0 0 32px 0', fontWeight: '500' }}>
+            {/* Venue Address */}
+            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#D4C391', margin: '0 0 28px 0' }}>
               Marriott Town Center<br />
               16090 City Walk,<br />
               Sugar Land, TX 77479
             </p>
 
-            <div style={{ color: '#C2A052', fontSize: '16px', marginBottom: '28px' }}>
-              ❦
+            {/* Bottom Kalash / Decorative Motifs */}
+            <div style={{ color: '#D4AF37', fontSize: '18px', marginBottom: '28px', letterSpacing: '12px' }}>
+              ⚜ ❖ ⚜
             </div>
 
+            {/* RSVP Button */}
             <button
               onClick={() => setStep('rsvp')}
               style={{
-                backgroundColor: '#610515',
-                color: '#F4E4BC',
+                backgroundColor: '#D4AF37',
+                color: '#1A0206',
                 padding: '14px 38px',
                 fontSize: '13px',
-                border: '1px solid #C2A052',
-                borderRadius: '4px',
+                border: '1px solid #FFF',
+                borderRadius: '2px',
                 cursor: 'pointer',
-                fontWeight: '600',
+                fontWeight: '700',
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
-                boxShadow: '0 4px 15px rgba(97, 5, 21, 0.4)',
+                boxShadow: '0 4px 15px rgba(212, 175, 55, 0.4)',
               }}
             >
               Continue to RSVP
