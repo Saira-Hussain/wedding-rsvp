@@ -7,7 +7,7 @@ export default function InviteExperience({ guest }) {
   // Navigation Steps: 'welcome' | 'details' | 'rsvp'
   const [step, setStep] = useState('welcome');
 
-  // Background style based on step
+  // Background style based on current step
   const backgroundStyle =
     step === 'welcome'
       ? {
@@ -17,8 +17,7 @@ export default function InviteExperience({ guest }) {
           backgroundRepeat: 'no-repeat',
         }
       : {
-          background:
-            "radial-gradient(circle at center, rgba(61, 10, 17, 0.85) 0%, rgba(8, 1, 2, 0.95) 100%), url('/welcome-bg.jpg')",
+          backgroundImage: "url('/invite-bg.jpg')", // New curtain & stage backdrop image
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -39,7 +38,7 @@ export default function InviteExperience({ guest }) {
         backgroundColor: '#0a0203',
       }}
     >
-      {/* Dynamic Background Layer */}
+      {/* Dynamic Background Backdrop Layer */}
       <div
         style={{
           position: 'fixed',
@@ -104,111 +103,51 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* STEP 2: PHYSICAL INVITATION RECREATION CARD */}
+      {/* STEP 2: INVITATION DETAILS CARD OVERLAY */}
       {step === 'details' && (
         <div
           style={{
             zIndex: 1,
             margin: '40px 20px',
-            maxWidth: '560px',
-            width: '90%',
+            maxWidth: '520px',
+            width: '88%',
             position: 'relative',
-            backgroundColor: '#F4E8D2', // Warm Ivory / Parchment
-            border: '4px double #C2A052', // Ornate Gold Border
-            borderRadius: '6px',
-            boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95), inset 0 0 50px rgba(194, 160, 82, 0.2)',
+            backgroundColor: 'rgba(244, 232, 210, 0.92)', // Semi-transparent warm parchment overlay
+            backdropFilter: 'blur(4px)',
+            border: '2px solid #C2A052', // Fine gold frame
+            borderRadius: '8px',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.75), inset 0 0 30px rgba(194, 160, 82, 0.15)',
             overflow: 'hidden',
           }}
         >
-          {/* MAROON VELVET DRAPE & GOLD TRIM - LEFT SIDE */}
+          {/* INNER TEXT CONTENT AREA */}
           <div
             style={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              bottom: 0,
-              width: '46px',
-              background: 'linear-gradient(90deg, #3d000a 0%, #610515 45%, #2b0007 85%, #C2A052 100%)',
-              borderRight: '2px solid #C2A052',
-              boxShadow: '4px 0 12px rgba(0,0,0,0.6)',
-              zIndex: 3,
-            }}
-          />
-
-          {/* MAROON VELVET DRAPE & GOLD TRIM - RIGHT SIDE */}
-          <div
-            style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              bottom: 0,
-              width: '46px',
-              background: 'linear-gradient(-90deg, #3d000a 0%, #610515 45%, #2b0007 85%, #C2A052 100%)',
-              borderLeft: '2px solid #C2A052',
-              boxShadow: '-4px 0 12px rgba(0,0,0,0.6)',
-              zIndex: 3,
-            }}
-          />
-
-          {/* HANGING LANTERN - LEFT */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '12px',
-              left: '58px',
-              color: '#B8860B',
-              fontSize: '20px',
-              zIndex: 4,
-              opacity: 0.85,
-            }}
-          >
-            🏮
-          </div>
-
-          {/* HANGING LANTERN - RIGHT */}
-          <div
-            style={{
-              position: 'absolute',
-              top: '12px',
-              right: '58px',
-              color: '#B8860B',
-              fontSize: '20px',
-              zIndex: 4,
-              opacity: 0.85,
-            }}
-          >
-            🏮
-          </div>
-
-          {/* INNER PARCHMENT CONTENT AREA */}
-          <div
-            style={{
-              padding: '44px 58px 40px 58px',
+              padding: '44px 36px 40px 36px',
               textAlign: 'center',
-              color: '#3B2414', // Dark Espresso Text
+              color: '#3B2414',
               position: 'relative',
               zIndex: 2,
             }}
           >
-            {/* Top Gold Medallion with Ruby Emblem */}
+            {/* Top Gold Medallion Accent */}
             <div
               style={{
                 color: '#B8860B',
-                fontSize: '26px',
+                fontSize: '24px',
                 marginBottom: '10px',
                 letterSpacing: '2px',
-                textShadow: '0 1px 2px rgba(0,0,0,0.1)',
               }}
             >
-              ❖ 💎 ❖
+              ❖ ⚜ ❖
             </div>
 
-            {/* Arabic Calligraphy Blessing in Antique Gold */}
+            {/* Arabic Calligraphy Blessing */}
             <p
               style={{
-                fontSize: '23px',
+                fontSize: '22px',
                 margin: '0 0 16px 0',
-                color: '#8B6B23', // Muted Antique Gold
+                color: '#8B6B23',
                 fontFamily: 'serif',
                 lineHeight: '1.4',
                 fontWeight: '600',
@@ -233,17 +172,17 @@ export default function InviteExperience({ guest }) {
               and reception of their daughter
             </p>
 
-            {/* Subtle Gold Ornament Divider */}
+            {/* Subtle Divider */}
             <div style={{ color: '#C2A052', fontSize: '13px', margin: '0 0 18px 0', letterSpacing: '6px' }}>
               ─── ❖ ───
             </div>
 
-            {/* Bride Name in Flowing Script */}
+            {/* Bride Name in Calligraphy Script */}
             <h1
               style={{
-                fontSize: '40px',
+                fontSize: '38px',
                 fontFamily: "'Great Vibes', 'Alex Brush', 'Playfair Display', cursive",
-                color: '#610515', // Deep Burgundy Calligraphy
+                color: '#610515',
                 margin: '0 0 2px 0',
                 fontWeight: 'normal',
                 letterSpacing: '1px',
@@ -252,7 +191,7 @@ export default function InviteExperience({ guest }) {
               Ayesha Syeda Hussain
             </h1>
 
-            {/* Connecting 'with' */}
+            {/* Connector */}
             <p
               style={{
                 fontSize: '15px',
@@ -265,12 +204,12 @@ export default function InviteExperience({ guest }) {
               with
             </p>
 
-            {/* Groom Name in Flowing Script */}
+            {/* Groom Name in Calligraphy Script */}
             <h1
               style={{
-                fontSize: '40px',
+                fontSize: '38px',
                 fontFamily: "'Great Vibes', 'Alex Brush', 'Playfair Display', cursive",
-                color: '#610515', // Deep Burgundy Calligraphy
+                color: '#610515',
                 margin: '0 0 20px 0',
                 fontWeight: 'normal',
                 letterSpacing: '1px',
@@ -279,12 +218,12 @@ export default function InviteExperience({ guest }) {
               Owais Hasan Sayeed
             </h1>
 
-            {/* Subtle Gold Ornament Divider */}
+            {/* Subtle Divider */}
             <div style={{ color: '#C2A052', fontSize: '13px', margin: '0 0 22px 0', letterSpacing: '6px' }}>
               ─── ❖ ───
             </div>
 
-            {/* Event Date & Schedule */}
+            {/* Event Schedule */}
             <h2
               style={{
                 fontSize: '16px',
@@ -304,19 +243,19 @@ export default function InviteExperience({ guest }) {
               RECEPTION AT 6 PM
             </p>
 
-            {/* Venue Details */}
+            {/* Venue Location */}
             <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#3B2414', margin: '0 0 28px 0', fontWeight: '500' }}>
               Marriott Town Center<br />
               16090 City Walk,<br />
               Sugar Land, TX 77479
             </p>
 
-            {/* Bottom Filigree Accent */}
+            {/* Bottom Ornament */}
             <div style={{ color: '#C2A052', fontSize: '16px', marginBottom: '24px' }}>
               ❦
             </div>
 
-            {/* RSVP Button */}
+            {/* RSVP Navigation Button */}
             <button
               onClick={() => setStep('rsvp')}
               style={{
@@ -347,7 +286,7 @@ export default function InviteExperience({ guest }) {
             margin: '40px 20px',
             maxWidth: '500px',
             width: '100%',
-            backgroundColor: '#F4E8D2',
+            backgroundColor: 'rgba(244, 232, 210, 0.96)',
             border: '2px solid #C2A052',
             padding: '36px 28px',
             borderRadius: '12px',
