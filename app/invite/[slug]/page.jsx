@@ -14,13 +14,13 @@ export default async function InvitePage({ params }) {
     .maybeSingle();
 
   return (
-    <div style={{ padding: '40px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '40px auto', border: '1px solid #ccc', borderRadius: '8px' }}>
-      <h2>Database Diagnostic</h2>
-      <p><strong>Slug from URL:</strong> <code>{slug || 'undefined'}</code></p>
-      <p><strong>Supabase URL set?</strong> {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'YES' : 'NO (Missing Env Var)'}</p>
-      <p><strong>Anon Key set?</strong> {process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'YES' : 'NO (Missing Env Var)'}</p>
+    <div style={{ padding: '40px', fontFamily: 'sans-serif', backgroundColor: '#111', color: '#fff', minHeight: '100vh' }}>
+      <h2>Portal Diagnostic</h2>
+      <p><strong>Received Slug:</strong> <code>{slug || 'None'}</code></p>
+      <p><strong>SUPABASE URL Present:</strong> {process.env.NEXT_PUBLIC_SUPABASE_URL ? 'YES' : 'NO'}</p>
+      <p><strong>ANON KEY Present:</strong> {process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? 'YES' : 'NO'}</p>
       <p><strong>Database Error:</strong> {error ? JSON.stringify(error) : 'None'}</p>
-      <p><strong>Guest Record Found:</strong> {guest ? JSON.stringify(guest) : 'NULL'}</p>
+      <p><strong>Guest Data:</strong> {guest ? JSON.stringify(guest) : 'NULL'}</p>
     </div>
   );
 }
