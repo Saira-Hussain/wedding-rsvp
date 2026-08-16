@@ -17,11 +17,12 @@ export default function InviteExperience({ guest }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: step === 'welcome' ? 'space-between' : 'center',
-        fontFamily: "'Playfair Display', 'Georgia', serif",
+        fontFamily: "'Playfair Display', 'Cinzel', 'Georgia', serif",
         overflowY: 'auto',
+        backgroundColor: '#0a0203',
       }}
     >
-      {/* Background Layer */}
+      {/* Dynamic Outer Background */}
       <div
         style={{
           position: 'fixed',
@@ -32,7 +33,7 @@ export default function InviteExperience({ guest }) {
           backgroundImage:
             step === 'welcome'
               ? "url('/welcome-bg.jpg')"
-              : "radial-gradient(ellipse at center, #2d0a10 0%, #0d0204 100%)",
+              : "radial-gradient(circle at center, #3d0a11 0%, #1a0306 60%, #080102 100%)",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           transition: 'background-image 0.8s ease-in-out',
@@ -80,77 +81,178 @@ export default function InviteExperience({ guest }) {
         </>
       )}
 
-      {/* STEP 2: EXACT MATCH INVITATION CARD */}
+      {/* STEP 2: FULL LUXURY VELVET & GOLD INVITATION CARD */}
       {step === 'details' && (
         <div
           style={{
             margin: '40px 20px',
-            maxWidth: '520px',
+            maxWidth: '560px',
             width: '90%',
             position: 'relative',
-            borderRadius: '8px',
+            backgroundColor: '#EAE1CE', // Warm cream parchment background
+            border: '3px double #C2A052', // Double gold border
+            boxShadow: '0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(184, 134, 11, 0.15)',
             overflow: 'hidden',
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.85)',
           }}
         >
-          {/* Card Image Display */}
-          <div style={{ position: 'relative', width: '100%', display: 'block' }}>
-            <img
-              src="/card-frame.jpg"
-              alt="Wedding Invitation"
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-            />
-
-            {/* Guest Name Overlay (Top center) */}
-            <div
-              style={{
-                position: 'absolute',
-                top: '12%',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '70%',
-                textAlign: 'center',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: '18px',
-                  color: '#5C3A21',
-                  fontWeight: '600',
-                  letterSpacing: '1px',
-                  textTransform: 'uppercase',
-                  borderBottom: '1px solid #C4A462',
-                  paddingBottom: '2px',
-                }}
-              >
-                {guest.family_name}
-              </span>
-            </div>
-          </div>
-
-          {/* Action Button Section Below Card */}
+          {/* MAROON VELVET DRAPE - LEFT SIDE */}
           <div
             style={{
-              backgroundColor: '#120306',
-              padding: '20px 0',
-              textAlign: 'center',
-              borderTop: '1px solid #C4A462',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              bottom: 0,
+              width: '42px',
+              background: 'linear-gradient(90deg, #3d000a 0%, #610515 40%, #2b0007 80%, #C2A052 100%)',
+              borderRight: '2px solid #C2A052',
+              boxShadow: '3px 0 10px rgba(0,0,0,0.5)',
+              zIndex: 2,
             }}
-          >
+          />
+
+          {/* MAROON VELVET DRAPE - RIGHT SIDE */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              bottom: 0,
+              width: '42px',
+              background: 'linear-gradient(-90deg, #3d000a 0%, #610515 40%, #2b0007 80%, #C2A052 100%)',
+              borderLeft: '2px solid #C2A052',
+              boxShadow: '-3px 0 10px rgba(0,0,0,0.5)',
+              zIndex: 2,
+            }}
+          />
+
+          {/* MAIN CARD CONTENT */}
+          <div style={{ padding: '48px 56px 40px 56px', textAlign: 'center', color: '#5B4332', position: 'relative', zIndex: 1 }}>
+            
+            {/* Top Ornamental Gold Medallion */}
+            <div style={{ color: '#B8860B', fontSize: '22px', marginBottom: '12px', letterSpacing: '4px' }}>
+              ❖ ⚜ ❖
+            </div>
+
+            {/* Arabic Bismillah Calligraphy */}
+            <p
+              style={{
+                fontSize: '24px',
+                margin: '0 0 18px 0',
+                color: '#610515', // Rich dark maroon
+                fontFamily: 'serif',
+                lineHeight: '1.4',
+                fontWeight: '600',
+              }}
+            >
+              بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
+            </p>
+
+            {/* Host Announcement */}
+            <p
+              style={{
+                fontSize: '14px',
+                lineHeight: '1.7',
+                color: '#5B4332',
+                margin: '0 0 20px 0',
+                fontStyle: 'italic',
+                fontWeight: '500',
+              }}
+            >
+              Mr. and Mrs. Syed Abrar-ul Hussain<br />
+              invite you to the nikah ceremony<br />
+              and reception of their daughter
+            </p>
+
+            {/* Filigree Divider */}
+            <div style={{ color: '#C2A052', fontSize: '14px', margin: '0 0 20px 0', letterSpacing: '6px' }}>
+              ─── ❖ ───
+            </div>
+
+            {/* Bride Name */}
+            <h1
+              style={{
+                fontSize: '38px',
+                fontFamily: "'Great Vibes', 'Alex Brush', 'Playfair Display', cursive",
+                color: '#610515',
+                margin: '0 0 4px 0',
+                fontWeight: 'normal',
+                letterSpacing: '1px',
+              }}
+            >
+              Ayesha Syeda Hussain
+            </h1>
+
+            {/* Connecting Phrase */}
+            <p style={{ fontSize: '15px', color: '#B8860B', margin: '8px 0', fontStyle: 'italic', letterSpacing: '2px' }}>
+              — with —
+            </p>
+
+            {/* Groom Name */}
+            <h1
+              style={{
+                fontSize: '38px',
+                fontFamily: "'Great Vibes', 'Alex Brush', 'Playfair Display', cursive",
+                color: '#610515',
+                margin: '0 0 24px 0',
+                fontWeight: 'normal',
+                letterSpacing: '1px',
+              }}
+            >
+              Owais Hasan Sayeed
+            </h1>
+
+            {/* Filigree Divider */}
+            <div style={{ color: '#C2A052', fontSize: '14px', margin: '0 0 24px 0', letterSpacing: '6px' }}>
+              ─── ❖ ───
+            </div>
+
+            {/* Event Date & Times */}
+            <h2
+              style={{
+                fontSize: '17px',
+                letterSpacing: '3px',
+                color: '#5B4332',
+                margin: '0 0 14px 0',
+                fontWeight: '700',
+              }}
+            >
+              DECEMBER 26, 2026
+            </h2>
+
+            <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0', fontWeight: '700' }}>
+              NIKAH AT 4 PM
+            </p>
+            <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0 24px 0', fontWeight: '700' }}>
+              RECEPTION AT 6 PM
+            </p>
+
+            {/* Venue Details */}
+            <p style={{ fontSize: '14px', lineHeight: '1.6', color: '#5B4332', margin: '0 0 32px 0', fontWeight: '500' }}>
+              Marriott Town Center<br />
+              16090 City Walk,<br />
+              Sugar Land, TX 77479
+            </p>
+
+            {/* Bottom Filigree Accent */}
+            <div style={{ color: '#C2A052', fontSize: '16px', marginBottom: '28px' }}>
+              ❦
+            </div>
+
+            {/* Action Button */}
             <button
               onClick={() => setStep('rsvp')}
               style={{
-                backgroundColor: '#800020',
-                color: '#F3ECE0',
-                padding: '14px 40px',
-                fontSize: '14px',
-                border: '1px solid #C4A462',
-                borderRadius: '6px',
+                backgroundColor: '#610515',
+                color: '#F4E4BC',
+                padding: '14px 38px',
+                fontSize: '13px',
+                border: '1px solid #C2A052',
+                borderRadius: '4px',
                 cursor: 'pointer',
                 fontWeight: '600',
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
-                boxShadow: '0 4px 15px rgba(0,0,0,0.4)',
+                boxShadow: '0 4px 15px rgba(97, 5, 21, 0.4)',
               }}
             >
               Continue to RSVP
