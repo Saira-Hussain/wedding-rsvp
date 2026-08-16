@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export default function Home() {
   return (
     <main
@@ -17,24 +15,19 @@ export default function Home() {
         boxSizing: 'border-box',
       }}
     >
-      <Link
-        href="/invite/hussain-family"
+      <div
         style={{
-          padding: '16px 36px',
-          fontSize: '18px',
-          fontWeight: '600',
-          color: '#1a1a1a',
-          backgroundColor: '#d4af37',
-          border: 'none',
-          borderRadius: '30px',
-          cursor: 'pointer',
-          textDecoration: 'none',
-          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.4)',
-          transition: 'transform 0.2s ease',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          padding: '16px 28px',
+          borderRadius: '25px',
+          color: '#ffffff',
+          fontSize: '16px',
+          letterSpacing: '1px',
+          backdropFilter: 'blur(4px)',
         }}
       >
-        View Your Invitation
-      </Link>
+        Please open the personalized link provided in your invitation.
+      </div>
     </main>
   );
 }
