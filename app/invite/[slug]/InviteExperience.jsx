@@ -32,7 +32,7 @@ export default function InviteExperience({ guest }) {
           backgroundImage:
             step === 'welcome'
               ? "url('/welcome-bg.jpg')"
-              : "url('/details-bg.jpg')", // Ensure your luxury hall bg image is saved as details-bg.jpg
+              : "radial-gradient(ellipse at center, #580816 0%, #2D030A 60%, #150104 100%), url('/details-bg.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -88,12 +88,12 @@ export default function InviteExperience({ guest }) {
             margin: '40px 20px',
             maxWidth: '540px',
             width: '90%',
-            backgroundColor: '#F3ECE0', // Cream parchment tone
-            border: '2px solid #C4A462', // Muted gold frame
+            backgroundColor: '#F3ECE0',
+            border: '2px solid #C4A462',
             borderRadius: '12px',
             padding: '44px 32px',
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.7)',
-            color: '#5C3A21', // Dark bronze/burgundy text
+            color: '#5C3A21',
             textAlign: 'center',
           }}
         >
@@ -101,7 +101,7 @@ export default function InviteExperience({ guest }) {
           <h3
             style={{
               fontSize: '22px',
-              color: '#800020', // Deep burgundy
+              color: '#800020',
               fontWeight: '600',
               margin: '0 0 20px 0',
               letterSpacing: '0.5px',
