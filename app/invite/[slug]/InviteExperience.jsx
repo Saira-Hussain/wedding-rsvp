@@ -11,11 +11,15 @@ export default function InviteExperience({ guest }) {
     <main
       style={{
         minHeight: '100vh',
+        width: '100vw',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: '20px',
-        backgroundColor: '#FAFAFA',
+        backgroundImage: "url('/welcome-bg.jpg')", // Change to .png if image is welcome-bg.png
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         fontFamily: 'serif',
       }}
     >
@@ -23,12 +27,13 @@ export default function InviteExperience({ guest }) {
         style={{
           width: '100%',
           maxWidth: '500px',
-          backgroundColor: '#FFFFFF',
+          backgroundColor: 'rgba(255, 255, 255, 0.92)', // Slightly translucent to pop over background
+          backdropFilter: 'blur(8px)',
           padding: '40px 30px',
           borderRadius: '16px',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+          boxShadow: '0 8px 32px rgba(0, 0, 0, 0.12)',
           textAlign: 'center',
-          border: '1px solid #EAEAEA',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
         }}
       >
         {/* STEP 1: WELCOME SCREEN */}
