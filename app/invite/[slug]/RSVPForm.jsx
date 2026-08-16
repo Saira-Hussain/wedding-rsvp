@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '../../../lib/supabase';
 
 export default function RSVPForm({ guest }) {
   const [attending, setAttending] = useState(guest?.attending_count > 0 ? 'yes' : 'no');
