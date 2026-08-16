@@ -37,54 +37,31 @@ export default function InviteExperience({ guest }) {
         }}
       />
 
-      {/* TOP SECTION: Welcome Text moved up into the dome area */}
+      {/* TOP SECTION: Clean floating text over the dome */}
       <div
         style={{
           width: '100%',
           display: 'flex',
           justifyContent: 'center',
-          paddingTop: '6vh', // Elevates text into dome section
+          paddingTop: '6vh',
           paddingLeft: '20px',
           paddingRight: '20px',
         }}
       >
         {step === 'welcome' && (
-          <div
+          <h1
             style={{
+              fontSize: '38px',
+              color: '#F4E4BC', // Warm gold tone
+              fontWeight: '400',
+              margin: 0,
+              letterSpacing: '1px',
               textAlign: 'center',
-              maxWidth: '650px',
-              backgroundColor: 'rgba(0, 0, 0, 0.25)', // Subtle dark overlay for contrast
-              backdropFilter: 'blur(4px)',
-              padding: '16px 28px',
-              borderRadius: '12px',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
+              textShadow: '0 2px 10px rgba(0,0,0,0.85), 0 0 4px rgba(0,0,0,0.6)',
             }}
           >
-            <h1
-              style={{
-                fontSize: '36px',
-                color: '#F4E4BC', // Soft warm gold
-                fontWeight: '400',
-                margin: '0 0 6px 0',
-                letterSpacing: '1px',
-                textShadow: '0 2px 10px rgba(0,0,0,0.8)',
-              }}
-            >
-              Welcome, {guest.family_name}
-            </h1>
-            <p
-              style={{
-                color: '#FFFFFF',
-                fontSize: '16px',
-                margin: 0,
-                lineHeight: '1.4',
-                opacity: 0.95,
-                textShadow: '0 2px 6px rgba(0,0,0,0.8)',
-              }}
-            >
-              We are honored to invite you to celebrate our special day.
-            </p>
-          </div>
+            Welcome, {guest.family_name}
+          </h1>
         )}
       </div>
 
