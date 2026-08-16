@@ -1,9 +1,10 @@
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 
-import { supabase } from '@/lib/supabase';
+import { supabase } from '../../../lib/supabase';
 import { notFound } from 'next/navigation';
 import RSVPForm from './RSVPForm';
+
 
 export default async function InvitePage({ params }) {
   const resolvedParams = await params;
