@@ -1,35 +1,14 @@
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+import { redirect } from 'next/navigation';
 
-import { supabase } from '@/lib/supabase';
-import { notFound } from 'next/navigation';
-import RSVPForm from './RSVPForm';
+export default function Home() {
+  // Option A: Redirect visitors straight to an invite or info page
+  // redirect('/invite/hussain-family');
 
-export default async function InvitePage({ params }) {
-  const { slug } = await params;
-
-  const { data: guest, error } = await supabase
-    .from('guests')
-    .select('*')
-    .eq('slug', slug)
-    .single();
-
-  if (error || !guest) {
-    notFound();
-  }
-
+  // Option B: Show a clean welcome page
   return (
-    <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px', background: '#fafafa' }}>
-      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-        <h1 style={{ fontSize: '36px', marginBottom: '8px' }}>
-          {guest.family_name}
-        </h1>
-        <p style={{ fontSize: '18px', color: '#666' }}>
-          We have reserved <strong>{guest.max_invites}</strong> {guest.max_invites === 1 ? 'seat' : 'seats'} in your honor.
-        </p>
-      </div>
-
-      <RSVPForm guest={guest} />
+    <main style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif', padding: '20px' }}>
+      <h1>Welcome to the Wedding RSVP Portal</h1>
+      <p style={{ color: '#666' }}>Please use the personalized link provided in your invitation.</p>
     </main>
   );
 }
