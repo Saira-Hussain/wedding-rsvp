@@ -26,17 +26,18 @@ export default function InviteExperience({ guest }) {
   return (
     <main
       style={{
-        minHeight: '100vh',
+        minHeight: '100dvh',
         width: '100%',
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: step === 'welcome' ? 'space-between' : 'center',
         fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
         backgroundColor: '#0a0203',
         padding: '24px 16px',
         boxSizing: 'border-box',
+        overflowX: 'hidden',
       }}
     >
       {/* Background Layer */}
@@ -60,54 +61,53 @@ export default function InviteExperience({ guest }) {
             position: 'relative',
             zIndex: 1,
             width: '100%',
-            maxWidth: '480px',
+            maxWidth: '500px',
+            minHeight: 'calc(100dvh - 48px)',
             display: 'flex',
             flexDirection: 'column',
+            justifyContent: 'space-between',
             alignItems: 'center',
-            justifyContent: 'center',
-            minHeight: '80vh',
             textAlign: 'center',
-            gap: '32px',
             boxSizing: 'border-box',
           }}
         >
-          {/* Top Heading */}
-          <div style={{ width: '100%', padding: '0 12px' }}>
+          {/* Dynamic Guest Name (Top) */}
+          <div style={{ paddingTop: '5vh', width: '100%' }}>
             <h1
               style={{
-                fontSize: 'clamp(1.6rem, 5.5vw, 2.4rem)',
+                fontSize: 'clamp(1.5rem, 5vw, 2.2rem)',
                 color: '#F4E4BC',
                 fontWeight: '400',
                 margin: 0,
                 letterSpacing: '1px',
                 textShadow: '0 2px 10px rgba(0,0,0,0.85)',
                 wordBreak: 'break-word',
-                lineHeight: '1.3',
+                lineHeight: '1.2',
               }}
             >
               Welcome, {guest?.family_name || 'Guest'}
             </h1>
           </div>
 
-          {/* Action Button */}
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+          {/* Action Button (Bottom) */}
+          <div style={{ paddingBottom: '3vh', width: '100%' }}>
             <button
               onClick={() => setStep('details')}
               style={{
-                backgroundColor: 'rgba(44, 44, 44, 0.85)',
+                backgroundColor: 'rgba(20, 20, 20, 0.85)',
                 color: '#FFFFFF',
-                padding: '12px 20px',
-                fontSize: 'clamp(0.95rem, 3.8vw, 1.1rem)',
+                padding: '12px 24px',
+                fontSize: 'clamp(0.9rem, 3.8vw, 1.1rem)',
                 border: '1px solid #C2A052',
                 borderRadius: '8px',
                 cursor: 'pointer',
                 fontWeight: '600',
                 letterSpacing: '1px',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.6)',
                 fontFamily: 'serif',
-                backdropFilter: 'blur(4px)',
-                maxWidth: '100%',
-                wordBreak: 'break-word',
+                backdropFilter: 'blur(6px)',
+                width: '100%',
+                maxWidth: '280px',
               }}
             >
               بسم الله الرحمن الرحيم
@@ -130,6 +130,7 @@ export default function InviteExperience({ guest }) {
             borderRadius: '8px',
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.75)',
             boxSizing: 'border-box',
+            margin: 'auto 0',
           }}
         >
           <div
@@ -272,6 +273,7 @@ export default function InviteExperience({ guest }) {
             textAlign: 'center',
             color: '#3B2414',
             boxSizing: 'border-box',
+            margin: 'auto 0',
           }}
         >
           <h2 style={{ fontSize: '1.4rem', color: '#610515', marginBottom: '8px' }}>
