@@ -6,8 +6,8 @@ import { supabase } from '../../../lib/supabase';
 export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   const [attending, setAttending] = useState(guest?.attending_count > 0 ? 'yes' : 'no');
   const [attendingCount, setAttendingCount] = useState(
-    guest?.attending_count && guest.attending_count > 0 
-      ? guest.attending_count 
+    guest?.attending_count && guest.attending_count > 0
+      ? guest.attending_count
       : guest?.max_invites ?? 1
   );
   const [dua, setDua] = useState(guest?.notes || '');
@@ -20,29 +20,40 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
     setSubmitting(true);
     setErrorMessage('');
 
+    if (!guest?.id) {
+      setErrorMessage('Guest profile not found. Please try reloading the page.');
+      setSubmitting(false);
+      return;
+    }
+
     const isAttending = attending === 'yes';
     const finalCount = isAttending ? parseInt(attendingCount, 10) : 0;
 
-    const { error } = await supabase
-      .from('guests')
-      .update({
-        attending_count: finalCount,
-        has_rsvped: true,
-        notes: dua,
-        updated_at: new Date().toISOString(),
-      })
-      .eq('id', guest.id);
+    try {
+      const { error } = await supabase
+        .from('guests')
+        .update({
+          attending_count: finalCount,
+          has_rsvped: true,
+          notes: dua,
+          updated_at: new Date().toISOString(),
+        })
+        .eq('id', guest.id);
 
-    setSubmitting(false);
-
-    if (error) {
-      console.error('Supabase update error:', error);
-      setErrorMessage('Failed to submit RSVP. Please try again.');
-    } else {
-      if (onSeatsUpdate) {ny
-        onSeatsUpdate(finalCount);
+      if (error) {
+        console.error('Supabase update error:', error);
+        setErrorMessage('Failed to submit RSVP. Please check your connection and try again.');
+      } else {
+        if (onSeatsUpdate) {
+          onSeatsUpdate(finalCount);
+        }
+        setSubmitted(true);
       }
-      setSubmitted(true);
+    } catch (err) {
+      console.error('Unexpected error during RSVP submission:', err);
+      setErrorMessage('An unexpected error occurred. Please try again.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -62,7 +73,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
           Thank You!
         </h3>
         <p style={{ fontSize: '16px', color: '#555', lineHeight: '1.6', marginBottom: '10px' }}>
-          {finalAttendingCount > 0 
+          {finalAttendingCount > 0
             ? `Your RSVP for ${finalAttendingCount} ${finalAttendingCount === 1 ? 'guest' : 'guests'} has been recorded.`
             : 'Your response has been recorded. We will miss you!'}
         </p>
@@ -93,7 +104,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
           Will you be attending?
         </label>
         <div style={{ display: 'flex', gap: '20px' }}>
-          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
             <input
               type="radio"
               name="attending"
@@ -103,7 +114,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
             />
             Joyfully Accept
           </label>
-          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
             <input
               type="radio"
               name="attending"
@@ -133,6 +144,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
               border: '1px solid #CCC',
               fontSize: '16px',
               backgroundColor: '#FFF',
+              color: '#333',
             }}
           >
             {Array.from({ length: guest?.max_invites || 1 }, (_, i) => i + 1).map((num) => (
@@ -163,6 +175,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
             fontSize: '15px',
             boxSizing: 'border-box',
             fontFamily: 'inherit',
+            color: '#333',
           }}
         />
       </div>
