@@ -5,7 +5,8 @@ import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
-  const [confirmedSeats, setConfirmedSeats] = useState(guest?.max_invites || 1);
+  const [confirmedSeats, setConfirmedSeats] = useState(guest?.attending_count || guest?.max_invites || 1);
+  const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
 
   const backgroundStyle =
     step === 'welcome'
@@ -159,12 +160,12 @@ export default function InviteExperience({ guest }) {
 
             <h1
               style={{
-                fontSize: '48px',
+                fontSize: '56px',
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
                 color: '#610515',
                 margin: '0 0 2px 0',
-                fontWeight: '600',
-                lineHeight: '1.1',
+                fontWeight: '400',
+                lineHeight: '1.2',
               }}
             >
               Ayesha Syeda Hussain
@@ -173,9 +174,9 @@ export default function InviteExperience({ guest }) {
             <p
               style={{
                 fontSize: '24px',
+                fontFamily: "var(--font-script), 'Great Vibes', cursive",
                 color: '#B8860B',
                 margin: '4px 0',
-                fontStyle: 'italic',
               }}
             >
               with
@@ -183,12 +184,12 @@ export default function InviteExperience({ guest }) {
 
             <h1
               style={{
-                fontSize: '48px',
+                fontSize: '56px',
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
                 color: '#610515',
                 margin: '0 0 16px 0',
-                fontWeight: '600',
-                lineHeight: '1.1',
+                fontWeight: '400',
+                lineHeight: '1.2',
               }}
             >
               Owais Hasan Sayeed
@@ -215,10 +216,6 @@ export default function InviteExperience({ guest }) {
               Sugar Land, TX 77479
             </p>
 
-            <div style={{ color: '#C2A052', fontSize: '16px', marginBottom: '24px' }}>
-              ❦
-            </div>
-
             <button
               onClick={() => setStep('rsvp')}
               style={{
@@ -231,47 +228,3 @@ export default function InviteExperience({ guest }) {
                 cursor: 'pointer',
                 fontWeight: '600',
                 letterSpacing: '2px',
-                textTransform: 'uppercase',
-                boxShadow: '0 4px 15px rgba(97, 5, 21, 0.35)',
-              }}
-            >
-              Continue to RSVP
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 3: RSVP FORM */}
-      {step === 'rsvp' && (
-        <div
-          style={{
-            zIndex: 1,
-            margin: '40px 20px',
-            maxWidth: '500px',
-            width: '100%',
-            backgroundColor: 'rgba(244, 232, 210, 0.96)',
-            border: '2px solid #C2A052',
-            padding: '36px 28px',
-            borderRadius: '12px',
-            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)',
-            textAlign: 'center',
-            color: '#3B2414',
-          }}
-        >
-          <h2 style={{ fontSize: '26px', color: '#610515', marginBottom: '8px' }}>
-            RSVP
-          </h2>
-
-          <p style={{ color: '#5B4332', fontSize: '15px', marginBottom: '20px' }}>
-          We reserved <strong>{guest?.max_invites || 1}</strong> {guest?.max_invites === 1 ? 'seat' : 'seats'} in your honor.
-          </p>
-
-          <RSVPForm
-          guest={guest}
-          onSeatsUpdate={(count) => setConfirmedSeats(count)}
-      />
-        </div>
-      )}
-    </main>
-  );
-}
