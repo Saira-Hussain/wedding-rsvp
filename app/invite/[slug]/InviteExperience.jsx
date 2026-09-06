@@ -175,7 +175,7 @@ export default function InviteExperience({ guest }) {
             <p style={{ fontSize: '0.82rem', lineHeight: '1.5', color: '#3B2414', margin: '0 0 12px 0', fontStyle: 'italic', fontWeight: '500' }}>
               Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain <br />
               and the blessings of Late Mr. Mohammed Rafiuddin:<br />
-
+              br />
               Mr. and Mrs. Syed Abrar-ul Hussain
               invite you to the shaadi reception of their daughter
             </p>
