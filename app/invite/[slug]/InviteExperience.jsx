@@ -182,13 +182,12 @@ export default function InviteExperience({ guest }) {
             {/* Bride Name in Cursive Script */}
             <h1
               style={{
-                fontSize: '42px',
-                fontFamily: "'Sacramento', 'Dancing Script', 'Parisienne', cursive",
-                color: '#610515',
-                margin: '0 0 2px 0',
-                fontWeight: 'normal',
-                letterSpacing: '1px',
-                lineHeight: '1.2',
+                fontSize: '13px',
+                lineHeight: '1.7',
+                color: '#3B2414',
+                margin: '0 0 18px 0',
+                fontStyle: 'italic',
+                fontWeight: '500',
               }}
             >
               Ayesha Syeda Hussain
@@ -197,11 +196,12 @@ export default function InviteExperience({ guest }) {
             {/* Connector */}
             <p
               style={{
-                fontSize: '22px',
-                fontFamily: "'Sacramento', 'Dancing Script', 'Parisienne', cursive",
-                color: '#B8860B',
-                margin: '4px 0',
-                letterSpacing: '1px',
+                fontSize: '13px',
+                lineHeight: '1.7',
+                color: '#3B2414',
+                margin: '0 0 18px 0',
+                fontStyle: 'italic',
+                fontWeight: '500',
               }}
             >
               with
@@ -210,13 +210,12 @@ export default function InviteExperience({ guest }) {
             {/* Groom Name in Cursive Script */}
             <h1
               style={{
-                fontSize: '42px',
-                fontFamily: "'Sacramento', 'Dancing Script', 'Parisienne', cursive",
-                color: '#610515',
-                margin: '0 0 20px 0',
-                fontWeight: 'normal',
-                letterSpacing: '1px',
-                lineHeight: '1.2',
+                fontSize: '13px',
+                lineHeight: '1.7',
+                color: '#3B2414',
+                margin: '0 0 18px 0',
+                fontStyle: 'italic',
+                fontWeight: '500',
               }}
             >
               Owais Hasan Sayeed
