@@ -5,8 +5,7 @@ import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
-  // State to track attending count across steps
-  const [confirmedSeats, setConfirmedSeats] = useState(guest.max_invites);
+  const [confirmedSeats, setConfirmedSeats] = useState(guest?.max_invites || 1);
 
   const backgroundStyle =
     step === 'welcome'
@@ -33,7 +32,7 @@ export default function InviteExperience({ guest }) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: step === 'welcome' ? 'space-between' : 'center',
-        fontFamily: "'Playfair Display', 'Cinzel', 'Georgia', serif",
+        fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
         overflowY: 'auto',
         backgroundColor: '#0a0203',
       }}
@@ -77,7 +76,7 @@ export default function InviteExperience({ guest }) {
                 textShadow: '0 2px 10px rgba(0,0,0,0.85)',
               }}
             >
-              Welcome, {guest.family_name}
+              Welcome, {guest?.family_name || 'Guest'}
             </h1>
           </div>
 
@@ -155,3 +154,124 @@ export default function InviteExperience({ guest }) {
             </p>
 
             <div style={{ color: '#C2A052', fontSize: '13px', margin: '0 0 18px 0', letterSpacing: '6px' }}>
+              ─── ❖ ───
+            </div>
+
+            <h1
+              style={{
+                fontSize: '48px',
+                color: '#610515',
+                margin: '0 0 2px 0',
+                fontWeight: '700',
+                lineHeight: '1.1',
+              }}
+            >
+              Ayesha Syeda Hussain
+            </h1>
+
+            <p
+              style={{
+                fontSize: '24px',
+                color: '#B8860B',
+                margin: '4px 0',
+                fontStyle: 'italic',
+              }}
+            >
+              with
+            </p>
+
+            <h1
+              style={{
+                fontSize: '48px',
+                color: '#610515',
+                margin: '0 0 16px 0',
+                fontWeight: '700',
+                lineHeight: '1.1',
+              }}
+            >
+              Owais Hasan Sayeed
+            </h1>
+
+            <div style={{ color: '#C2A052', fontSize: '13px', margin: '0 0 22px 0', letterSpacing: '6px' }}>
+              ─── ❖ ───
+            </div>
+
+            <h2 style={{ fontSize: '16px', letterSpacing: '3px', color: '#3B2414', margin: '0 0 12px 0', fontWeight: '700' }}>
+              DECEMBER 26, 2026
+            </h2>
+
+            <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0', fontWeight: '700' }}>
+              NIKAH AT 4 PM
+            </p>
+            <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0 22px 0', fontWeight: '700' }}>
+              RECEPTION AT 6 PM
+            </p>
+
+            <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#3B2414', margin: '0 0 28px 0', fontWeight: '500' }}>
+              Marriott Town Center<br />
+              16090 City Walk,<br />
+              Sugar Land, TX 77479
+            </p>
+
+            <div style={{ color: '#C2A052', fontSize: '16px', marginBottom: '24px' }}>
+              ❦
+            </div>
+
+            <button
+              onClick={() => setStep('rsvp')}
+              style={{
+                backgroundColor: '#610515',
+                color: '#F4E8D2',
+                padding: '13px 36px',
+                fontSize: '13px',
+                border: '1px solid #C2A052',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontWeight: '600',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                boxShadow: '0 4px 15px rgba(97, 5, 21, 0.35)',
+              }}
+            >
+              Continue to RSVP
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* STEP 3: RSVP FORM */}
+      {step === 'rsvp' && (
+        <div
+          style={{
+            zIndex: 1,
+            margin: '40px 20px',
+            maxWidth: '500px',
+            width: '100%',
+            backgroundColor: 'rgba(244, 232, 210, 0.96)',
+            border: '2px solid #C2A052',
+            padding: '36px 28px',
+            borderRadius: '12px',
+            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)',
+            textAlign: 'center',
+            color: '#3B2414',
+          }}
+        >
+          <h2 style={{ fontSize: '26px', color: '#610515', marginBottom: '8px' }}>
+            RSVP
+          </h2>
+
+          <p style={{ color: '#5B4332', fontSize: '15px', marginBottom: '20px' }}>
+            We reserved <strong>{confirmedSeats}</strong> {confirmedSeats === 1 ? 'seat' : 'seats'} in your honor.
+          </p>
+
+          <hr style={{ border: 'none', borderTop: '1px solid #C2A052', margin: '20px 0' }} />
+
+          <RSVPForm
+            guest={guest}
+            onSeatsUpdate={(count) => setConfirmedSeats(count)}
+          />
+        </div>
+      )}
+    </main>
+  );
+}
