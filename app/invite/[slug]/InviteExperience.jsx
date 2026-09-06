@@ -274,6 +274,7 @@ export default function InviteExperience({ guest }) {
               setConfirmedSeats(count);
               setHasSubmitted(true);
             }}
+            onEdit={() => setHasSubmitted(false)}
           />
         </div>
       )}
