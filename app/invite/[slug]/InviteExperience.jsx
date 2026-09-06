@@ -5,8 +5,10 @@ import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
-  const [confirmedSeats, setConfirmedSeats] = useState(guest?.attending_count || guest?.max_invites || 1);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
+
+  const isNikahInvited = guest?.invited_to_nikah ?? false;
+  const isShaadiInvited = guest?.invited_to_shaadi ?? true; // defaults to true if column is unset
 
   return (
     <main
@@ -25,7 +27,6 @@ export default function InviteExperience({ guest }) {
         overflowX: 'hidden',
       }}
     >
-      {/* Pure CSS Responsive Background Styles */}
       <style jsx global>{`
         .dynamic-bg {
           background-size: cover;
@@ -33,27 +34,20 @@ export default function InviteExperience({ guest }) {
           background-repeat: no-repeat;
           transition: background-image 0.8s ease-in-out;
         }
-
-        /* Step 1: Desktop Background */
         .dynamic-bg.step-welcome {
           background-image: url('/welcome-bg.jpg');
         }
-
-        /* Step 1: Mobile Background Overrides Instantly via CSS */
         @media (max-width: 768px) {
           .dynamic-bg.step-welcome {
             background-image: url('/welcome-mobile-bg.jpg') !important;
           }
         }
-
-        /* Step 2 & 3 Background */
         .dynamic-bg.step-details,
         .dynamic-bg.step-rsvp {
           background-image: url('/invite-bg.jpg');
         }
       `}</style>
 
-      {/* Background Layer */}
       <div
         className={`dynamic-bg step-${step}`}
         style={{
@@ -83,7 +77,6 @@ export default function InviteExperience({ guest }) {
             boxSizing: 'border-box',
           }}
         >
-          {/* Dynamic Guest Name (Top) */}
           <div style={{ paddingTop: '5vh', width: '100%' }}>
             <h1
               style={{
@@ -101,7 +94,6 @@ export default function InviteExperience({ guest }) {
             </h1>
           </div>
 
-          {/* Action Button (Bottom) */}
           <div style={{ paddingBottom: '3vh', width: '100%' }}>
             <button
               onClick={() => setStep('details')}
@@ -173,13 +165,13 @@ export default function InviteExperience({ guest }) {
             </p>
 
             <p style={{ fontSize: '0.82rem', lineHeight: '1.5', color: '#3B2414', margin: '0 0 12px 0', fontStyle: 'italic', fontWeight: '500' }}>
-            Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
-            and the blessings of Late Mr. Mohammed Rafiuddin:<br />
-            <br />
-            <span style={{ fontSize: '1.05rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
-            Mr. and Mrs. Syed Abrar-ul Hussain
-            </span><br />
-            invite you to the shaadi reception of their daughter
+              Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
+              and the blessings of Late Mr. Mohammed Rafiuddin:<br />
+              <br />
+              <span style={{ fontSize: '1.05rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
+                Mr. and Mrs. Syed Abrar-ul Hussain
+              </span><br />
+              invite you to the shaadi reception of their daughter
             </p>
 
             <div style={{ color: '#C2A052', fontSize: '11px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
@@ -237,12 +229,19 @@ export default function InviteExperience({ guest }) {
               DECEMBER 26, 2026
             </h2>
 
-            <p style={{ fontSize: '0.78rem', letterSpacing: '1px', color: '#610515', margin: '2px 0', fontWeight: '700' }}>
-              NIKAH AT 4 PM
-            </p>
-            <p style={{ fontSize: '0.78rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 14px 0', fontWeight: '700' }}>
-              RECEPTION AT 6 PM
-            </p>
+            {/* CONDITIONAL NIKAH TIME */}
+            {isNikahInvited && (
+              <p style={{ fontSize: '0.78rem', letterSpacing: '1px', color: '#610515', margin: '2px 0', fontWeight: '700' }}>
+                NIKAH AT 4 PM
+              </p>
+            )}
+
+            {/* CONDITIONAL SHAADI TIME */}
+            {isShaadiInvited && (
+              <p style={{ fontSize: '0.78rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 14px 0', fontWeight: '700' }}>
+                RECEPTION AT 6 PM
+              </p>
+            )}
 
             <p style={{ fontSize: '0.82rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 18px 0', fontWeight: '500' }}>
               Marriott Town Center<br />
@@ -307,10 +306,7 @@ export default function InviteExperience({ guest }) {
 
           <RSVPForm
             guest={guest}
-            onSeatsUpdate={(count) => {
-              setConfirmedSeats(count);
-              setHasSubmitted(true);
-            }}
+            onSeatsUpdate={() => setHasSubmitted(true)}
             onEdit={() => setHasSubmitted(false)}
           />
         </div>
