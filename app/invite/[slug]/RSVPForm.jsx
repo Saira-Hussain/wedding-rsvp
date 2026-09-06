@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 
 export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
-  const isNikahInvited = guest?.invited_to_nikah ?? false;
+  const isNikahInvited = guest?.invited_to_nikah ?? true;
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
 
   // Nikah state
