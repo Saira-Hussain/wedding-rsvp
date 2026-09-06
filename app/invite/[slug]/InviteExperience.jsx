@@ -196,7 +196,7 @@ export default function InviteExperience({ guest }) {
             {/* Connector */}
             <p
               style={{
-                fontSize: '30px',
+                fontSize: '20px',
                 lineHeight: '1.7',
                 color: '#800000',
                 margin: '0 0 18px 0',
@@ -210,9 +210,9 @@ export default function InviteExperience({ guest }) {
             {/* Groom Name in Cursive Script */}
             <h1
               style={{
-                fontSize: '13px',
+                fontSize: '30px',
                 lineHeight: '1.7',
-                color: '#3B2414',
+                color: '#800000',
                 margin: '0 0 18px 0',
                 fontStyle: 'italic',
                 fontWeight: '500',
@@ -239,9 +239,7 @@ export default function InviteExperience({ guest }) {
               DECEMBER 26, 2026
             </h2>
 
-            <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0', fontWeight: '700' }}>
-              NIKAH AT 4 PM
-            </p>
+            
             <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0 22px 0', fontWeight: '700' }}>
               RECEPTION AT 6 PM
             </p>
