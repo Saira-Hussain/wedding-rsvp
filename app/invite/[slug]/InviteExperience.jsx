@@ -1,17 +1,32 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
+  const [isMobile, setIsMobile] = useState(false);
   const [confirmedSeats, setConfirmedSeats] = useState(guest?.attending_count || guest?.max_invites || 1);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
+
+  // Detect Mobile Viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile(); // Check initial load width
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Dynamically Select Background Image Based on Screen Size
+  const welcomeBackground = isMobile ? "url('/welcome-mobile-bg.jpg')" : "url('/welcome-bg.jpg')";
 
   const backgroundStyle =
     step === 'welcome'
       ? {
-          backgroundImage: "url('/welcome-bg.jpg')",
+          backgroundImage: welcomeBackground,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
