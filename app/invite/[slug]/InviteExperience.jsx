@@ -182,7 +182,7 @@ export default function InviteExperience({ guest }) {
             {/* Bride Name in Cursive Script */}
             <h1
               style={{
-                fontSize: '13px',
+                fontSize: '30px',
                 lineHeight: '1.7',
                 color: '#800000',
                 margin: '0 0 18px 0',
@@ -196,7 +196,7 @@ export default function InviteExperience({ guest }) {
             {/* Connector */}
             <p
               style={{
-                fontSize: '13px',
+                fontSize: '30px',
                 lineHeight: '1.7',
                 color: '#800000',
                 margin: '0 0 18px 0',
