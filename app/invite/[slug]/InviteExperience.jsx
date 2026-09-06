@@ -294,7 +294,7 @@ export default function InviteExperience({ guest }) {
 
           {!hasSubmitted && (
             <>
-              <p style={{ color: '#5B4332', fontSize: '0.85rem', marginBottom: '14px' }}>
+              <p style={{ color: '#5B4332', fontSize: '1 rem', marginBottom: '14px' }}>
                 We reserved <strong>{guest?.max_invites || 1}</strong> {guest?.max_invites === 1 ? 'seat' : 'seats'} in your honor.
               </p>
               <hr style={{ border: 'none', borderTop: '1px solid #C2A052', margin: '14px 0' }} />
