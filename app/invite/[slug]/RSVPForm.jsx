@@ -4,29 +4,30 @@ import { useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 
 export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
-  const isNikahInvited = guest?.invited_to_nikah ?? true;
+  const isNikkahInvited = guest?.invited_to_nikkah ?? false;
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
 
-  // Nikah state
-  const [attendingNikah, setAttendingNikah] = useState(
-    guest?.nikah_attending_count > 0 ? 'yes' : 'no'
+  const maxNikkah = guest?.max_guests_nikkah ?? 1;
+  const maxShaadi = guest?.max_guests_shaadi ?? 1;
+
+  // Nikkah state
+  const [attendingNikkah, setAttendingNikkah] = useState(
+    (guest?.rsvp_count_nikkah ?? 0) > 0 ? 'yes' : 'no'
   );
-  const [nikahCount, setNikahCount] = useState(
-    guest?.nikah_attending_count && guest.nikah_attending_count > 0
-      ? guest.nikah_attending_count
-      : guest?.max_invites ?? 1
+  const [nikkahCount, setNikkahCount] = useState(
+    guest?.rsvp_count_nikkah && guest.rsvp_count_nikkah > 0
+      ? guest.rsvp_count_nikkah
+      : maxNikkah
   );
 
   // Shaadi state
   const [attendingShaadi, setAttendingShaadi] = useState(
-    guest?.shaadi_attending_count > 0 || guest?.attending_count > 0 ? 'yes' : 'no'
+    (guest?.rsvp_count_shaadi ?? 0) > 0 ? 'yes' : 'no'
   );
   const [shaadiCount, setShaadiCount] = useState(
-    guest?.shaadi_attending_count && guest.shaadi_attending_count > 0
-      ? guest.shaadi_attending_count
-      : guest?.attending_count && guest.attending_count > 0
-      ? guest.attending_count
-      : guest?.max_invites ?? 1
+    guest?.rsvp_count_shaadi && guest.rsvp_count_shaadi > 0
+      ? guest.rsvp_count_shaadi
+      : maxShaadi
   );
 
   const [dua, setDua] = useState(guest?.notes || '');
@@ -45,16 +46,15 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       return;
     }
 
-    const finalNikahCount = isNikahInvited && attendingNikah === 'yes' ? parseInt(nikahCount, 10) : 0;
+    const finalNikkahCount = isNikkahInvited && attendingNikkah === 'yes' ? parseInt(nikkahCount, 10) : 0;
     const finalShaadiCount = isShaadiInvited && attendingShaadi === 'yes' ? parseInt(shaadiCount, 10) : 0;
 
     try {
       const { error } = await supabase
         .from('guests')
         .update({
-          nikah_attending_count: finalNikahCount,
-          shaadi_attending_count: finalShaadiCount,
-          attending_count: finalShaadiCount,
+          rsvp_count_nikkah: finalNikkahCount,
+          rsvp_count_shaadi: finalShaadiCount,
           has_rsvped: true,
           notes: dua,
           updated_at: new Date().toISOString(),
@@ -86,7 +86,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   };
 
   if (submitted) {
-    const finalNikahCount = isNikahInvited && attendingNikah === 'yes' ? parseInt(nikahCount, 10) : 0;
+    const finalNikkahCount = isNikkahInvited && attendingNikkah === 'yes' ? parseInt(nikkahCount, 10) : 0;
     const finalShaadiCount = isShaadiInvited && attendingShaadi === 'yes' ? parseInt(shaadiCount, 10) : 0;
 
     return (
@@ -95,9 +95,9 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
           Thank You!
         </h3>
         
-        {isNikahInvited && (
+        {isNikkahInvited && (
           <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.5', margin: '4px 0' }}>
-            <strong>Nikah:</strong> {finalNikahCount > 0 ? `${finalNikahCount} ${finalNikahCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
+            <strong>Nikkah:</strong> {finalNikkahCount > 0 ? `${finalNikkahCount} ${finalNikkahCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
           </p>
         )}
 
@@ -128,44 +128,47 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
 
   return (
     <form onSubmit={handleSubmit} style={{ textAlign: 'left', marginTop: '10px' }}>
-      {/* 1. NIKAH QUESTION */}
-      {isNikahInvited && (
+      {/* 1. NIKKAH SECTION */}
+      {isNikkahInvited && (
         <div style={{ marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #D4AF37' }}>
+          <p style={{ color: '#5B4332', fontSize: '0.95rem', marginBottom: '8px' }}>
+            Reserved seats for Nikkah: <strong>{maxNikkah}</strong>
+          </p>
           <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
-            Will you be attending the Nikah? (4 PM)
+            Will you be attending the Nikkah? (4 PM)
           </label>
           <div style={{ display: 'flex', gap: '20px', marginBottom: '12px' }}>
             <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
               <input
                 type="radio"
-                name="attendingNikah"
+                name="attendingNikkah"
                 value="yes"
-                checked={attendingNikah === 'yes'}
-                onChange={() => setAttendingNikah('yes')}
+                checked={attendingNikkah === 'yes'}
+                onChange={() => setAttendingNikkah('yes')}
               />
               Joyfully Accept
             </label>
             <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
               <input
                 type="radio"
-                name="attendingNikah"
+                name="attendingNikkah"
                 value="no"
-                checked={attendingNikah === 'no'}
-                onChange={() => setAttendingNikah('no')}
+                checked={attendingNikkah === 'no'}
+                onChange={() => setAttendingNikkah('no')}
               />
               Regretfully Decline
             </label>
           </div>
 
-          {attendingNikah === 'yes' && (
+          {attendingNikkah === 'yes' && (
             <div>
-              <label htmlFor="nikahCount" style={{ display: 'block', fontSize: '0.88rem', fontWeight: '600', marginBottom: '6px', color: '#333' }}>
-                Guests attending Nikah:
+              <label htmlFor="nikkahCount" style={{ display: 'block', fontSize: '0.88rem', fontWeight: '600', marginBottom: '6px', color: '#333' }}>
+                Guests attending Nikkah:
               </label>
               <select
-                id="nikahCount"
-                value={nikahCount}
-                onChange={(e) => setNikahCount(e.target.value)}
+                id="nikkahCount"
+                value={nikkahCount}
+                onChange={(e) => setNikkahCount(e.target.value)}
                 style={{
                   width: '100%',
                   padding: '8px 10px',
@@ -176,7 +179,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
                   color: '#333',
                 }}
               >
-                {Array.from({ length: guest?.max_invites || 1 }, (_, i) => i + 1).map((num) => (
+                {Array.from({ length: maxNikkah }, (_, i) => i + 1).map((num) => (
                   <option key={num} value={num}>
                     {num} {num === 1 ? 'Guest' : 'Guests'}
                   </option>
@@ -187,9 +190,12 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
         </div>
       )}
 
-      {/* 2. SHAADI / RECEPTION QUESTION */}
+      {/* 2. SHAADI / RECEPTION SECTION */}
       {isShaadiInvited && (
         <div style={{ marginBottom: '20px' }}>
+          <p style={{ color: '#5B4332', fontSize: '0.95rem', marginBottom: '8px' }}>
+            Reserved seats for Shaadi: <strong>{maxShaadi}</strong>
+          </p>
           <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
             Will you be attending the Shaadi / Reception? (6 PM)
           </label>
@@ -235,7 +241,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
                   color: '#333',
                 }}
               >
-                {Array.from({ length: guest?.max_invites || 1 }, (_, i) => i + 1).map((num) => (
+                {Array.from({ length: maxShaadi }, (_, i) => i + 1).map((num) => (
                   <option key={num} value={num}>
                     {num} {num === 1 ? 'Guest' : 'Guests'}
                   </option>
