@@ -4,10 +4,10 @@ import { useState } from 'react';
 import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
-  // Navigation Steps: 'welcome' | 'details' | 'rsvp'
   const [step, setStep] = useState('welcome');
+  // State to track attending count across steps
+  const [confirmedSeats, setConfirmedSeats] = useState(guest.max_invites);
 
-  // Background style based on current step
   const backgroundStyle =
     step === 'welcome'
       ? {
@@ -17,7 +17,7 @@ export default function InviteExperience({ guest }) {
           backgroundRepeat: 'no-repeat',
         }
       : {
-          backgroundImage: "url('/invite-bg.jpg')", // New curtain & stage backdrop image
+          backgroundImage: "url('/invite-bg.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -38,7 +38,7 @@ export default function InviteExperience({ guest }) {
         backgroundColor: '#0a0203',
       }}
     >
-      {/* Dynamic Background Backdrop Layer */}
+      {/* Background Layer */}
       <div
         style={{
           position: 'fixed',
@@ -52,7 +52,7 @@ export default function InviteExperience({ guest }) {
         }}
       />
 
-      {/* STEP 1: WELCOME SCREEN */}
+      {/* STEP 1: WELCOME */}
       {step === 'welcome' && (
         <div
           style={{
@@ -99,13 +99,13 @@ export default function InviteExperience({ guest }) {
                 backdropFilter: 'blur(4px)',
               }}
             >
-            Bismillah
+              بسم الله الرحمن الرحيم
             </button>
           </div>
         </div>
       )}
 
-      {/* STEP 2: INVITATION DETAILS CARD OVERLAY */}
+      {/* STEP 2: INVITATION DETAILS */}
       {step === 'details' && (
         <div
           style={{
@@ -122,7 +122,6 @@ export default function InviteExperience({ guest }) {
             overflow: 'hidden',
           }}
         >
-          {/* INNER TEXT CONTENT AREA */}
           <div
             style={{
               padding: '44px 36px 40px 36px',
@@ -132,19 +131,10 @@ export default function InviteExperience({ guest }) {
               zIndex: 2,
             }}
           >
-            {/* Top Gold Medallion Accent */}
-            <div
-              style={{
-                color: '#B8860B',
-                fontSize: '24px',
-                marginBottom: '10px',
-                letterSpacing: '2px',
-              }}
-            >
+            <div style={{ color: '#B8860B', fontSize: '24px', marginBottom: '10px', letterSpacing: '2px' }}>
               ❖ ⚜ ❖
             </div>
 
-            {/* Arabic Calligraphy Blessing */}
             <p
               style={{
                 fontSize: '22px',
@@ -158,154 +148,10 @@ export default function InviteExperience({ guest }) {
               بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
             </p>
 
-            {/* Host Announcement */}
-            <p
-              style={{
-                fontSize: '13px',
-                lineHeight: '1.7',
-                color: '#3B2414',
-                margin: '0 0 18px 0',
-                fontStyle: 'italic',
-                fontWeight: '500',
-              }}
-            >
+            <p style={{ fontSize: '13px', lineHeight: '1.7', color: '#3B2414', margin: '0 0 18px 0', fontStyle: 'italic', fontWeight: '500' }}>
               Mr. and Mrs. Syed Abrar-ul Hussain<br />
               invite you to the nikah ceremony<br />
               and reception of their daughter
             </p>
 
-            {/* Subtle Divider */}
             <div style={{ color: '#C2A052', fontSize: '13px', margin: '0 0 18px 0', letterSpacing: '6px' }}>
-              ─── ❖ ───
-            </div>
-
-            {/* Bride Name in Cursive Script */}
-            <h1
-              style={{
-                fontSize: '30px',
-                lineHeight: '1.7',
-                color: '#800000',
-                margin: '0 0 18px 0',
-                fontStyle: 'italic',
-                fontWeight: '500',
-              }}
-            >
-              Ayesha Syeda Hussain
-            </h1>
-
-            {/* Connector */}
-            <p
-              style={{
-                fontSize: '20px',
-                lineHeight: '1.7',
-                color: '#800000',
-                margin: '0 0 18px 0',
-                fontStyle: 'italic',
-                fontWeight: '500',
-              }}
-            >
-              with
-            </p>
-
-            {/* Groom Name in Cursive Script */}
-            <h1
-              style={{
-                fontSize: '30px',
-                lineHeight: '1.7',
-                color: '#800000',
-                margin: '0 0 18px 0',
-                fontStyle: 'italic',
-                fontWeight: '500',
-              }}
-            >
-              Owais Hasan Sayeed
-            </h1>
-
-            {/* Subtle Divider */}
-            <div style={{ color: '#C2A052', fontSize: '13px', margin: '0 0 22px 0', letterSpacing: '6px' }}>
-              ─── ❖ ───
-            </div>
-
-            {/* Event Schedule */}
-            <h2
-              style={{
-                fontSize: '16px',
-                letterSpacing: '3px',
-                color: '#3B2414',
-                margin: '0 0 12px 0',
-                fontWeight: '700',
-              }}
-            >
-              DECEMBER 26, 2026
-            </h2>
-
-            
-            <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0 22px 0', fontWeight: '700' }}>
-              RECEPTION AT 6 PM
-            </p>
-
-            {/* Venue Location */}
-            <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#3B2414', margin: '0 0 28px 0', fontWeight: '500' }}>
-              Marriott Town Center<br />
-              16090 City Walk,<br />
-              Sugar Land, TX 77479
-            </p>
-
-            {/* Bottom Ornament */}
-            <div style={{ color: '#C2A052', fontSize: '16px', marginBottom: '24px' }}>
-              ❦
-            </div>
-
-            {/* RSVP Navigation Button */}
-            <button
-              onClick={() => setStep('rsvp')}
-              style={{
-                backgroundColor: '#610515',
-                color: '#F4E8D2',
-                padding: '13px 36px',
-                fontSize: '13px',
-                border: '1px solid #C2A052',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontWeight: '600',
-                letterSpacing: '2px',
-                textTransform: 'uppercase',
-                boxShadow: '0 4px 15px rgba(97, 5, 21, 0.35)',
-              }}
-            >
-              Continue to RSVP
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 3: RSVP FORM */}
-      {step === 'rsvp' && (
-        <div
-          style={{
-            zIndex: 1,
-            margin: '40px 20px',
-            maxWidth: '500px',
-            width: '100%',
-            backgroundColor: 'rgba(244, 232, 210, 0.96)',
-            border: '2px solid #C2A052',
-            padding: '36px 28px',
-            borderRadius: '12px',
-            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)',
-            textAlign: 'center',
-            color: '#3B2414',
-          }}
-        >
-          <h2 style={{ fontSize: '26px', color: '#610515', marginBottom: '8px' }}>
-            RSVP
-          </h2>
-          <p style={{ color: '#5B4332', fontSize: '15px', marginBottom: '20px' }}>
-            We reserved <strong>{guest.max_invites}</strong> {guest.max_invites === 1 ? 'seat' : 'seats'} in your honor.
-          </p>
-          <hr style={{ border: 'none', borderTop: '1px solid #C2A052', margin: '20px 0' }} />
-          <RSVPForm guest={guest} />
-        </div>
-      )}
-    </main>
-  );
-}
