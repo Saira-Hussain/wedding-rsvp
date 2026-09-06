@@ -1,42 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
-  const [isMobile, setIsMobile] = useState(false);
   const [confirmedSeats, setConfirmedSeats] = useState(guest?.attending_count || guest?.max_invites || 1);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
-
-  // Detect Mobile Viewport
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
-    checkMobile(); // Check initial load width
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Dynamically Select Background Image Based on Screen Size
-  const welcomeBackground = isMobile ? "url('/welcome-mobile-bg.jpg')" : "url('/welcome-bg.jpg')";
-
-  const backgroundStyle =
-    step === 'welcome'
-      ? {
-          backgroundImage: welcomeBackground,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }
-      : {
-          backgroundImage: "url('/invite-bg.jpg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        };
 
   return (
     <main
@@ -55,17 +25,44 @@ export default function InviteExperience({ guest }) {
         overflowX: 'hidden',
       }}
     >
+      {/* Pure CSS Responsive Background Styles */}
+      <style jsx global>{`
+        .dynamic-bg {
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          transition: background-image 0.8s ease-in-out;
+        }
+
+        /* Step 1: Desktop Background */
+        .dynamic-bg.step-welcome {
+          background-image: url('/welcome-bg.jpg');
+        }
+
+        /* Step 1: Mobile Background Overrides Instantly via CSS */
+        @media (max-width: 768px) {
+          .dynamic-bg.step-welcome {
+            background-image: url('/welcome-mobile-bg.jpg') !important;
+          }
+        }
+
+        /* Step 2 & 3 Background */
+        .dynamic-bg.step-details,
+        .dynamic-bg.step-rsvp {
+          background-image: url('/invite-bg.jpg');
+        }
+      `}</style>
+
       {/* Background Layer */}
       <div
+        className={`dynamic-bg step-${step}`}
         style={{
           position: 'fixed',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
-          transition: 'all 0.8s ease-in-out',
           zIndex: 0,
-          ...backgroundStyle,
         }}
       />
 
