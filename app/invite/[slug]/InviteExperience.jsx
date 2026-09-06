@@ -99,7 +99,7 @@ export default function InviteExperience({ guest }) {
                 backdropFilter: 'blur(4px)', // Optional: match the blur from the invite card
               }}
             >
-              bismillah
+              Bismillah
             </button>
           </div>
         </div>
