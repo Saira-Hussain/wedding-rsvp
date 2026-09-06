@@ -7,8 +7,8 @@ export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
 
-  const isNikahInvited = guest?.invited_to_nikah ?? false;
-  const isShaadiInvited = guest?.invited_to_shaadi ?? true; // defaults to true if column is unset
+  const isNikkahInvited = guest?.invited_to_nikkah ?? false;
+  const isShaadiInvited = guest?.invited_to_shaadi ?? true;
 
   return (
     <main
@@ -229,14 +229,12 @@ export default function InviteExperience({ guest }) {
               DECEMBER 26, 2026
             </h2>
 
-            {/* CONDITIONAL NIKAH TIME */}
-            {isNikahInvited && (
+            {isNikkahInvited && (
               <p style={{ fontSize: '0.78rem', letterSpacing: '1px', color: '#610515', margin: '2px 0', fontWeight: '700' }}>
-                NIKAH AT 4 PM
+                NIKKAH AT 4 PM
               </p>
             )}
 
-            {/* CONDITIONAL SHAADI TIME */}
             {isShaadiInvited && (
               <p style={{ fontSize: '0.78rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 14px 0', fontWeight: '700' }}>
                 RECEPTION AT 6 PM
@@ -294,15 +292,6 @@ export default function InviteExperience({ guest }) {
           <h2 style={{ fontSize: '1.4rem', color: '#610515', marginBottom: '8px' }}>
             RSVP
           </h2>
-
-          {!hasSubmitted && (
-            <>
-              <p style={{ color: '#5B4332', fontSize: '1rem', marginBottom: '14px' }}>
-                We reserved <strong>{guest?.max_invites || 1}</strong> {guest?.max_invites === 1 ? 'seat' : 'seats'} in your honor.
-              </p>
-              <hr style={{ border: 'none', borderTop: '1px solid #C2A052', margin: '14px 0' }} />
-            </>
-          )}
 
           <RSVPForm
             guest={guest}
