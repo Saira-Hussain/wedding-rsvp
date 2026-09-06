@@ -160,7 +160,7 @@ export default function InviteExperience({ guest }) {
 
             <h1
               style={{
-                fontSize: '56px',
+                fontSize: '50px',
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
                 color: '#610515',
                 margin: '0 0 2px 0',
@@ -184,7 +184,7 @@ export default function InviteExperience({ guest }) {
 
             <h1
               style={{
-                fontSize: '56px',
+                fontSize: '50px',
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
                 color: '#610515',
                 margin: '0 0 16px 0',
