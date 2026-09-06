@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 
-export default function RSVPForm({ guest }) {
+export default function RSVPForm({ guest, onSeatsUpdate }) {
   const [attending, setAttending] = useState(guest?.attending_count > 0 ? 'yes' : 'no');
   const [attendingCount, setAttendingCount] = useState(
     guest?.attending_count && guest.attending_count > 0 
@@ -21,16 +21,12 @@ export default function RSVPForm({ guest }) {
     setErrorMessage('');
 
     const isAttending = attending === 'yes';
+    const finalCount = isAttending ? parseInt(attendingCount, 10) : 0;
 
-    // Map form state to match your Supabase column names:
-    // - attending_count (int4)
-    // - has_rsvped (boolean)
-    // - notes (text)
-    // - updated_at (timestamptz)
     const { error } = await supabase
       .from('guests')
       .update({
-        attending_count: isAttending ? parseInt(attendingCount, 10) : 0,
+        attending_count: finalCount,
         has_rsvped: true,
         notes: dietaryNotes,
         updated_at: new Date().toISOString(),
@@ -43,24 +39,32 @@ export default function RSVPForm({ guest }) {
       console.error('Supabase update error:', error);
       setErrorMessage('Failed to submit RSVP. Please try again.');
     } else {
+      // Pass the updated dynamic count back to InviteExperience
+      if (onSeatsUpdate) {
+        onSeatsUpdate(finalCount);
+      }
       setSubmitted(true);
     }
   };
 
   if (submitted) {
+    const finalAttendingCount = attending === 'yes' ? parseInt(attendingCount, 10) : 0;
+
     return (
       <div style={{ textAlign: 'center', padding: '20px 0' }}>
-        <h3 style={{ fontSize: '22px', color: '#8C733E', marginBottom: '12px' }}>
+        <h3 style={{ fontSize: '24px', color: '#8C733E', marginBottom: '12px' }}>
           Thank You!
         </h3>
-        <p style={{ fontSize: '16px', color: '#555', lineHeight: '1.6' }}>
-          Your RSVP has been recorded. We look forward to celebrating with you!
+        <p style={{ fontSize: '16px', color: '#555', lineHeight: '1.6', marginBottom: '10px' }}>
+          {finalAttendingCount > 0 
+            ? `Your RSVP for ${finalAttendingCount} ${finalAttendingCount === 1 ? 'guest' : 'guests'} has been recorded.`
+            : 'Your response has been recorded. We will miss you!'}
         </p>
         <button
           type="button"
           onClick={() => setSubmitted(false)}
           style={{
-            marginTop: '20px',
+            marginTop: '16px',
             background: 'none',
             border: 'none',
             color: '#8C733E',
