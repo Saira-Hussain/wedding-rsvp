@@ -147,7 +147,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       {/* Dietary Restrictions / Notes */}
       <div style={{ marginBottom: '24px' }}>
         <label htmlFor="dietaryNotes" style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
-          Dietary Restrictions or Notes:
+          Leave a dua for the couple!:
         </label>
         <textarea
           id="dietaryNotes"
