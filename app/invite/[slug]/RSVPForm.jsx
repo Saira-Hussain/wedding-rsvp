@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 
-export default function RSVPForm({ guest, onSeatsUpdate }) {
+export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   const [attending, setAttending] = useState(guest?.attending_count > 0 ? 'yes' : 'no');
   const [attendingCount, setAttendingCount] = useState(
     guest?.attending_count && guest.attending_count > 0 
@@ -39,11 +39,17 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
       console.error('Supabase update error:', error);
       setErrorMessage('Failed to submit RSVP. Please try again.');
     } else {
-      // Pass the updated dynamic count back to InviteExperience
       if (onSeatsUpdate) {
         onSeatsUpdate(finalCount);
       }
       setSubmitted(true);
+    }
+  };
+
+  const handleEdit = () => {
+    setSubmitted(false);
+    if (onEdit) {
+      onEdit();
     }
   };
 
@@ -62,7 +68,7 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
         </p>
         <button
           type="button"
-          onClick={() => setSubmitted(false)}
+          onClick={handleEdit}
           style={{
             marginTop: '16px',
             background: 'none',
