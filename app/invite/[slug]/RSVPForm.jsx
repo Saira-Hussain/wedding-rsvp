@@ -39,7 +39,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       console.error('Supabase update error:', error);
       setErrorMessage('Failed to submit RSVP. Please try again.');
     } else {
-      if (onSeatsUpdate) {
+      if (onSeatsUpdate) {ny
         onSeatsUpdate(finalCount);
       }
       setSubmitted(true);
@@ -120,7 +120,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       {attending === 'yes' && (
         <div style={{ marginBottom: '20px' }}>
           <label htmlFor="attendingCount" style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
-            Number of Guests Attending (Max {guest?.max_invites}):
+            Number of Guests Attending:
           </label>
           <select
             id="attendingCount"
