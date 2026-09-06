@@ -99,7 +99,7 @@ export default function InviteExperience({ guest }) {
                 backdropFilter: 'blur(4px)',
               }}
             >
-              بسم الله الرحمن الرحيم
+            Bismillah
             </button>
           </div>
         </div>
@@ -184,7 +184,7 @@ export default function InviteExperience({ guest }) {
               style={{
                 fontSize: '13px',
                 lineHeight: '1.7',
-                color: '#3B2414',
+                color: '#800000',
                 margin: '0 0 18px 0',
                 fontStyle: 'italic',
                 fontWeight: '500',
@@ -198,7 +198,7 @@ export default function InviteExperience({ guest }) {
               style={{
                 fontSize: '13px',
                 lineHeight: '1.7',
-                color: '#3B2414',
+                color: '#800000',
                 margin: '0 0 18px 0',
                 fontStyle: 'italic',
                 fontWeight: '500',
