@@ -173,9 +173,11 @@ export default function InviteExperience({ guest }) {
             </p>
 
             <p style={{ fontSize: '0.82rem', lineHeight: '1.5', color: '#3B2414', margin: '0 0 12px 0', fontStyle: 'italic', fontWeight: '500' }}>
-              Mr. and Mrs. Syed Abrar-ul Hussain<br />
-              invite you to the nikah ceremony<br />
-              and reception of their daughter
+              Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain <br />
+              and the blessings of Late Mr. Mohammed Rafiuddin:<br />
+
+              Mr. and Mrs. Syed Abrar-ul Hussain
+              invite you to the shaadi reception of their daughter
             </p>
 
             <div style={{ color: '#C2A052', fontSize: '11px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
