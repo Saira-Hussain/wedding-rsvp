@@ -103,7 +103,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
 
         {isShaadiInvited && (
           <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.5', margin: '4px 0' }}>
-            <strong>Shaadi / Reception:</strong> {finalShaadiCount > 0 ? `${finalShaadiCount} ${finalShaadiCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
+            <strong>Reception:</strong> {finalShaadiCount > 0 ? `${finalShaadiCount} ${finalShaadiCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
           </p>
         )}
 
