@@ -85,19 +85,21 @@ export default function InviteExperience({ guest }) {
             <button
               onClick={() => setStep('details')}
               style={{
-                backgroundColor: '#2C2C2C',
+                backgroundColor: 'rgba(44, 44, 44, 0.7)', // Semi-transparent black
                 color: '#FFFFFF',
                 padding: '14px 36px',
-                fontSize: '16px',
-                border: 'none',
+                fontSize: '18px', // Sightly larger font size for the Arabic text
+                border: '1px solid #C2A052', // Matching gold frame
                 borderRadius: '8px',
                 cursor: 'pointer',
-                fontWeight: '500',
+                fontWeight: '600',
                 letterSpacing: '1px',
                 boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+                fontFamily: 'serif', // Ensure a font that can render Arabic is used
+                backdropFilter: 'blur(4px)', // Optional: match the blur from the invite card
               }}
             >
-              Bismillah
+              بسم الله الرحمن الرحيم
             </button>
           </div>
         </div>
