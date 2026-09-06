@@ -197,7 +197,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
             Reserved seats for Shaadi: <strong>{maxShaadi}</strong>
           </p>
           <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
-            Will you be attending the Shaadi / Reception? (6 PM)
+            Will you be attending the Reception? (6 PM)
           </label>
           <div style={{ display: 'flex', gap: '20px', marginBottom: '12px' }}>
             <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
