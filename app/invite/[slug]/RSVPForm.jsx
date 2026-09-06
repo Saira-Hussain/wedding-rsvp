@@ -4,12 +4,31 @@ import { useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 
 export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
-  const [attending, setAttending] = useState(guest?.attending_count > 0 ? 'yes' : 'no');
-  const [attendingCount, setAttendingCount] = useState(
-    guest?.attending_count && guest.attending_count > 0
+  const isNikahInvited = guest?.invited_to_nikah ?? false;
+  const isShaadiInvited = guest?.invited_to_shaadi ?? true;
+
+  // Nikah state
+  const [attendingNikah, setAttendingNikah] = useState(
+    guest?.nikah_attending_count > 0 ? 'yes' : 'no'
+  );
+  const [nikahCount, setNikahCount] = useState(
+    guest?.nikah_attending_count && guest.nikah_attending_count > 0
+      ? guest.nikah_attending_count
+      : guest?.max_invites ?? 1
+  );
+
+  // Shaadi state
+  const [attendingShaadi, setAttendingShaadi] = useState(
+    guest?.shaadi_attending_count > 0 || guest?.attending_count > 0 ? 'yes' : 'no'
+  );
+  const [shaadiCount, setShaadiCount] = useState(
+    guest?.shaadi_attending_count && guest.shaadi_attending_count > 0
+      ? guest.shaadi_attending_count
+      : guest?.attending_count && guest.attending_count > 0
       ? guest.attending_count
       : guest?.max_invites ?? 1
   );
+
   const [dua, setDua] = useState(guest?.notes || '');
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(guest?.has_rsvped || false);
@@ -26,14 +45,16 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       return;
     }
 
-    const isAttending = attending === 'yes';
-    const finalCount = isAttending ? parseInt(attendingCount, 10) : 0;
+    const finalNikahCount = isNikahInvited && attendingNikah === 'yes' ? parseInt(nikahCount, 10) : 0;
+    const finalShaadiCount = isShaadiInvited && attendingShaadi === 'yes' ? parseInt(shaadiCount, 10) : 0;
 
     try {
       const { error } = await supabase
         .from('guests')
         .update({
-          attending_count: finalCount,
+          nikah_attending_count: finalNikahCount,
+          shaadi_attending_count: finalShaadiCount,
+          attending_count: finalShaadiCount,
           has_rsvped: true,
           notes: dua,
           updated_at: new Date().toISOString(),
@@ -42,15 +63,15 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
 
       if (error) {
         console.error('Supabase update error:', error);
-        setErrorMessage('Failed to submit RSVP. Please check your connection and try again.');
+        setErrorMessage('Failed to submit RSVP. Please try again.');
       } else {
         if (onSeatsUpdate) {
-          onSeatsUpdate(finalCount);
+          onSeatsUpdate();
         }
         setSubmitted(true);
       }
     } catch (err) {
-      console.error('Unexpected error during RSVP submission:', err);
+      console.error('Unexpected error:', err);
       setErrorMessage('An unexpected error occurred. Please try again.');
     } finally {
       setSubmitting(false);
@@ -65,18 +86,27 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   };
 
   if (submitted) {
-    const finalAttendingCount = attending === 'yes' ? parseInt(attendingCount, 10) : 0;
+    const finalNikahCount = isNikahInvited && attendingNikah === 'yes' ? parseInt(nikahCount, 10) : 0;
+    const finalShaadiCount = isShaadiInvited && attendingShaadi === 'yes' ? parseInt(shaadiCount, 10) : 0;
 
     return (
       <div style={{ textAlign: 'center', padding: '20px 0' }}>
         <h3 style={{ fontSize: '24px', color: '#8C733E', marginBottom: '12px' }}>
           Thank You!
         </h3>
-        <p style={{ fontSize: '16px', color: '#555', lineHeight: '1.6', marginBottom: '10px' }}>
-          {finalAttendingCount > 0
-            ? `Your RSVP for ${finalAttendingCount} ${finalAttendingCount === 1 ? 'guest' : 'guests'} has been recorded.`
-            : 'Your response has been recorded. We will miss you!'}
-        </p>
+        
+        {isNikahInvited && (
+          <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.5', margin: '4px 0' }}>
+            <strong>Nikah:</strong> {finalNikahCount > 0 ? `${finalNikahCount} ${finalNikahCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
+          </p>
+        )}
+
+        {isShaadiInvited && (
+          <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.5', margin: '4px 0' }}>
+            <strong>Shaadi / Reception:</strong> {finalShaadiCount > 0 ? `${finalShaadiCount} ${finalShaadiCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
+          </p>
+        )}
+
         <button
           type="button"
           onClick={handleEdit}
@@ -97,67 +127,127 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ textAlign: 'left', marginTop: '20px' }}>
-      {/* Attendance Option */}
-      <div style={{ marginBottom: '20px' }}>
-        <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
-          Will you be attending?
-        </label>
-        <div style={{ display: 'flex', gap: '20px' }}>
-          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
-            <input
-              type="radio"
-              name="attending"
-              value="yes"
-              checked={attending === 'yes'}
-              onChange={() => setAttending('yes')}
-            />
-            Joyfully Accept
+    <form onSubmit={handleSubmit} style={{ textAlign: 'left', marginTop: '10px' }}>
+      {/* 1. NIKAH QUESTION */}
+      {isNikahInvited && (
+        <div style={{ marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #D4AF37' }}>
+          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
+            Will you be attending the Nikah? (4 PM)
           </label>
-          <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
-            <input
-              type="radio"
-              name="attending"
-              value="no"
-              checked={attending === 'no'}
-              onChange={() => setAttending('no')}
-            />
-            Regretfully Decline
-          </label>
-        </div>
-      </div>
+          <div style={{ display: 'flex', gap: '20px', marginBottom: '12px' }}>
+            <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
+              <input
+                type="radio"
+                name="attendingNikah"
+                value="yes"
+                checked={attendingNikah === 'yes'}
+                onChange={() => setAttendingNikah('yes')}
+              />
+              Joyfully Accept
+            </label>
+            <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
+              <input
+                type="radio"
+                name="attendingNikah"
+                value="no"
+                checked={attendingNikah === 'no'}
+                onChange={() => setAttendingNikah('no')}
+              />
+              Regretfully Decline
+            </label>
+          </div>
 
-      {/* Guest Count Selection */}
-      {attending === 'yes' && (
-        <div style={{ marginBottom: '20px' }}>
-          <label htmlFor="attendingCount" style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
-            Number of Guests Attending:
-          </label>
-          <select
-            id="attendingCount"
-            value={attendingCount}
-            onChange={(e) => setAttendingCount(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '10px',
-              borderRadius: '8px',
-              border: '1px solid #CCC',
-              fontSize: '16px',
-              backgroundColor: '#FFF',
-              color: '#333',
-            }}
-          >
-            {Array.from({ length: guest?.max_invites || 1 }, (_, i) => i + 1).map((num) => (
-              <option key={num} value={num}>
-                {num} {num === 1 ? 'Guest' : 'Guests'}
-              </option>
-            ))}
-          </select>
+          {attendingNikah === 'yes' && (
+            <div>
+              <label htmlFor="nikahCount" style={{ display: 'block', fontSize: '0.88rem', fontWeight: '600', marginBottom: '6px', color: '#333' }}>
+                Guests attending Nikah:
+              </label>
+              <select
+                id="nikahCount"
+                value={nikahCount}
+                onChange={(e) => setNikahCount(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '8px 10px',
+                  borderRadius: '6px',
+                  border: '1px solid #CCC',
+                  fontSize: '15px',
+                  backgroundColor: '#FFF',
+                  color: '#333',
+                }}
+              >
+                {Array.from({ length: guest?.max_invites || 1 }, (_, i) => i + 1).map((num) => (
+                  <option key={num} value={num}>
+                    {num} {num === 1 ? 'Guest' : 'Guests'}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
       )}
 
-      {/* Dua / Message for the Couple */}
-      <div style={{ marginBottom: '24px' }}>
+      {/* 2. SHAADI / RECEPTION QUESTION */}
+      {isShaadiInvited && (
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
+            Will you be attending the Shaadi / Reception? (6 PM)
+          </label>
+          <div style={{ display: 'flex', gap: '20px', marginBottom: '12px' }}>
+            <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
+              <input
+                type="radio"
+                name="attendingShaadi"
+                value="yes"
+                checked={attendingShaadi === 'yes'}
+                onChange={() => setAttendingShaadi('yes')}
+              />
+              Joyfully Accept
+            </label>
+            <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
+              <input
+                type="radio"
+                name="attendingShaadi"
+                value="no"
+                checked={attendingShaadi === 'no'}
+                onChange={() => setAttendingShaadi('no')}
+              />
+              Regretfully Decline
+            </label>
+          </div>
+
+          {attendingShaadi === 'yes' && (
+            <div>
+              <label htmlFor="shaadiCount" style={{ display: 'block', fontSize: '0.88rem', fontWeight: '600', marginBottom: '6px', color: '#333' }}>
+                Guests attending Shaadi:
+              </label>
+              <select
+                id="shaadiCount"
+                value={shaadiCount}
+                onChange={(e) => setShaadiCount(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '8px 10px',
+                  borderRadius: '6px',
+                  border: '1px solid #CCC',
+                  fontSize: '15px',
+                  backgroundColor: '#FFF',
+                  color: '#333',
+                }}
+              >
+                {Array.from({ length: guest?.max_invites || 1 }, (_, i) => i + 1).map((num) => (
+                  <option key={num} value={num}>
+                    {num} {num === 1 ? 'Guest' : 'Guests'}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* DUA / MESSAGE */}
+      <div style={{ marginBottom: '20px' }}>
         <label htmlFor="dua" style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
           Leave a dua for the couple!
         </label>
@@ -186,7 +276,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
         </p>
       )}
 
-      {/* Submit Button */}
+      {/* SUBMIT BUTTON */}
       <button
         type="submit"
         disabled={submitting}
