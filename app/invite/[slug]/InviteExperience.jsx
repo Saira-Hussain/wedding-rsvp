@@ -263,15 +263,13 @@ export default function InviteExperience({ guest }) {
           </h2>
 
           <p style={{ color: '#5B4332', fontSize: '15px', marginBottom: '20px' }}>
-            We reserved <strong>{confirmedSeats}</strong> {confirmedSeats === 1 ? 'seat' : 'seats'} in your honor.
+          We reserved <strong>{guest?.max_invites || 1}</strong> {guest?.max_invites === 1 ? 'seat' : 'seats'} in your honor.
           </p>
 
-          <hr style={{ border: 'none', borderTop: '1px solid #C2A052', margin: '20px 0' }} />
-
           <RSVPForm
-            guest={guest}
-            onSeatsUpdate={(count) => setConfirmedSeats(count)}
-          />
+          guest={guest}
+          onSeatsUpdate={(count) => setConfirmedSeats(count)}
+      />
         </div>
       )}
     </main>
