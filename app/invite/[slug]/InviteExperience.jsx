@@ -122,7 +122,7 @@ export default function InviteExperience({ guest }) {
                 maxWidth: '280px',
               }}
             >
-              بسم الله الرحمن الرحيم
+              Bismillah
             </button>
           </div>
         </div>
