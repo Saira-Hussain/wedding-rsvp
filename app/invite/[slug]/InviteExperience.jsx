@@ -163,7 +163,7 @@ export default function InviteExperience({ guest }) {
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
                 color: '#610515',
                 margin: '0 0 2px 0',
-                fontWeight: '700',
+                fontWeight: '600',
                 lineHeight: '1.1',
               }}
             >
@@ -187,7 +187,7 @@ export default function InviteExperience({ guest }) {
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
                 color: '#610515',
                 margin: '0 0 16px 0',
-                fontWeight: '700',
+                fontWeight: '600',
                 lineHeight: '1.1',
               }}
             >
