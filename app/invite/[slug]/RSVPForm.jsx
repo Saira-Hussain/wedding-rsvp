@@ -10,7 +10,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       ? guest.attending_count 
       : guest?.max_invites ?? 1
   );
-  const [dietaryNotes, setDietaryNotes] = useState(guest?.notes || '');
+  const [dua, setDua] = useState(guest?.notes || '');
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(guest?.has_rsvped || false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -28,7 +28,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       .update({
         attending_count: finalCount,
         has_rsvped: true,
-        notes: dietaryNotes,
+        notes: dua,
         updated_at: new Date().toISOString(),
       })
       .eq('id', guest.id);
@@ -144,17 +144,17 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
         </div>
       )}
 
-      {/* Dietary Restrictions / Notes */}
+      {/* Dua / Message for the Couple */}
       <div style={{ marginBottom: '24px' }}>
-        <label htmlFor="dietaryNotes" style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
+        <label htmlFor="dua" style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#333' }}>
           Leave a dua for the couple!
         </label>
         <textarea
-          id="dietaryNotes"
+          id="dua"
           rows={3}
-          value={dietaryNotes}
-          onChange={(e) => setDietaryNotes(e.target.value)}
-          placeholder="e.g., Vegetarian, nut allergies, high chair needed"
+          value={dua}
+          onChange={(e) => setDua(e.target.value)}
+          placeholder="May Allah bless your union with love, happiness, and prosperity..."
           style={{
             width: '100%',
             padding: '10px',
