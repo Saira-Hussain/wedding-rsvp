@@ -188,4 +188,127 @@ export default function InviteExperience({ guest }) {
                 margin: '0 0 2px 0',
                 fontWeight: 'normal',
                 letterSpacing: '1px',
-                lineHeight: '1.
+                lineHeight: '1.2',
+              }}
+            >
+              Ayesha Syeda Hussain
+            </h1>
+
+            {/* Connector */}
+            <p
+              style={{
+                fontSize: '22px',
+                fontFamily: "'Sacramento', 'Dancing Script', 'Parisienne', cursive",
+                color: '#B8860B',
+                margin: '4px 0',
+                letterSpacing: '1px',
+              }}
+            >
+              with
+            </p>
+
+            {/* Groom Name in Cursive Script */}
+            <h1
+              style={{
+                fontSize: '42px',
+                fontFamily: "'Sacramento', 'Dancing Script', 'Parisienne', cursive",
+                color: '#610515',
+                margin: '0 0 20px 0',
+                fontWeight: 'normal',
+                letterSpacing: '1px',
+                lineHeight: '1.2',
+              }}
+            >
+              Owais Hasan Sayeed
+            </h1>
+
+            {/* Subtle Divider */}
+            <div style={{ color: '#C2A052', fontSize: '13px', margin: '0 0 22px 0', letterSpacing: '6px' }}>
+              ─── ❖ ───
+            </div>
+
+            {/* Event Schedule */}
+            <h2
+              style={{
+                fontSize: '16px',
+                letterSpacing: '3px',
+                color: '#3B2414',
+                margin: '0 0 12px 0',
+                fontWeight: '700',
+              }}
+            >
+              DECEMBER 26, 2026
+            </h2>
+
+            <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0', fontWeight: '700' }}>
+              NIKAH AT 4 PM
+            </p>
+            <p style={{ fontSize: '12px', letterSpacing: '2px', color: '#610515', margin: '4px 0 22px 0', fontWeight: '700' }}>
+              RECEPTION AT 6 PM
+            </p>
+
+            {/* Venue Location */}
+            <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#3B2414', margin: '0 0 28px 0', fontWeight: '500' }}>
+              Marriott Town Center<br />
+              16090 City Walk,<br />
+              Sugar Land, TX 77479
+            </p>
+
+            {/* Bottom Ornament */}
+            <div style={{ color: '#C2A052', fontSize: '16px', marginBottom: '24px' }}>
+              ❦
+            </div>
+
+            {/* RSVP Navigation Button */}
+            <button
+              onClick={() => setStep('rsvp')}
+              style={{
+                backgroundColor: '#610515',
+                color: '#F4E8D2',
+                padding: '13px 36px',
+                fontSize: '13px',
+                border: '1px solid #C2A052',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontWeight: '600',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                boxShadow: '0 4px 15px rgba(97, 5, 21, 0.35)',
+              }}
+            >
+              Continue to RSVP
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* STEP 3: RSVP FORM */}
+      {step === 'rsvp' && (
+        <div
+          style={{
+            zIndex: 1,
+            margin: '40px 20px',
+            maxWidth: '500px',
+            width: '100%',
+            backgroundColor: 'rgba(244, 232, 210, 0.96)',
+            border: '2px solid #C2A052',
+            padding: '36px 28px',
+            borderRadius: '12px',
+            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)',
+            textAlign: 'center',
+            color: '#3B2414',
+          }}
+        >
+          <h2 style={{ fontSize: '26px', color: '#610515', marginBottom: '8px' }}>
+            RSVP
+          </h2>
+          <p style={{ color: '#5B4332', fontSize: '15px', marginBottom: '20px' }}>
+            We reserved <strong>{guest.max_invites}</strong> {guest.max_invites === 1 ? 'seat' : 'seats'} in your honor.
+          </p>
+          <hr style={{ border: 'none', borderTop: '1px solid #C2A052', margin: '20px 0' }} />
+          <RSVPForm guest={guest} />
+        </div>
+      )}
+    </main>
+  );
+}
