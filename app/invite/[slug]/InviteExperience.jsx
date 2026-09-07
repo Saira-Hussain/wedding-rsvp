@@ -43,8 +43,7 @@ export default function InviteExperience({ guest }) {
           }
           .dynamic-bg.step-details,
           .dynamic-bg.step-rsvp {
-            background-size: contain !important;
-            background-color: #0a0203;
+            background-size: 100% 100% !important; /* Forces the full curtain scene to scale to the phone screen */
           }
         }
         .dynamic-bg.step-details,
