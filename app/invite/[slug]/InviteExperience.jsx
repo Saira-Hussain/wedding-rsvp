@@ -47,11 +47,10 @@ export default function InviteExperience({ guest }) {
   zIndex: 1,
   maxWidth: '380px',
   width: '90%',
-  backgroundImage: "url('/gold-card-bg.jpg')",
+  backgroundColor: '#F4E8D2', // Fallback color while image loads
+  backgroundImage: "url('/gold-bg.png')", // Path to your gold texture file in /public
   backgroundSize: 'cover',
   backgroundPosition: 'center',
-  backgroundRepeat: 'no-repeat',
-  backdropFilter: 'blur(4px)',
   border: '2px solid #C2A052',
   borderRadius: '12px',
   boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
