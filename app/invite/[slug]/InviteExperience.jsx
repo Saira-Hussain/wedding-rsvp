@@ -1,12 +1,36 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
   const [isOpening, setIsOpening] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
+
+  // Countdown timer state
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const targetDate = new Date('2026-12-26T16:00:00');
+    const updateCountdown = () => {
+      const now = new Date();
+      const difference = targetDate.getTime() - now.getTime();
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
+        });
+      }
+    };
+
+    updateCountdown();
+    const timer = setInterval(updateCountdown, 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const isNikkahInvited = guest?.invited_to_nikkah ?? true;
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
@@ -19,6 +43,22 @@ export default function InviteExperience({ guest }) {
     }, 900);
   };
 
+  const cardContainerStyle = {
+    zIndex: 1,
+    maxWidth: '380px',
+    width: '90%',
+    backgroundColor: 'rgba(244, 232, 210, 0.94)',
+    backdropFilter: 'blur(4px)',
+    border: '2px solid #C2A052',
+    borderRadius: '12px',
+    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+    boxSizing: 'border-box',
+    padding: '24px 16px',
+    textAlign: 'center',
+    color: '#3B2414',
+    marginBottom: '24px',
+  };
+
   return (
     <main
       style={{
@@ -28,12 +68,13 @@ export default function InviteExperience({ guest }) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: step === 'welcome' ? 'space-between' : 'center',
+        justifyContent: step === 'welcome' ? 'space-between' : 'flex-start',
         fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
         backgroundColor: '#0a0203',
-        padding: '24px 12px',
+        padding: step === 'details' ? '32px 12px 60px 12px' : '24px 12px',
         boxSizing: 'border-box',
         overflowX: 'hidden',
+        overflowY: 'auto',
       }}
     >
       <style jsx global>{`
@@ -168,32 +209,12 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* STEP 2: INVITATION DETAILS */}
+      {/* STEP 2: SCROLLABLE CARDS */}
       {step === 'details' && (
-        <div
-          style={{
-            zIndex: 1,
-            maxWidth: '360px',
-            width: '85%',
-            position: 'relative',
-            backgroundColor: 'rgba(244, 232, 210, 0.94)',
-            backdropFilter: 'blur(4px)',
-            border: '2px solid #C2A052',
-            borderRadius: '8px',
-            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.75)',
-            boxSizing: 'border-box',
-            margin: 'auto 0',
-          }}
-        >
-          <div
-            style={{
-              padding: '20px 14px',
-              textAlign: 'center',
-              color: '#3B2414',
-              position: 'relative',
-              zIndex: 2,
-            }}
-          >
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          
+          {/* Box 1: Invitation & Event Details */}
+          <section style={cardContainerStyle}>
             <div style={{ color: '#B8860B', fontSize: '16px', marginBottom: '6px', letterSpacing: '2px' }}>
               ❖ ⚜ ❖
             </div>
@@ -313,9 +334,75 @@ export default function InviteExperience({ guest }) {
                 maxWidth: '240px',
               }}
             >
-              Continue to RSVP
+              Click to RSVP
             </button>
-          </div>
+          </section>
+
+          {/* Box 2: Countdown Timer */}
+          <section style={cardContainerStyle}>
+            <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
+              Counting Down
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+              {[
+                { label: 'Days', val: timeLeft.days },
+                { label: 'Hours', val: timeLeft.hours },
+                { label: 'Mins', val: timeLeft.minutes },
+                { label: 'Secs', val: timeLeft.seconds },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    backgroundColor: 'rgba(97, 5, 21, 0.08)',
+                    border: '1px solid #C2A052',
+                    borderRadius: '6px',
+                    padding: '8px 4px',
+                  }}
+                >
+                  <span style={{ display: 'block', fontSize: '1.2rem', fontWeight: '700', color: '#610515' }}>
+                    {String(item.val).padStart(2, '0')}
+                  </span>
+                  <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: '#8B6B23', letterSpacing: '0.5px' }}>
+                    {item.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Box 3: Travel & Accommodations */}
+          <section style={cardContainerStyle}>
+            <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '14px', textTransform: 'uppercase', fontWeight: '700' }}>
+              Travel & Accommodations
+            </h2>
+            <div style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414' }}>
+              <p style={{ margin: '0 0 10px 0' }}>
+                <strong>Venue:</strong> Marriott Town Center<br />
+                16090 City Walk, Sugar Land, TX 77479
+              </p>
+              <p style={{ margin: 0 }}>
+                <strong>Accommodations:</strong> A block of rooms has been reserved for out-of-town guests at the Marriott. Mention the <em>Hussain & Sayeed</em> wedding when booking.
+              </p>
+            </div>
+          </section>
+
+          {/* Box 4: Q&A */}
+          <section style={cardContainerStyle}>
+            <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '14px', textTransform: 'uppercase', fontWeight: '700' }}>
+              Questions & Answers
+            </h2>
+            <div style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left' }}>
+              <div style={{ marginBottom: '12px' }}>
+                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>What is the dress code?</p>
+                <p style={{ margin: 0 }}>Formal / Traditional South Asian attire.</p>
+              </div>
+              <div>
+                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Can I bring additional guests?</p>
+                <p style={{ margin: 0 }}>Please refer to the seats allocated in your RSVP form step.</p>
+              </div>
+            </div>
+          </section>
+
         </div>
       )}
 
