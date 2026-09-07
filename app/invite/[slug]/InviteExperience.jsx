@@ -7,7 +7,7 @@ export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
 
-  const isNikkahInvited = guest?.invited_to_nikkah ?? false;
+  const isNikkahInvited = guest?.invited_to_nikkah ?? true;
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
 
   return (
@@ -40,6 +40,11 @@ export default function InviteExperience({ guest }) {
         @media (max-width: 768px) {
           .dynamic-bg.step-welcome {
             background-image: url('/welcome-mobile-bg.jpg') !important;
+          }
+          .dynamic-bg.step-details,
+          .dynamic-bg.step-rsvp {
+            background-size: contain !important;
+            background-color: #0a0203;
           }
         }
         .dynamic-bg.step-details,
@@ -171,7 +176,7 @@ export default function InviteExperience({ guest }) {
               <span style={{ fontSize: '1.05rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
                 Mr. and Mrs. Syed Abrar-ul Hussain
               </span><br />
-              invite you to the shaadi reception of their daughter
+              invite you to the reception of their daughter
             </p>
 
             <div style={{ color: '#C2A052', fontSize: '11px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
