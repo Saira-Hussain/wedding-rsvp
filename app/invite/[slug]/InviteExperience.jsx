@@ -370,18 +370,66 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* Box 3: Travel & Accommodations */}
+          {/* Box 3: Travel */}
           <section style={cardContainerStyle}>
-            <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '14px', textTransform: 'uppercase', fontWeight: '700' }}>
-              Travel & Accommodations
+            <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
+              Travel
             </h2>
-            <div style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414' }}>
-              <p style={{ margin: '0 0 10px 0' }}>
-                <strong>Venue:</strong> Marriott Town Center<br />
-                16090 City Walk, Sugar Land, TX 77479
-              </p>
-              <p style={{ margin: 0 }}>
-              </p>
+
+            <div style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left' }}>
+              
+              <div style={{ marginBottom: '14px' }}>
+                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Getting In</p>
+                <p style={{ margin: 0 }}>
+                  We recommend flying into <strong>George Bush Intercontinental Airport (IAH)</strong>! <strong>William P. Hobby Airport (HOU)</strong> is another good option depending on where you’re staying.
+                </p>
+              </div>
+
+              <div style={{ marginBottom: '14px' }}>
+                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Getting Around</p>
+                <p style={{ margin: '0 0 6px 0' }}>
+                  There are plenty of ways to get around Houston! You’ll find several car rental options, plus taxis and rideshare services. If you plan to explore the city, renting a car is often the easiest option.
+                </p>
+                <a
+                  href="https://www.fly2houston.com/iah/ground-transportation"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: '#8B6B23', textDecoration: 'underline', fontSize: '0.75rem', fontWeight: '600' }}
+                >
+                  IAH Ground Transportation Information
+                </a>
+              </div>
+
+              <div style={{ marginBottom: '14px' }}>
+                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>High Season in Houston</p>
+                <p style={{ margin: 0 }}>
+                  Houston stays busy all year, and hotels fill up fast on wedding weekends. Book your travel early to get the best rates and availability.
+                </p>
+              </div>
+
+              <div style={{ marginBottom: '14px' }}>
+                <p style={{ fontWeight: '700', margin: '0 0 4px 0', color: '#610515' }}>Our Favorite Restaurants</p>
+                <ul style={{ margin: 0, paddingLeft: '18px', listStyleType: 'disc' }}>
+                  <li>Aga's</li>
+                  <li>Ma's House</li>
+                  <li>Bundu Khan</li>
+                  <li>Levant</li>
+                </ul>
+              </div>
+
+              <div>
+                <p style={{ fontWeight: '700', margin: '0 0 4px 0', color: '#610515' }}>Things to Do in Houston</p>
+                <ul style={{ margin: 0, paddingLeft: '18px', listStyleType: 'disc' }}>
+                  <li>Space Center Houston</li>
+                  <li>Museum District</li>
+                  <li>Buffalo Bayou Park</li>
+                  <li>Houston Zoo</li>
+                  <li>The Menil Collection</li>
+                  <li>Discovery Green</li>
+                  <li>The Galleria</li>
+                </ul>
+              </div>
+
             </div>
           </section>
 
