@@ -47,7 +47,7 @@ export default function InviteExperience({ guest }) {
     zIndex: 1,
     maxWidth: '380px',
     width: '90%',
-    backgroundColor: 'rgba(244, 232, 210, 0.94)',
+    backgroundColor: 'rgba(0, 0, 0, 0.94)',
     backdropFilter: 'blur(4px)',
     border: '2px solid #C2A052',
     borderRadius: '12px',
