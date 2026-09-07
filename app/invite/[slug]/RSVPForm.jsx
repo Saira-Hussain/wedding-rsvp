@@ -132,7 +132,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       {isNikkahInvited && (
         <div style={{ marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #D4AF37' }}>
           <p style={{ color: '#5B4332', fontSize: '0.95rem', marginBottom: '8px' }}>
-            We have reserved <strong>{maxNikkah} seats in your honor</strong>
+            We have reserved <strong>{maxNikkah}</strong> seats in your honor
           </p>
           <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
             Will you be attending the Nikkah? (4 PM)
@@ -194,7 +194,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       {isShaadiInvited && (
         <div style={{ marginBottom: '20px' }}>
           <p style={{ color: '#5B4332', fontSize: '0.95rem', marginBottom: '8px' }}>
-            Reserved seats for Shaadi: <strong>{maxShaadi}</strong>
+            We have reserved <strong>{maxNikkah}</strong> seats in your honor
           </p>
           <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
             Will you be attending the Reception? (6 PM)
