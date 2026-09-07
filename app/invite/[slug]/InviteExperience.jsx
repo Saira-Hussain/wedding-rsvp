@@ -31,7 +31,7 @@ export default function InviteExperience({ guest }) {
         justifyContent: step === 'welcome' ? 'space-between' : 'center',
         fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
         backgroundColor: '#0a0203',
-        padding: '24px 16px',
+        padding: '24px 12px',
         boxSizing: 'border-box',
         overflowX: 'hidden',
       }}
@@ -173,8 +173,8 @@ export default function InviteExperience({ guest }) {
         <div
           style={{
             zIndex: 1,
-            maxWidth: '400px',
-            width: '90%',
+            maxWidth: '360px',
+            width: '85%',
             position: 'relative',
             backgroundColor: 'rgba(244, 232, 210, 0.94)',
             backdropFilter: 'blur(4px)',
@@ -187,21 +187,21 @@ export default function InviteExperience({ guest }) {
         >
           <div
             style={{
-              padding: '24px 16px',
+              padding: '20px 14px',
               textAlign: 'center',
               color: '#3B2414',
               position: 'relative',
               zIndex: 2,
             }}
           >
-            <div style={{ color: '#B8860B', fontSize: '18px', marginBottom: '8px', letterSpacing: '2px' }}>
+            <div style={{ color: '#B8860B', fontSize: '16px', marginBottom: '6px', letterSpacing: '2px' }}>
               ❖ ⚜ ❖
             </div>
 
             <p
               style={{
-                fontSize: 'clamp(1rem, 4vw, 1.25rem)',
-                margin: '0 0 10px 0',
+                fontSize: 'clamp(0.9rem, 3.5vw, 1.15rem)',
+                margin: '0 0 8px 0',
                 color: '#8B6B23',
                 fontFamily: 'serif',
                 lineHeight: '1.4',
@@ -212,23 +212,23 @@ export default function InviteExperience({ guest }) {
               بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
             </p>
 
-            <p style={{ fontSize: '0.82rem', lineHeight: '1.5', color: '#3B2414', margin: '0 0 12px 0', fontStyle: 'italic', fontWeight: '500' }}>
+            <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
               Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
               and the blessings of Late Mr. Mohammed Rafiuddin:<br />
               <br />
-              <span style={{ fontSize: '1.05rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
+              <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
                 Mr. and Mrs. Syed Abrar-ul Hussain
               </span><br />
               invite you to the reception of their daughter
             </p>
 
-            <div style={{ color: '#C2A052', fontSize: '11px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
+            <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 8px 0', letterSpacing: '3px' }}>
               ─── ❖ ───
             </div>
 
             <h1
               style={{
-                fontSize: 'clamp(1.8rem, 7vw, 2.8rem)',
+                fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
                 color: '#610515',
                 margin: '0',
@@ -244,7 +244,7 @@ export default function InviteExperience({ guest }) {
 
             <p
               style={{
-                fontSize: '1.1rem',
+                fontSize: '1rem',
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
                 color: '#B8860B',
                 margin: '2px 0',
@@ -255,10 +255,10 @@ export default function InviteExperience({ guest }) {
 
             <h1
               style={{
-                fontSize: 'clamp(1.8rem, 7vw, 2.8rem)',
+                fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
                 color: '#610515',
-                margin: '0 0 10px 0',
+                margin: '0 0 8px 0',
                 fontWeight: '400',
                 lineHeight: '1.2',
                 wordBreak: 'break-word',
@@ -269,27 +269,27 @@ export default function InviteExperience({ guest }) {
               Owais Hasan Sayeed
             </h1>
 
-            <div style={{ color: '#C2A052', fontSize: '11px', margin: '0 0 14px 0', letterSpacing: '3px' }}>
+            <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
               ─── ❖ ───
             </div>
 
-            <h2 style={{ fontSize: '0.9rem', letterSpacing: '2px', color: '#3B2414', margin: '0 0 8px 0', fontWeight: '700' }}>
+            <h2 style={{ fontSize: '0.85rem', letterSpacing: '2px', color: '#3B2414', margin: '0 0 6px 0', fontWeight: '700' }}>
               DECEMBER 26, 2026
             </h2>
 
             {isNikkahInvited && (
-              <p style={{ fontSize: '0.78rem', letterSpacing: '1px', color: '#610515', margin: '2px 0', fontWeight: '700' }}>
+              <p style={{ fontSize: '0.74rem', letterSpacing: '1px', color: '#610515', margin: '2px 0', fontWeight: '700' }}>
                 NIKKAH AT 4 PM
               </p>
             )}
 
             {isShaadiInvited && (
-              <p style={{ fontSize: '0.78rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 14px 0', fontWeight: '700' }}>
+              <p style={{ fontSize: '0.74rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 10px 0', fontWeight: '700' }}>
                 RECEPTION AT 6 PM
               </p>
             )}
 
-            <p style={{ fontSize: '0.82rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 18px 0', fontWeight: '500' }}>
+            <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 14px 0', fontWeight: '500' }}>
               Marriott Town Center<br />
               16090 City Walk,<br />
               Sugar Land, TX 77479
@@ -300,8 +300,8 @@ export default function InviteExperience({ guest }) {
               style={{
                 backgroundColor: '#610515',
                 color: '#F4E8D2',
-                padding: '12px 20px',
-                fontSize: '0.78rem',
+                padding: '10px 16px',
+                fontSize: '0.74rem',
                 border: '1px solid #C2A052',
                 borderRadius: '4px',
                 cursor: 'pointer',
@@ -310,7 +310,7 @@ export default function InviteExperience({ guest }) {
                 textTransform: 'uppercase',
                 boxShadow: '0 4px 15px rgba(97, 5, 21, 0.35)',
                 width: '100%',
-                maxWidth: '260px',
+                maxWidth: '240px',
               }}
             >
               Continue to RSVP
@@ -324,11 +324,11 @@ export default function InviteExperience({ guest }) {
         <div
           style={{
             zIndex: 1,
-            maxWidth: '400px',
-            width: '90%',
+            maxWidth: '360px',
+            width: '85%',
             backgroundColor: 'rgba(244, 232, 210, 0.96)',
             border: '2px solid #C2A052',
-            padding: '24px 16px',
+            padding: '20px 14px',
             borderRadius: '12px',
             boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)',
             textAlign: 'center',
@@ -337,7 +337,7 @@ export default function InviteExperience({ guest }) {
             margin: 'auto 0',
           }}
         >
-          <h2 style={{ fontSize: '1.4rem', color: '#610515', marginBottom: '8px' }}>
+          <h2 style={{ fontSize: '1.3rem', color: '#610515', marginBottom: '8px' }}>
             RSVP
           </h2>
 
