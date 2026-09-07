@@ -44,20 +44,23 @@ export default function InviteExperience({ guest }) {
   };
 
   const cardContainerStyle = {
-    zIndex: 1,
-    maxWidth: '380px',
-    width: '90%',
-    backgroundColor: 'rgba(194, 160, 82, 1)',
-    backdropFilter: 'blur(4px)',
-    border: '2px solid #C2A052',
-    borderRadius: '12px',
-    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
-    boxSizing: 'border-box',
-    padding: '24px 16px',
-    textAlign: 'center',
-    color: '#3B2414',
-    marginBottom: '24px',
-  };
+  zIndex: 1,
+  maxWidth: '380px',
+  width: '90%',
+  backgroundImage: "url('/gold-card-bg.jpg')",
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backdropFilter: 'blur(4px)',
+  border: '2px solid #C2A052',
+  borderRadius: '12px',
+  boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+  boxSizing: 'border-box',
+  padding: '24px 16px',
+  textAlign: 'center',
+  color: '#3B2414',
+  marginBottom: '24px',
+};
 
   return (
     <main
