@@ -381,7 +381,6 @@ export default function InviteExperience({ guest }) {
                 16090 City Walk, Sugar Land, TX 77479
               </p>
               <p style={{ margin: 0 }}>
-                <strong>Accommodations:</strong> A block of rooms has been reserved for out-of-town guests at the Marriott. Mention the <em>Hussain & Sayeed</em> wedding when booking.
               </p>
             </div>
           </section>
