@@ -44,11 +44,11 @@ export default function InviteExperience({ guest }) {
           transition: background-image 0.8s ease-in-out;
         }
         .dynamic-bg.step-welcome {
-          background-image: url('/welcome-bg.jpg');
+          background-image: url('/invite-bg.jpg');
         }
         @media (max-width: 768px) {
           .dynamic-bg.step-welcome {
-            background-image: url('/welcome-mobile-bg.jpg') !important;
+            background-image: url('/invite-bg.jpg') !important;
           }
           .dynamic-bg.step-details,
           .dynamic-bg.step-rsvp {
