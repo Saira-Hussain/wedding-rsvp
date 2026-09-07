@@ -5,10 +5,19 @@ import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
+  const [isOpening, setIsOpening] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
 
   const isNikkahInvited = guest?.invited_to_nikkah ?? true;
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
+
+  const handleOpenCurtains = () => {
+    setIsOpening(true);
+    setTimeout(() => {
+      setStep('details');
+      setIsOpening(false);
+    }, 900); // Matches the curtain slide animation duration
+  };
 
   return (
     <main
@@ -43,14 +52,51 @@ export default function InviteExperience({ guest }) {
           }
           .dynamic-bg.step-details,
           .dynamic-bg.step-rsvp {
-            background-size: 100% 100% !important; /* Forces the full curtain scene to scale to the phone screen */
+            background-size: 100% 100% !important;
           }
         }
         .dynamic-bg.step-details,
         .dynamic-bg.step-rsvp {
           background-image: url('/invite-bg.jpg');
         }
+
+        /* Curtain Opening Animation Styles */
+        .curtain-left, .curtain-right {
+          position: fixed;
+          top: 0;
+          width: 50%;
+          height: 100%;
+          background-image: url('/invite-bg.jpg');
+          background-size: cover;
+          background-repeat: no-repeat;
+          z-index: 10;
+          transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .curtain-left {
+          left: 0;
+          background-position: left center;
+        }
+        .curtain-right {
+          right: 0;
+          background-position: right center;
+        }
+        .opening .curtain-left {
+          transform: translateX(-100%);
+        }
+        .opening .curtain-right {
+          transform: translateX(100%);
+        }
       `}</style>
+
+      {/* Sliding Curtains Effect */}
+      <div className={isOpening ? 'opening' : ''} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10 }}>
+        {isOpening && (
+          <>
+            <div className="curtain-left" />
+            <div className="curtain-right" />
+          </>
+        )}
+      </div>
 
       <div
         className={`dynamic-bg step-${step}`}
@@ -100,7 +146,7 @@ export default function InviteExperience({ guest }) {
 
           <div style={{ paddingBottom: '3vh', width: '100%' }}>
             <button
-              onClick={() => setStep('details')}
+              onClick={handleOpenCurtains}
               style={{
                 backgroundColor: 'rgba(20, 20, 20, 0.85)',
                 color: '#FFFFFF',
