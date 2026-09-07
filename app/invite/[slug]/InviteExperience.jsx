@@ -48,7 +48,7 @@ export default function InviteExperience({ guest }) {
         }
         @media (max-width: 768px) {
           .dynamic-bg.step-welcome {
-            background-image: url('/welcome-bg.jpg') !important;
+            background-image: url('/welcome-mobile-bg.jpg') !important;
           }
           .dynamic-bg.step-details,
           .dynamic-bg.step-rsvp {
