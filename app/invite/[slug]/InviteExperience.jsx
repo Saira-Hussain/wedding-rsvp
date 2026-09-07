@@ -253,7 +253,7 @@ export default function InviteExperience({ guest }) {
               style={{
                 fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                color: '#610515',
+                color: '#8B6B23',
                 margin: '0',
                 fontWeight: '400',
                 lineHeight: '1.2',
@@ -280,7 +280,7 @@ export default function InviteExperience({ guest }) {
               style={{
                 fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
                 fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                color: '#610515',
+                color: '#8B6B23',
                 margin: '0 0 8px 0',
                 fontWeight: '400',
                 lineHeight: '1.2',
