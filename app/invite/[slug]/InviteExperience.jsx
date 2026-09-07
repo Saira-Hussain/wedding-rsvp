@@ -16,7 +16,7 @@ export default function InviteExperience({ guest }) {
     setTimeout(() => {
       setStep('details');
       setIsOpening(false);
-    }, 900); // Matches the curtain slide animation duration
+    }, 900);
   };
 
   return (
@@ -60,7 +60,6 @@ export default function InviteExperience({ guest }) {
           background-image: url('/invite-bg.jpg');
         }
 
-        /* Curtain Opening Animation Styles */
         .curtain-left, .curtain-right {
           position: fixed;
           top: 0;
@@ -88,7 +87,6 @@ export default function InviteExperience({ guest }) {
         }
       `}</style>
 
-      {/* Sliding Curtains Effect */}
       <div className={isOpening ? 'opening' : ''} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10 }}>
         {isOpening && (
           <>
@@ -175,8 +173,8 @@ export default function InviteExperience({ guest }) {
         <div
           style={{
             zIndex: 1,
-            maxWidth: '480px',
-            width: '100%',
+            maxWidth: '400px',
+            width: '90%',
             position: 'relative',
             backgroundColor: 'rgba(244, 232, 210, 0.94)',
             backdropFilter: 'blur(4px)',
@@ -326,8 +324,8 @@ export default function InviteExperience({ guest }) {
         <div
           style={{
             zIndex: 1,
-            maxWidth: '480px',
-            width: '100%',
+            maxWidth: '400px',
+            width: '90%',
             backgroundColor: 'rgba(244, 232, 210, 0.96)',
             border: '2px solid #C2A052',
             padding: '24px 16px',
