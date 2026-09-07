@@ -388,17 +388,47 @@ export default function InviteExperience({ guest }) {
 
           {/* Box 4: Q&A */}
           <section style={cardContainerStyle}>
-            <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '14px', textTransform: 'uppercase', fontWeight: '700' }}>
+            <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '6px', textTransform: 'uppercase', fontWeight: '700' }}>
               Questions & Answers
             </h2>
+            <p style={{ fontSize: '0.75rem', color: '#8B6B23', fontStyle: 'italic', marginBottom: '16px' }}>
+              If you have questions, please check our Q & A section first!
+            </p>
+            
             <div style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left' }}>
+              <div style={{ marginBottom: '12px' }}>
+                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>When is the RSVP deadline?</p>
+                <p style={{ margin: 0 }}>Please RSVP by November 1st so we can get an accurate headcount. :)</p>
+              </div>
+
+              <div style={{ marginBottom: '12px' }}>
+                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>What time should I arrive?</p>
+                <p style={{ margin: 0 }}>We recommend arriving 15–20 minutes before the scheduled start time so you can get settled and enjoy the celebration.</p>
+              </div>
+
+              <div style={{ marginBottom: '12px' }}>
+                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Is there parking available?</p>
+                <p style={{ margin: 0 }}>Yes! Parking will be available at the venue in the parking garage.</p>
+              </div>
+
+              <div style={{ marginBottom: '12px' }}>
+                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Can we use our phones and cameras to take photos during the wedding?</p>
+                <p style={{ margin: 0 }}>Absolutely! Capture all the memories you’d like — just please don’t block our photographer’s shots. They’re talented, we promise :)</p>
+              </div>
+
               <div style={{ marginBottom: '12px' }}>
                 <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>What is the dress code?</p>
                 <p style={{ margin: 0 }}>Formal / Traditional South Asian attire.</p>
               </div>
-              <div>
+
+              <div style={{ marginBottom: '12px' }}>
                 <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Can I bring additional guests?</p>
                 <p style={{ margin: 0 }}>Please refer to the seats allocated in your RSVP form step.</p>
+              </div>
+
+              <div>
+                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>What will the weather be like?</p>
+                <p style={{ margin: 0 }}>Welcome to Houston, out-of-towners! You can expect cool, comfortable days—usually around 60–70°F—with cooler evenings. We recommend bringing layers, a light jacket, and comfortable shoes. And as always, plan for a little extra traffic. ;)</p>
               </div>
             </div>
           </section>
