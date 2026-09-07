@@ -44,11 +44,11 @@ export default function InviteExperience({ guest }) {
           transition: background-image 0.8s ease-in-out;
         }
         .dynamic-bg.step-welcome {
-          background-image: url('/invite-bg.jpg');
+          background-image: url('/welcome-bg.jpg');
         }
         @media (max-width: 768px) {
           .dynamic-bg.step-welcome {
-            background-image: url('/invite-bg.jpg') !important;
+            background-image: url('/welcome-bg.jpg') !important;
           }
           .dynamic-bg.step-details,
           .dynamic-bg.step-rsvp {
@@ -57,7 +57,7 @@ export default function InviteExperience({ guest }) {
         }
         .dynamic-bg.step-details,
         .dynamic-bg.step-rsvp {
-          background-image: url('/invite-bg.jpg');
+          background-image: url('/welcome-bg.jpg');
         }
 
         .curtain-left, .curtain-right {
@@ -65,7 +65,7 @@ export default function InviteExperience({ guest }) {
           top: 0;
           width: 50%;
           height: 100%;
-          background-image: url('/invite-bg.jpg');
+          background-image: url('/welcome-bg.jpg');
           background-size: cover;
           background-repeat: no-repeat;
           z-index: 10;
