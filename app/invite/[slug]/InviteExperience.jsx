@@ -48,7 +48,7 @@ export default function InviteExperience({ guest }) {
   maxWidth: '380px',
   width: '90%',
   backgroundColor: '#F4E8D2', // Fallback color while image loads
-  backgroundImage: "url('/gold-bg.jpg')", // Path to your gold texture file in /public
+  backgroundImage: "url('/gold-card-bg.jpg')", // Path to your gold texture file in /public
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   border: '2px solid #C2A052',
