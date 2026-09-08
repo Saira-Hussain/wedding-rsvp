@@ -357,7 +357,8 @@ export default function InviteExperience({ guest }) {
 
               <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
                 Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
-                and the blessings of Late Mr. Mohammed Rafiuddin:<br />
+                and the blessings of Mrs. Syeda Butool, the wife of Late Mr. Mohammed Rafiuddin:<br />
+                <br />
                 <br />
                 <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
                   Mr. and Mrs. Syed Abrar-ul Hussain
