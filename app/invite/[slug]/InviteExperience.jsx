@@ -47,8 +47,8 @@ export default function InviteExperience({ guest }) {
     zIndex: 1,
     maxWidth: '380px',
     width: '90%',
-    backgroundColor: '#F4E8D2', // Fallback color while image loads
-    backgroundImage: "url('/gold-card-bg.jpg')", // Path to your gold texture file in /public
+    backgroundColor: '#F4E8D2',
+    backgroundImage: "url('/gold-card-bg.jpg')",
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     border: '2px solid #C2A052',
@@ -236,15 +236,28 @@ export default function InviteExperience({ guest }) {
                 بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
               </p>
 
-              <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
-                Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
-                and the blessings of Mrs. Syeda Butool, the wife of Late Mr. Mohammed Rafiuddin:<br />
-                <br />
-                <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
-                  Mr. and Mrs. Syed Abrar-ul Hussain
-                </span><br />
-                invite you to the reception of their daughter
-              </p>
+              {/* Conditional Host Wording */}
+              {guest?.groom_side ? (
+                <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
+                  Under the guardianship of Paternal Grandparents<br />
+                  and the blessings of Maternal Grandparents:<br />
+                  <br />
+                  <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
+                    Mr. and Mrs. Zafar Hasan Sayeed
+                  </span><br />
+                  invite you to the reception of their son
+                </p>
+              ) : (
+                <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
+                  Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
+                  and the blessings of Mrs. Syeda Butool, the wife of Late Mr. Mohammed Rafiuddin:<br />
+                  <br />
+                  <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
+                    Mr. and Mrs. Syed Abrar-ul Hussain
+                  </span><br />
+                  invite you to the reception of their daughter
+                </p>
+              )}
 
               <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 8px 0', letterSpacing: '3px' }}>
                 ─── ❖ ───
@@ -263,7 +276,7 @@ export default function InviteExperience({ guest }) {
                   padding: '0 4px',
                 }}
               >
-                Ayesha Syeda Hussain
+                {guest?.groom_side ? 'Owais Hasan Sayeed' : 'Ayesha Syeda Hussain'}
               </h1>
 
               <p
@@ -290,7 +303,7 @@ export default function InviteExperience({ guest }) {
                   padding: '0 4px',
                 }}
               >
-                Owais Hasan Sayeed
+                {guest?.groom_side ? 'Ayesha Syeda Hussain' : 'Owais Hasan Sayeed'}
               </h1>
 
               <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
@@ -355,16 +368,28 @@ export default function InviteExperience({ guest }) {
                 بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
               </p>
 
-              <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
-                Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
-                and the blessings of Mrs. Syeda Butool, the wife of Late Mr. Mohammed Rafiuddin:<br />
-                <br />
-                <br />
-                <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
-                  Mr. and Mrs. Syed Abrar-ul Hussain
-                </span><br />
-                invite you to the Valima reception of
-              </p>
+              {/* Conditional Host Wording for Valima */}
+              {guest?.groom_side ? (
+                <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
+                  Under the guardianship of Paternal Grandparents<br />
+                  and the blessings of Maternal Grandparents:<br />
+                  <br />
+                  <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
+                    Mr. and Mrs. Zafar Hasan Sayeed
+                  </span><br />
+                  invite you to the Valima reception of their son
+                </p>
+              ) : (
+                <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
+                  Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
+                  and the blessings of Mrs. Syeda Butool, the wife of Late Mr. Mohammed Rafiuddin:<br />
+                  <br />
+                  <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
+                    Mr. and Mrs. Syed Abrar-ul Hussain
+                  </span><br />
+                  invite you to the Valima reception of
+                </p>
+              )}
 
               <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 8px 0', letterSpacing: '3px' }}>
                 ─── ❖ ───
@@ -383,7 +408,7 @@ export default function InviteExperience({ guest }) {
                   padding: '0 4px',
                 }}
               >
-                Ayesha Syeda Hussain
+                {guest?.groom_side ? 'Owais Hasan Sayeed' : 'Ayesha Syeda Hussain'}
               </h1>
 
               <p
@@ -410,7 +435,7 @@ export default function InviteExperience({ guest }) {
                   padding: '0 4px',
                 }}
               >
-                Owais Hasan Sayeed
+                {guest?.groom_side ? 'Ayesha Syeda Hussain' : 'Owais Hasan Sayeed'}
               </h1>
 
               <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
