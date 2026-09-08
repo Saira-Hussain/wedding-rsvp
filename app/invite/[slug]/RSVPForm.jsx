@@ -6,9 +6,11 @@ import { supabase } from '../../../lib/supabase';
 export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   const isNikkahInvited = guest?.invited_to_nikkah ?? false;
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
+  const isValimaInvited = guest?.invited_to_valima ?? false;
 
   const maxNikkah = guest?.max_guests_nikkah ?? 1;
   const maxShaadi = guest?.max_guests_shaadi ?? 1;
+  const maxValima = guest?.max_guests_valima ?? 1;
 
   // Nikkah state
   const [attendingNikkah, setAttendingNikkah] = useState(
@@ -30,6 +32,16 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       : maxShaadi
   );
 
+  // Valima state
+  const [attendingValima, setAttendingValima] = useState(
+    (guest?.rsvp_count_valima ?? 0) > 0 ? 'yes' : 'no'
+  );
+  const [valimaCount, setValimaCount] = useState(
+    guest?.rsvp_count_valima && guest.rsvp_count_valima > 0
+      ? guest.rsvp_count_valima
+      : maxValima
+  );
+
   const [dua, setDua] = useState(guest?.notes || '');
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(guest?.has_rsvped || false);
@@ -48,6 +60,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
 
     const finalNikkahCount = isNikkahInvited && attendingNikkah === 'yes' ? parseInt(nikkahCount, 10) : 0;
     const finalShaadiCount = isShaadiInvited && attendingShaadi === 'yes' ? parseInt(shaadiCount, 10) : 0;
+    const finalValimaCount = isValimaInvited && attendingValima === 'yes' ? parseInt(valimaCount, 10) : 0;
 
     try {
       const { error } = await supabase
@@ -55,6 +68,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
         .update({
           rsvp_count_nikkah: finalNikkahCount,
           rsvp_count_shaadi: finalShaadiCount,
+          rsvp_count_valima: finalValimaCount,
           has_rsvped: true,
           notes: dua,
           updated_at: new Date().toISOString(),
@@ -88,6 +102,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   if (submitted) {
     const finalNikkahCount = isNikkahInvited && attendingNikkah === 'yes' ? parseInt(nikkahCount, 10) : 0;
     const finalShaadiCount = isShaadiInvited && attendingShaadi === 'yes' ? parseInt(shaadiCount, 10) : 0;
+    const finalValimaCount = isValimaInvited && attendingValima === 'yes' ? parseInt(valimaCount, 10) : 0;
 
     return (
       <div style={{ textAlign: 'center', padding: '20px 0' }}>
@@ -103,7 +118,13 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
 
         {isShaadiInvited && (
           <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.5', margin: '4px 0' }}>
-            <strong>Reception:</strong> {finalShaadiCount > 0 ? `${finalShaadiCount} ${finalShaadiCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
+            <strong>Shaadi:</strong> {finalShaadiCount > 0 ? `${finalShaadiCount} ${finalShaadiCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
+          </p>
+        )}
+
+        {isValimaInvited && (
+          <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.5', margin: '4px 0' }}>
+            <strong>Valima:</strong> {finalValimaCount > 0 ? `${finalValimaCount} ${finalValimaCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
           </p>
         )}
 
@@ -190,14 +211,14 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
         </div>
       )}
 
-      {/* 2. SHAADI / RECEPTION SECTION */}
+      {/* 2. SHAADI SECTION */}
       {isShaadiInvited && (
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{ marginBottom: '20px', paddingBottom: isValimaInvited ? '16px' : '0', borderBottom: isValimaInvited ? '1px solid #D4AF37' : 'none' }}>
           <p style={{ color: '#5B4332', fontSize: '0.95rem', marginBottom: '8px' }}>
-            We have reserved <strong>{maxNikkah}</strong> seats in your honor
+            We have reserved <strong>{maxShaadi}</strong> seats in your honor
           </p>
           <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
-            Will you be attending the Reception? (6 PM)
+            Will you be attending the Shaadi? (4 PM)
           </label>
           <div style={{ display: 'flex', gap: '20px', marginBottom: '12px' }}>
             <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
@@ -242,6 +263,68 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
                 }}
               >
                 {Array.from({ length: maxShaadi }, (_, i) => i + 1).map((num) => (
+                  <option key={num} value={num}>
+                    {num} {num === 1 ? 'Guest' : 'Guests'}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* 3. VALIMA SECTION */}
+      {isValimaInvited && (
+        <div style={{ marginBottom: '20px' }}>
+          <p style={{ color: '#5B4332', fontSize: '0.95rem', marginBottom: '8px' }}>
+            We have reserved <strong>{maxValima}</strong> seats in your honor
+          </p>
+          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
+            Will you be attending the Valima? (7 PM)
+          </label>
+          <div style={{ display: 'flex', gap: '20px', marginBottom: '12px' }}>
+            <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
+              <input
+                type="radio"
+                name="attendingValima"
+                value="yes"
+                checked={attendingValima === 'yes'}
+                onChange={() => setAttendingValima('yes')}
+              />
+              Joyfully Accept
+            </label>
+            <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
+              <input
+                type="radio"
+                name="attendingValima"
+                value="no"
+                checked={attendingValima === 'no'}
+                onChange={() => setAttendingValima('no')}
+              />
+              Regretfully Decline
+            </label>
+          </div>
+
+          {attendingValima === 'yes' && (
+            <div>
+              <label htmlFor="valimaCount" style={{ display: 'block', fontSize: '0.88rem', fontWeight: '600', marginBottom: '6px', color: '#333' }}>
+                Guests attending Valima:
+              </label>
+              <select
+                id="valimaCount"
+                value={valimaCount}
+                onChange={(e) => setValimaCount(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '8px 10px',
+                  borderRadius: '6px',
+                  border: '1px solid #CCC',
+                  fontSize: '15px',
+                  backgroundColor: '#FFF',
+                  color: '#333',
+                }}
+              >
+                {Array.from({ length: maxValima }, (_, i) => i + 1).map((num) => (
                   <option key={num} value={num}>
                     {num} {num === 1 ? 'Guest' : 'Guests'}
                   </option>
