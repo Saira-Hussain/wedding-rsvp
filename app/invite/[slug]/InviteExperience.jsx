@@ -32,8 +32,8 @@ export default function InviteExperience({ guest }) {
     return () => clearInterval(timer);
   }, []);
 
-  const isNikkahInvited = guest?.invited_to_nikkah ?? true;
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
+  const isValimaInvited = guest?.invited_to_valima ?? true;
 
   const handleOpenCurtains = () => {
     setIsOpening(true);
@@ -44,22 +44,22 @@ export default function InviteExperience({ guest }) {
   };
 
   const cardContainerStyle = {
-  zIndex: 1,
-  maxWidth: '380px',
-  width: '90%',
-  backgroundColor: '#F4E8D2', // Fallback color while image loads
-  backgroundImage: "url('/gold-card-bg.jpg')", // Path to your gold texture file in /public
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  border: '2px solid #C2A052',
-  borderRadius: '12px',
-  boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
-  boxSizing: 'border-box',
-  padding: '24px 16px',
-  textAlign: 'center',
-  color: '#3B2414',
-  marginBottom: '24px',
-};
+    zIndex: 1,
+    maxWidth: '380px',
+    width: '90%',
+    backgroundColor: '#F4E8D2', // Fallback color while image loads
+    backgroundImage: "url('/gold-card-bg.jpg')", // Path to your gold texture file in /public
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    border: '2px solid #C2A052',
+    borderRadius: '12px',
+    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+    boxSizing: 'border-box',
+    padding: '24px 16px',
+    textAlign: 'center',
+    color: '#3B2414',
+    marginBottom: '24px',
+  };
 
   return (
     <main
@@ -300,15 +300,17 @@ export default function InviteExperience({ guest }) {
               DECEMBER 26, 2026
             </h2>
 
-            {isNikkahInvited && (
+            {/* Shaadi Timing */}
+            {isShaadiInvited && (
               <p style={{ fontSize: '0.74rem', letterSpacing: '1px', color: '#610515', margin: '2px 0', fontWeight: '700' }}>
-                NIKKAH AT 4 PM
+                SHAADI AT 4 PM
               </p>
             )}
 
-            {isShaadiInvited && (
+            {/* Valima Timing */}
+            {isValimaInvited && (
               <p style={{ fontSize: '0.74rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 10px 0', fontWeight: '700' }}>
-                RECEPTION AT 6 PM
+                VALIMA AT 6 PM
               </p>
             )}
 
