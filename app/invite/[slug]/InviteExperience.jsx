@@ -215,134 +215,245 @@ export default function InviteExperience({ guest }) {
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           
-          {/* Box 1: Invitation & Event Details */}
-          <section style={cardContainerStyle}>
-            <div style={{ color: '#B8860B', fontSize: '16px', marginBottom: '6px', letterSpacing: '2px' }}>
-              ❖ ⚜ ❖
-            </div>
+          {/* Box 1: Shaadi Invitation Card */}
+          {isShaadiInvited && (
+            <section style={cardContainerStyle}>
+              <div style={{ color: '#B8860B', fontSize: '16px', marginBottom: '6px', letterSpacing: '2px' }}>
+                ❖ ⚜ ❖
+              </div>
 
-            <p
-              style={{
-                fontSize: 'clamp(0.9rem, 3.5vw, 1.15rem)',
-                margin: '0 0 8px 0',
-                color: '#8B6B23',
-                fontFamily: 'serif',
-                lineHeight: '1.4',
-                fontWeight: '600',
-                padding: '0 4px',
-              }}
-            >
-              بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
-            </p>
+              <p
+                style={{
+                  fontSize: 'clamp(0.9rem, 3.5vw, 1.15rem)',
+                  margin: '0 0 8px 0',
+                  color: '#8B6B23',
+                  fontFamily: 'serif',
+                  lineHeight: '1.4',
+                  fontWeight: '600',
+                  padding: '0 4px',
+                }}
+              >
+                بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
+              </p>
 
-            <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
-              Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
-              and the blessings of Late Mr. Mohammed Rafiuddin:<br />
-              <br />
-              <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
-                Mr. and Mrs. Syed Abrar-ul Hussain
-              </span><br />
-              invite you to the reception of their daughter
-            </p>
+              <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
+                Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
+                and the blessings of Late Mr. Mohammed Rafiuddin:<br />
+                <br />
+                <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
+                  Mr. and Mrs. Syed Abrar-ul Hussain
+                </span><br />
+                invite you to the reception of their daughter
+              </p>
 
-            <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 8px 0', letterSpacing: '3px' }}>
-              ─── ❖ ───
-            </div>
+              <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 8px 0', letterSpacing: '3px' }}>
+                ─── ❖ ───
+              </div>
 
-            <h1
-              style={{
-                fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
-                fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                color: '#8B6B23',
-                margin: '0',
-                fontWeight: '400',
-                lineHeight: '1.2',
-                wordBreak: 'break-word',
-                whiteSpace: 'normal',
-                padding: '0 4px',
-              }}
-            >
-              Ayesha Syeda Hussain
-            </h1>
+              <h1
+                style={{
+                  fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
+                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
+                  color: '#8B6B23',
+                  margin: '0',
+                  fontWeight: '400',
+                  lineHeight: '1.2',
+                  wordBreak: 'break-word',
+                  whiteSpace: 'normal',
+                  padding: '0 4px',
+                }}
+              >
+                Ayesha Syeda Hussain
+              </h1>
 
-            <p
-              style={{
-                fontSize: '1rem',
-                fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                color: '#B8860B',
-                margin: '2px 0',
-              }}
-            >
-              with
-            </p>
+              <p
+                style={{
+                  fontSize: '1rem',
+                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
+                  color: '#B8860B',
+                  margin: '2px 0',
+                }}
+              >
+                with
+              </p>
 
-            <h1
-              style={{
-                fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
-                fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                color: '#8B6B23',
-                margin: '0 0 8px 0',
-                fontWeight: '400',
-                lineHeight: '1.2',
-                wordBreak: 'break-word',
-                whiteSpace: 'normal',
-                padding: '0 4px',
-              }}
-            >
-              Owais Hasan Sayeed
-            </h1>
+              <h1
+                style={{
+                  fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
+                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
+                  color: '#8B6B23',
+                  margin: '0 0 8px 0',
+                  fontWeight: '400',
+                  lineHeight: '1.2',
+                  wordBreak: 'break-word',
+                  whiteSpace: 'normal',
+                  padding: '0 4px',
+                }}
+              >
+                Owais Hasan Sayeed
+              </h1>
 
-            <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
-              ─── ❖ ───
-            </div>
+              <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
+                ─── ❖ ───
+              </div>
 
-            <h2 style={{ fontSize: '0.85rem', letterSpacing: '2px', color: '#3B2414', margin: '0 0 6px 0', fontWeight: '700' }}>
-              DECEMBER 26, 2026
-            </h2>
+              <h2 style={{ fontSize: '0.85rem', letterSpacing: '2px', color: '#3B2414', margin: '0 0 6px 0', fontWeight: '700' }}>
+                DECEMBER 26, 2026
+              </h2>
 
-            {/* Shaadi Timing */}
-            {isShaadiInvited && (
-              <p style={{ fontSize: '0.74rem', letterSpacing: '1px', color: '#610515', margin: '2px 0', fontWeight: '700' }}>
+              <p style={{ fontSize: '0.74rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 10px 0', fontWeight: '700' }}>
                 SHAADI AT 4 PM
               </p>
-            )}
 
-            {/* Valima Timing */}
-            {isValimaInvited && (
-              <p style={{ fontSize: '0.74rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 10px 0', fontWeight: '700' }}>
-                VALIMA AT 6 PM
+              <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 14px 0', fontWeight: '500' }}>
+                Marriott Town Center<br />
+                16090 City Walk,<br />
+                Sugar Land, TX 77479
               </p>
-            )}
 
-            <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 14px 0', fontWeight: '500' }}>
-              Marriott Town Center<br />
-              16090 City Walk,<br />
-              Sugar Land, TX 77479
-            </p>
+              <button
+                onClick={() => setStep('rsvp')}
+                style={{
+                  backgroundColor: '#610515',
+                  color: '#F4E8D2',
+                  padding: '10px 16px',
+                  fontSize: '0.74rem',
+                  border: '1px solid #C2A052',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  boxShadow: '0 4px 15px rgba(97, 5, 21, 0.35)',
+                  width: '100%',
+                  maxWidth: '240px',
+                }}
+              >
+                Click to RSVP
+              </button>
+            </section>
+          )}
 
-            <button
-              onClick={() => setStep('rsvp')}
-              style={{
-                backgroundColor: '#610515',
-                color: '#F4E8D2',
-                padding: '10px 16px',
-                fontSize: '0.74rem',
-                border: '1px solid #C2A052',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontWeight: '600',
-                letterSpacing: '1.5px',
-                textTransform: 'uppercase',
-                boxShadow: '0 4px 15px rgba(97, 5, 21, 0.35)',
-                width: '100%',
-                maxWidth: '240px',
-              }}
-            >
-              Click to RSVP
-            </button>
-          </section>
+          {/* Box 2: Valima Invitation Card */}
+          {isValimaInvited && (
+            <section style={cardContainerStyle}>
+              <div style={{ color: '#B8860B', fontSize: '16px', marginBottom: '6px', letterSpacing: '2px' }}>
+                ❖ ⚜ ❖
+              </div>
 
-          {/* Box 2: Countdown Timer */}
+              <p
+                style={{
+                  fontSize: 'clamp(0.9rem, 3.5vw, 1.15rem)',
+                  margin: '0 0 8px 0',
+                  color: '#8B6B23',
+                  fontFamily: 'serif',
+                  lineHeight: '1.4',
+                  fontWeight: '600',
+                  padding: '0 4px',
+                }}
+              >
+                بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
+              </p>
+
+              <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
+                Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
+                and the blessings of Late Mr. Mohammed Rafiuddin:<br />
+                <br />
+                <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
+                  Mr. and Mrs. Syed Abrar-ul Hussain
+                </span><br />
+                invite you to the Valima reception of
+              </p>
+
+              <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 8px 0', letterSpacing: '3px' }}>
+                ─── ❖ ───
+              </div>
+
+              <h1
+                style={{
+                  fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
+                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
+                  color: '#8B6B23',
+                  margin: '0',
+                  fontWeight: '400',
+                  lineHeight: '1.2',
+                  wordBreak: 'break-word',
+                  whiteSpace: 'normal',
+                  padding: '0 4px',
+                }}
+              >
+                Ayesha Syeda Hussain
+              </h1>
+
+              <p
+                style={{
+                  fontSize: '1rem',
+                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
+                  color: '#B8860B',
+                  margin: '2px 0',
+                }}
+              >
+                with
+              </p>
+
+              <h1
+                style={{
+                  fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
+                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
+                  color: '#8B6B23',
+                  margin: '0 0 8px 0',
+                  fontWeight: '400',
+                  lineHeight: '1.2',
+                  wordBreak: 'break-word',
+                  whiteSpace: 'normal',
+                  padding: '0 4px',
+                }}
+              >
+                Owais Hasan Sayeed
+              </h1>
+
+              <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
+                ─── ❖ ───
+              </div>
+
+              <h2 style={{ fontSize: '0.85rem', letterSpacing: '2px', color: '#3B2414', margin: '0 0 6px 0', fontWeight: '700' }}>
+                DECEMBER 27, 2026
+              </h2>
+
+              <p style={{ fontSize: '0.74rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 10px 0', fontWeight: '700' }}>
+                VALIMA AT 7 PM
+              </p>
+
+              <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 14px 0', fontWeight: '500' }}>
+                Stafford Center<br />
+                10505 Cash Rd,<br />
+                Stafford, TX 77477
+              </p>
+
+              <button
+                onClick={() => setStep('rsvp')}
+                style={{
+                  backgroundColor: '#610515',
+                  color: '#F4E8D2',
+                  padding: '10px 16px',
+                  fontSize: '0.74rem',
+                  border: '1px solid #C2A052',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  boxShadow: '0 4px 15px rgba(97, 5, 21, 0.35)',
+                  width: '100%',
+                  maxWidth: '240px',
+                }}
+              >
+                Click to RSVP
+              </button>
+            </section>
+          )}
+
+          {/* Countdown Timer */}
           <section style={cardContainerStyle}>
             <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
               Counting Down
@@ -374,7 +485,7 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* Box 3: Travel */}
+          {/* Travel Card */}
           <section style={cardContainerStyle}>
             <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
               Travel
@@ -437,7 +548,7 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* Box 4: Q&A */}
+          {/* Q&A Card */}
           <section style={cardContainerStyle}>
             <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '6px', textTransform: 'uppercase', fontWeight: '700' }}>
               Questions & Answers
