@@ -12,9 +12,9 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   const maxShaadi = guest?.max_guests_shaadi ?? 1;
   const maxValima = guest?.max_guests_valima ?? 1;
 
-  // Nikkah state
+  // Nikkah state: Defaults to 'yes' for first-time guests, retains saved choice if already RSVPed
   const [attendingNikkah, setAttendingNikkah] = useState(
-    (guest?.rsvp_count_nikkah ?? 0) > 0 ? 'yes' : 'no'
+    guest?.has_rsvped ? ((guest?.rsvp_count_nikkah ?? 0) > 0 ? 'yes' : 'no') : 'yes'
   );
   const [nikkahCount, setNikkahCount] = useState(
     guest?.rsvp_count_nikkah && guest.rsvp_count_nikkah > 0
@@ -22,9 +22,9 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       : maxNikkah
   );
 
-  // Shaadi state
+  // Shaadi state: Defaults to 'yes' for first-time guests, retains saved choice if already RSVPed
   const [attendingShaadi, setAttendingShaadi] = useState(
-    (guest?.rsvp_count_shaadi ?? 0) > 0 ? 'yes' : 'no'
+    guest?.has_rsvped ? ((guest?.rsvp_count_shaadi ?? 0) > 0 ? 'yes' : 'no') : 'yes'
   );
   const [shaadiCount, setShaadiCount] = useState(
     guest?.rsvp_count_shaadi && guest.rsvp_count_shaadi > 0
@@ -32,9 +32,9 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       : maxShaadi
   );
 
-  // Valima state
+  // Valima state: Defaults to 'yes' for first-time guests, retains saved choice if already RSVPed
   const [attendingValima, setAttendingValima] = useState(
-    (guest?.rsvp_count_valima ?? 0) > 0 ? 'yes' : 'no'
+    guest?.has_rsvped ? ((guest?.rsvp_count_valima ?? 0) > 0 ? 'yes' : 'no') : 'yes'
   );
   const [valimaCount, setValimaCount] = useState(
     guest?.rsvp_count_valima && guest.rsvp_count_valima > 0
