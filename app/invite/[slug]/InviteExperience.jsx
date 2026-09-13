@@ -115,6 +115,7 @@ export default function InviteExperience({ guest }) {
           background-color: #0b1d17;
           transition: opacity 0.8s ease-in-out 0.6s, visibility 0.8s 0.6s;
           perspective: 1000px;
+          overflow: hidden;
         }
 
         .envelope-overlay.open {
@@ -128,8 +129,9 @@ export default function InviteExperience({ guest }) {
           position: absolute;
           top: 0;
           bottom: 0;
-          width: 50%;
-          background-size: cover;
+          width: 50vw;
+          height: 100vh;
+          background-size: 200% 100%;
           background-repeat: no-repeat;
           z-index: 101;
           transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.2s;
