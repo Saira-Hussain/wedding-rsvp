@@ -1,19 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
-import InviteExperience from './InviteExperience';
+import { supabase } from '../lib/supabase';
+import InviteExperience from './invite/[slug]/InviteExperience';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-);
-
-export default async function InvitePage({ params }) {
-  const { slug } = params;
-
+export default async function HomePage() {
   const { data: guest } = await supabase
     .from('guests')
     .select('*')
-    .eq('slug', slug)
-    .single();
+    .limit(1)
+    .maybeSingle();
 
   return <InviteExperience guest={guest} />;
 }
