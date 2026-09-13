@@ -35,7 +35,7 @@ export default function InviteExperience({ guest }) {
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
   const isValimaInvited = guest?.invited_to_valima ?? true;
 
-  // Determine correct image path based on guest flags (removed /public prefix)
+  // Determine correct image path based on guest flags
   const shaadiImgSrc = guest?.groom_side
     ? '/shaadi-groom.png'
     : '/shaadi-bride.png';
@@ -105,7 +105,8 @@ export default function InviteExperience({ guest }) {
         }
         .dynamic-bg.step-details,
         .dynamic-bg.step-rsvp {
-          background-image: url('/welcome-bg.jpg');
+          background-image: none;
+          background-color: #000000;
         }
 
         .curtain-left, .curtain-right {
