@@ -1,9 +1,13 @@
+Here is the complete, updated `InviteExperience.js` file with the envelope unsealing animation integration, gold-textured RSVP buttons, and the updated `#E4C6A3` card background color:
+
+```jsx
 'use client';
 
 import { useState, useEffect } from 'react';
 import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
+  const [isSealOpen, setIsSealOpen] = useState(false);
   const [step, setStep] = useState('welcome');
   const [isOpening, setIsOpening] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
@@ -103,6 +107,89 @@ export default function InviteExperience({ guest }) {
       }}
     >
       <style jsx global>{`
+        /* --- WAX SEAL OVERLAY ANIMATION --- */
+        .envelope-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 100;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #0b1d17;
+          transition: opacity 0.8s ease-in-out 0.6s, visibility 0.8s 0.6s;
+          perspective: 1000px;
+        }
+
+        .envelope-overlay.open {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+
+        .envelope-flap-left,
+        .envelope-flap-right {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          width: 50%;
+          background-size: cover;
+          background-repeat: no-repeat;
+          z-index: 101;
+          transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.2s;
+        }
+
+        .envelope-flap-left {
+          left: 0;
+          background-image: url('/envelope-left.jpg');
+          background-position: left center;
+          transform-origin: left center;
+        }
+
+        .envelope-flap-right {
+          right: 0;
+          background-image: url('/envelope-right.jpg');
+          background-position: right center;
+          transform-origin: right center;
+        }
+
+        .envelope-overlay.open .envelope-flap-left {
+          transform: translateX(-100%) rotateY(-15deg);
+        }
+
+        .envelope-overlay.open .envelope-flap-right {
+          transform: translateX(100%) rotateY(15deg);
+        }
+
+        .wax-seal-btn {
+          position: relative;
+          z-index: 102;
+          width: 130px;
+          height: 130px;
+          border: none;
+          background: transparent;
+          cursor: pointer;
+          outline: none;
+          transition: transform 0.4s ease, opacity 0.5s ease;
+          filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+        }
+
+        .wax-seal-btn img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          transition: transform 0.3s ease;
+        }
+
+        .wax-seal-btn:hover img {
+          transform: scale(1.08);
+        }
+
+        .envelope-overlay.open .wax-seal-btn {
+          transform: scale(1.4);
+          opacity: 0;
+        }
+
+        /* --- EXISTING STYLES --- */
         .dynamic-bg {
           background-size: cover;
           background-position: center;
@@ -159,6 +246,19 @@ export default function InviteExperience({ guest }) {
           margin-bottom: 28px;
         }
       `}</style>
+
+      {/* WAX SEAL INITIAL OVERLAY */}
+      <div className={`envelope-overlay ${isSealOpen ? 'open' : ''}`}>
+        <div className="envelope-flap-left" />
+        <div className="envelope-flap-right" />
+        <button
+          className="wax-seal-btn"
+          onClick={() => setIsSealOpen(true)}
+          aria-label="Open Invitation"
+        >
+          <img src="/wax-seal.png" alt="Wax Seal" />
+        </button>
+      </div>
 
       <div className={isOpening ? 'opening' : ''} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10 }}>
         {isOpening && (
@@ -268,7 +368,6 @@ export default function InviteExperience({ guest }) {
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           
-          {/* Card 1: Shaadi Invitation Image + RSVP Button */}
           {isShaadiInvited && (
             <div className="stacked-invitation-item">
               <img
@@ -292,7 +391,6 @@ export default function InviteExperience({ guest }) {
             </div>
           )}
 
-          {/* Card 2: Valima Invitation Image + RSVP Button */}
           {isValimaInvited && (
             <div className="stacked-invitation-item">
               <img
@@ -491,3 +589,5 @@ export default function InviteExperience({ guest }) {
     </main>
   );
 }
+
+```
