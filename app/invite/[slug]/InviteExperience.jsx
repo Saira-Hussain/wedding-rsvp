@@ -8,7 +8,6 @@ export default function InviteExperience({ guest }) {
   const [isOpening, setIsOpening] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
 
-  // Countdown timer state
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
@@ -35,7 +34,6 @@ export default function InviteExperience({ guest }) {
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
   const isValimaInvited = guest?.invited_to_valima ?? true;
 
-  // Determine correct image path based on guest flags
   const shaadiImgSrc = guest?.groom_side
     ? '/shaadi-groom.png'
     : '/shaadi-bride.png';
@@ -54,7 +52,7 @@ export default function InviteExperience({ guest }) {
 
   const cardContainerStyle = {
     zIndex: 1,
-    maxWidth: '380px',
+    maxWidth: '650px',
     width: '90%',
     backgroundColor: '#F4E8D2',
     backgroundImage: "url('/gold-card-bg.jpg')",
@@ -64,10 +62,10 @@ export default function InviteExperience({ guest }) {
     borderRadius: '12px',
     boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
     boxSizing: 'border-box',
-    padding: '24px 16px',
+    padding: '28px 24px',
     textAlign: 'center',
     color: '#3B2414',
-    marginBottom: '24px',
+    marginBottom: '28px',
   };
 
   return (
@@ -82,7 +80,7 @@ export default function InviteExperience({ guest }) {
         justifyContent: step === 'welcome' ? 'space-between' : 'flex-start',
         fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
         backgroundColor: '#000000',
-        padding: step === 'details' ? '32px 12px 60px 12px' : '24px 12px',
+        padding: step === 'details' ? '32px 16px 60px 16px' : '24px 16px',
         boxSizing: 'border-box',
         overflowX: 'hidden',
         overflowY: 'auto',
@@ -133,6 +131,31 @@ export default function InviteExperience({ guest }) {
         }
         .opening .curtain-right {
           transform: translateX(100%);
+        }
+
+        /* Responsive Layout for Desktop vs Mobile */
+        .invitations-grid {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 24px;
+          width: 90%;
+          max-width: 380px;
+          margin-bottom: 28px;
+        }
+
+        @media (min-width: 768px) {
+          .invitations-grid {
+            flex-direction: row;
+            justify-content: center;
+            align-items: flex-start;
+            max-width: 800px;
+            gap: 32px;
+          }
+          .invitation-card-item {
+            flex: 1;
+            max-width: 380px;
+          }
         }
       `}</style>
 
@@ -244,110 +267,91 @@ export default function InviteExperience({ guest }) {
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           
-          {/* Card 1: Shaadi Invitation Image + RSVP Button */}
-          {isShaadiInvited && (
-            <div
-              style={{
-                zIndex: 1,
-                maxWidth: '380px',
-                width: '90%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginBottom: '24px',
-              }}
-            >
-              <img
-                src={shaadiImgSrc}
-                alt="Shaadi Invitation"
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '12px',
-                  boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
-                  border: '2px solid #C2A052',
-                  display: 'block',
-                }}
-              />
-              <button
-                onClick={() => setStep('rsvp')}
-                style={{
-                  marginTop: '16px',
-                  backgroundColor: '#610515',
-                  color: '#F4E8D2',
-                  padding: '12px 20px',
-                  fontSize: '0.8rem',
-                  border: '1px solid #C2A052',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontWeight: '600',
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
-                  width: '100%',
-                  maxWidth: '260px',
-                }}
-              >
-                Click to RSVP
-              </button>
-            </div>
-          )}
+          {/* Invitation Cards Wrapper */}
+          <div className="invitations-grid">
+            {isShaadiInvited && (
+              <div className="invitation-card-item" style={{ zIndex: 1, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <img
+                  src={shaadiImgSrc}
+                  alt="Shaadi Invitation"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '12px',
+                    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+                    border: '2px solid #C2A052',
+                    display: 'block',
+                  }}
+                />
+                <button
+                  onClick={() => setStep('rsvp')}
+                  style={{
+                    marginTop: '16px',
+                    backgroundColor: '#610515',
+                    color: '#F4E8D2',
+                    padding: '12px 20px',
+                    fontSize: '0.8rem',
+                    border: '1px solid #C2A052',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontWeight: '600',
+                    letterSpacing: '1.5px',
+                    textTransform: 'uppercase',
+                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+                    width: '100%',
+                    maxWidth: '260px',
+                  }}
+                >
+                  Click to RSVP
+                </button>
+              </div>
+            )}
 
-          {/* Card 2: Valima Invitation Image + RSVP Button */}
-          {isValimaInvited && (
-            <div
-              style={{
-                zIndex: 1,
-                maxWidth: '380px',
-                width: '90%',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                marginBottom: '24px',
-              }}
-            >
-              <img
-                src={valimaImgSrc}
-                alt="Valima Invitation"
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  borderRadius: '12px',
-                  boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
-                  border: '2px solid #C2A052',
-                  display: 'block',
-                }}
-              />
-              <button
-                onClick={() => setStep('rsvp')}
-                style={{
-                  marginTop: '16px',
-                  backgroundColor: '#610515',
-                  color: '#F4E8D2',
-                  padding: '12px 20px',
-                  fontSize: '0.8rem',
-                  border: '1px solid #C2A052',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontWeight: '600',
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
-                  width: '100%',
-                  maxWidth: '260px',
-                }}
-              >
-                Click to RSVP
-              </button>
-            </div>
-          )}
+            {isValimaInvited && (
+              <div className="invitation-card-item" style={{ zIndex: 1, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <img
+                  src={valimaImgSrc}
+                  alt="Valima Invitation"
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    borderRadius: '12px',
+                    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+                    border: '2px solid #C2A052',
+                    display: 'block',
+                  }}
+                />
+                <button
+                  onClick={() => setStep('rsvp')}
+                  style={{
+                    marginTop: '16px',
+                    backgroundColor: '#610515',
+                    color: '#F4E8D2',
+                    padding: '12px 20px',
+                    fontSize: '0.8rem',
+                    border: '1px solid #C2A052',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontWeight: '600',
+                    letterSpacing: '1.5px',
+                    textTransform: 'uppercase',
+                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+                    width: '100%',
+                    maxWidth: '260px',
+                  }}
+                >
+                  Click to RSVP
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* Countdown Timer */}
           <section style={cardContainerStyle}>
-            <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
+            <h2 style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
               Counting Down
             </h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
               {[
                 { label: 'Days', val: timeLeft.days },
                 { label: 'Hours', val: timeLeft.hours },
@@ -360,13 +364,13 @@ export default function InviteExperience({ guest }) {
                     backgroundColor: 'rgba(97, 5, 21, 0.08)',
                     border: '1px solid #C2A052',
                     borderRadius: '6px',
-                    padding: '8px 4px',
+                    padding: '12px 6px',
                   }}
                 >
-                  <span style={{ display: 'block', fontSize: '1.2rem', fontWeight: '700', color: '#610515' }}>
+                  <span style={{ display: 'block', fontSize: '1.4rem', fontWeight: '700', color: '#610515' }}>
                     {String(item.val).padStart(2, '0')}
                   </span>
-                  <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', color: '#8B6B23', letterSpacing: '0.5px' }}>
+                  <span style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#8B6B23', letterSpacing: '0.5px' }}>
                     {item.label}
                   </span>
                 </div>
@@ -376,11 +380,11 @@ export default function InviteExperience({ guest }) {
 
           {/* Travel Card */}
           <section style={cardContainerStyle}>
-            <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
+            <h2 style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
               Travel
             </h2>
 
-            <div style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left' }}>
+            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
               <div style={{ marginBottom: '14px' }}>
                 <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Getting In</p>
                 <p style={{ margin: 0 }}>
@@ -397,7 +401,7 @@ export default function InviteExperience({ guest }) {
                   href="https://www.fly2houston.com/iah/ground-transportation"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: '#8B6B23', textDecoration: 'underline', fontSize: '0.75rem', fontWeight: '600' }}
+                  style={{ color: '#8B6B23', textDecoration: 'underline', fontSize: '0.8rem', fontWeight: '600' }}
                 >
                   IAH Ground Transportation Information
                 </a>
@@ -437,14 +441,14 @@ export default function InviteExperience({ guest }) {
 
           {/* Q&A Card */}
           <section style={cardContainerStyle}>
-            <h2 style={{ fontSize: '1rem', letterSpacing: '2px', color: '#610515', marginBottom: '6px', textTransform: 'uppercase', fontWeight: '700' }}>
+            <h2 style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#610515', marginBottom: '6px', textTransform: 'uppercase', fontWeight: '700' }}>
               Questions & Answers
             </h2>
-            <p style={{ fontSize: '0.75rem', color: '#8B6B23', fontStyle: 'italic', marginBottom: '16px' }}>
+            <p style={{ fontSize: '0.8rem', color: '#8B6B23', fontStyle: 'italic', marginBottom: '16px' }}>
               If you have questions, please check our Q & A section first!
             </p>
             
-            <div style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left' }}>
+            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
               <div style={{ marginBottom: '12px' }}>
                 <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>When is the RSVP deadline?</p>
                 <p style={{ margin: 0 }}>Please RSVP by November 1st so we can get an accurate headcount. :)</p>
@@ -490,11 +494,11 @@ export default function InviteExperience({ guest }) {
         <div
           style={{
             zIndex: 1,
-            maxWidth: '360px',
-            width: '85%',
+            maxWidth: '450px',
+            width: '90%',
             backgroundColor: 'rgba(244, 232, 210, 0.96)',
             border: '2px solid #C2A052',
-            padding: '20px 14px',
+            padding: '24px 18px',
             borderRadius: '12px',
             boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)',
             textAlign: 'center',
