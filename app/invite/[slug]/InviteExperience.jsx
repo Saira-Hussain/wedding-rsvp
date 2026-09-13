@@ -132,6 +132,7 @@ export default function InviteExperience({ guest }) {
           width: 50vw;
           height: 100vh;
           overflow: hidden;
+          background-color: #4a0d17; /* Solid backup color to cover transparency grid */
           z-index: 101;
           transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.2s;
         }
@@ -180,11 +181,15 @@ export default function InviteExperience({ guest }) {
           width: 130px;
           height: 130px;
           border: none;
-          background: transparent;
+          background: #610515; /* Solid backup background for seal */
+          border-radius: 50%;
           cursor: pointer;
           outline: none;
           transition: transform 0.4s ease, opacity 0.5s ease;
           filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .wax-seal-btn img {
