@@ -37,12 +37,12 @@ export default function InviteExperience({ guest }) {
 
   // Determine correct image path based on guest flags
   const shaadiImgSrc = guest?.groom_side
-    ? '/invites/shaadi-groom.png'
-    : '/invites/shaadi-bride.png';
+    ? '/public/shaadi-groom.png'
+    : '/public/shaadi-bride.png';
 
   const valimaImgSrc = guest?.groom_side
-    ? '/invites/valima-groom.png'
-    : '/invites/valima-bride.png';
+    ? '/public/valima-groom.png'
+    : '/public/valima-bride.png';
 
   const handleOpenCurtains = () => {
     setIsOpening(true);
