@@ -72,7 +72,7 @@ export default function InviteExperience({ guest }) {
         alignItems: 'center',
         justifyContent: step === 'welcome' ? 'space-between' : 'flex-start',
         fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
-        backgroundColor: '#0b0204',
+        backgroundColor: '#000000',
         padding: step === 'details' ? '32px 12px 60px 12px' : '24px 12px',
         boxSizing: 'border-box',
         overflowX: 'hidden',
@@ -81,29 +81,22 @@ export default function InviteExperience({ guest }) {
     >
       <style jsx global>{`
         .dynamic-bg {
-          background-size: contain;
+          background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
           transition: background-image 0.8s ease-in-out;
         }
         .dynamic-bg.step-welcome {
           background-image: url('/welcome-bg.jpg');
-          background-color: #0b0204;
         }
         @media (max-width: 768px) {
           .dynamic-bg.step-welcome {
             background-image: url('/welcome-mobile-bg.jpg') !important;
-            background-size: cover !important;
-          }
-          .dynamic-bg.step-details,
-          .dynamic-bg.step-rsvp {
-            background-size: cover !important;
           }
         }
         .dynamic-bg.step-details,
         .dynamic-bg.step-rsvp {
           background-image: url('/welcome-bg.jpg');
-          background-size: cover;
         }
 
         .curtain-left, .curtain-right {
@@ -154,7 +147,7 @@ export default function InviteExperience({ guest }) {
         }}
       />
 
-      {/* Edge Blend Overlay for Desktop */}
+      {/* Dark Side Mask Overlay to Soften Ultra-Wide Edges */}
       {step === 'welcome' && (
         <div
           style={{
@@ -165,7 +158,7 @@ export default function InviteExperience({ guest }) {
             height: '100%',
             zIndex: 0,
             pointerEvents: 'none',
-            background: 'linear-gradient(to right, #0b0204 0%, transparent 25%, transparent 75%, #0b0204 100%)',
+            background: 'linear-gradient(to right, rgba(0,0,0,0.85) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.85) 100%)',
           }}
         />
       )}
@@ -193,8 +186,8 @@ export default function InviteExperience({ guest }) {
                 border: '1px solid #C2A052',
                 borderRadius: '50px',
                 padding: '8px 24px',
-                backgroundColor: 'rgba(10, 2, 3, 0.4)',
-                backdropFilter: 'blur(2px)',
+                backgroundColor: 'rgba(10, 2, 3, 0.6)',
+                backdropFilter: 'blur(4px)',
                 display: 'inline-block',
               }}
             >
