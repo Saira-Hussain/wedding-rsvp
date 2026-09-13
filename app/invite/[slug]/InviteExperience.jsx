@@ -1,6 +1,3 @@
-Here is the complete, updated `InviteExperience.js` file with the envelope unsealing animation integration, gold-textured RSVP buttons, and the updated `#E4C6A3` card background color:
-
-```jsx
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -466,7 +463,7 @@ export default function InviteExperience({ guest }) {
                   There are plenty of ways to get around Houston! You’ll find several car rental options, plus taxis and rideshare services. If you plan to explore the city, renting a car is often the easiest option.
                 </p>
                 <a
-                  href="https://www.fly2houston.com/iah/ground-transportation"
+                  href="[https://www.fly2houston.com/iah/ground-transportation](https://www.fly2houston.com/iah/ground-transportation)"
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: '#8B6B23', textDecoration: 'underline', fontSize: '0.8rem', fontWeight: '600' }}
@@ -579,9 +576,7 @@ export default function InviteExperience({ guest }) {
             RSVP
           </h2>
 
-          <RSVPForm
-            guest={guest}
-            onSeatsUpdate={() => setHasSubmitted(true)}
+          <RSVPForm guest="{guest}" onSeatsUpdate="{()"> setHasSubmitted(true)}
             onEdit={() => setHasSubmitted(false)}
           />
         </div>
@@ -589,5 +584,3 @@ export default function InviteExperience({ guest }) {
     </main>
   );
 }
-
-```
