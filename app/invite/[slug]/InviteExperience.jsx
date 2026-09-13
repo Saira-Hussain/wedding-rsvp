@@ -35,6 +35,15 @@ export default function InviteExperience({ guest }) {
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
   const isValimaInvited = guest?.invited_to_valima ?? true;
 
+  // Determine correct image path based on guest flags
+  const shaadiImgSrc = guest?.groom_side
+    ? '/invites/shaadi-groom.png'
+    : '/invites/shaadi-bride.png';
+
+  const valimaImgSrc = guest?.groom_side
+    ? '/invites/valima-groom.png'
+    : '/invites/valima-bride.png';
+
   const handleOpenCurtains = () => {
     setIsOpening(true);
     setTimeout(() => {
@@ -147,7 +156,6 @@ export default function InviteExperience({ guest }) {
         }}
       />
 
-      {/* Dark Side Mask Overlay to Soften Ultra-Wide Edges */}
       {step === 'welcome' && (
         <div
           style={{
@@ -235,266 +243,102 @@ export default function InviteExperience({ guest }) {
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           
-          {/* Box 1: Shaadi Invitation Card */}
+          {/* Card 1: Shaadi Invitation Image + RSVP Button */}
           {isShaadiInvited && (
-            <section style={cardContainerStyle}>
-              <div style={{ color: '#B8860B', fontSize: '16px', marginBottom: '6px', letterSpacing: '2px' }}>
-                ❖ ⚜ ❖
-              </div>
-
-              <p
+            <div
+              style={{
+                zIndex: 1,
+                maxWidth: '380px',
+                width: '90%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginBottom: '24px',
+              }}
+            >
+              <img
+                src={shaadiImgSrc}
+                alt="Shaadi Invitation"
                 style={{
-                  fontSize: 'clamp(0.9rem, 3.5vw, 1.15rem)',
-                  margin: '0 0 8px 0',
-                  color: '#8B6B23',
-                  fontFamily: 'serif',
-                  lineHeight: '1.4',
-                  fontWeight: '600',
-                  padding: '0 4px',
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '12px',
+                  boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+                  border: '2px solid #C2A052',
+                  display: 'block',
                 }}
-              >
-                بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
-              </p>
-
-              {guest?.groom_side ? (
-                <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
-                  Under the guardianship of Paternal Grandparents<br />
-                  and the blessings of Maternal Grandparents:<br />
-                  <br />
-                  <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
-                    Mr. and Mrs. Zafar Hasan Sayeed
-                  </span><br />
-                  invite you to the reception of their son
-                </p>
-              ) : (
-                <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
-                  Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
-                  and the blessings of Mrs. Syeda Butool, the wife of Late Mr. Mohammed Rafiuddin:<br />
-                  <br />
-                  <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
-                    Mr. and Mrs. Syed Abrar-ul Hussain
-                  </span><br />
-                  invite you to the reception of their daughter
-                </p>
-              )}
-
-              <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 8px 0', letterSpacing: '3px' }}>
-                ─── ❖ ───
-              </div>
-
-              <h1
-                style={{
-                  fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
-                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                  color: '#8B6B23',
-                  margin: '0',
-                  fontWeight: '400',
-                  lineHeight: '1.2',
-                  wordBreak: 'break-word',
-                  whiteSpace: 'normal',
-                  padding: '0 4px',
-                }}
-              >
-                {guest?.groom_side ? 'Owais Hasan Sayeed' : 'Ayesha Syeda Hussain'}
-              </h1>
-
-              <p
-                style={{
-                  fontSize: '1rem',
-                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                  color: '#B8860B',
-                  margin: '2px 0',
-                }}
-              >
-                with
-              </p>
-
-              <h1
-                style={{
-                  fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
-                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                  color: '#8B6B23',
-                  margin: '0 0 8px 0',
-                  fontWeight: '400',
-                  lineHeight: '1.2',
-                  wordBreak: 'break-word',
-                  whiteSpace: 'normal',
-                  padding: '0 4px',
-                }}
-              >
-                {guest?.groom_side ? 'Ayesha Syeda Hussain' : 'Owais Hasan Sayeed'}
-              </h1>
-
-              <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
-                ─── ❖ ───
-              </div>
-
-              <h2 style={{ fontSize: '0.85rem', letterSpacing: '2px', color: '#3B2414', margin: '0 0 6px 0', fontWeight: '700' }}>
-                DECEMBER 26, 2026
-              </h2>
-
-              <p style={{ fontSize: '0.74rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 10px 0', fontWeight: '700' }}>
-                SHAADI AT 4 PM
-              </p>
-
-              <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 14px 0', fontWeight: '500' }}>
-                Marriott Town Center<br />
-                16090 City Walk,<br />
-                Sugar Land, TX 77479
-              </p>
-
+              />
               <button
                 onClick={() => setStep('rsvp')}
                 style={{
+                  marginTop: '16px',
                   backgroundColor: '#610515',
                   color: '#F4E8D2',
-                  padding: '10px 16px',
-                  fontSize: '0.74rem',
+                  padding: '12px 20px',
+                  fontSize: '0.8rem',
                   border: '1px solid #C2A052',
-                  borderRadius: '4px',
+                  borderRadius: '6px',
                   cursor: 'pointer',
                   fontWeight: '600',
                   letterSpacing: '1.5px',
                   textTransform: 'uppercase',
-                  boxShadow: '0 4px 15px rgba(97, 5, 21, 0.35)',
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
                   width: '100%',
-                  maxWidth: '240px',
+                  maxWidth: '260px',
                 }}
               >
                 Click to RSVP
               </button>
-            </section>
+            </div>
           )}
 
-          {/* Box 2: Valima Invitation Card */}
+          {/* Card 2: Valima Invitation Image + RSVP Button */}
           {isValimaInvited && (
-            <section style={cardContainerStyle}>
-              <div style={{ color: '#B8860B', fontSize: '16px', marginBottom: '6px', letterSpacing: '2px' }}>
-                ❖ ⚜ ❖
-              </div>
-
-              <p
+            <div
+              style={{
+                zIndex: 1,
+                maxWidth: '380px',
+                width: '90%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginBottom: '24px',
+              }}
+            >
+              <img
+                src={valimaImgSrc}
+                alt="Valima Invitation"
                 style={{
-                  fontSize: 'clamp(0.9rem, 3.5vw, 1.15rem)',
-                  margin: '0 0 8px 0',
-                  color: '#8B6B23',
-                  fontFamily: 'serif',
-                  lineHeight: '1.4',
-                  fontWeight: '600',
-                  padding: '0 4px',
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '12px',
+                  boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+                  border: '2px solid #C2A052',
+                  display: 'block',
                 }}
-              >
-                بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
-              </p>
-
-              {guest?.groom_side ? (
-                <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
-                  Under the guardianship of Paternal Grandparents<br />
-                  and the blessings of Maternal Grandparents:<br />
-                  <br />
-                  <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
-                    Mr. and Mrs. Zafar Hasan Sayeed
-                  </span><br />
-                  invite you to the Valima reception of their son
-                </p>
-              ) : (
-                <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
-                  Under the guardianship of Mr. and Mrs. Syed Badar-ul Hussain<br />
-                  and the blessings of Mrs. Syeda Butool, the wife of Late Mr. Mohammed Rafiuddin:<br />
-                  <br />
-                  <span style={{ fontSize: '0.95rem', fontWeight: '600', fontStyle: 'normal', display: 'inline-block', marginBottom: '2px' }}>
-                    Mr. and Mrs. Syed Abrar-ul Hussain
-                  </span><br />
-                  invite you to the Valima reception of
-                </p>
-              )}
-
-              <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 8px 0', letterSpacing: '3px' }}>
-                ─── ❖ ───
-              </div>
-
-              <h1
-                style={{
-                  fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
-                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                  color: '#8B6B23',
-                  margin: '0',
-                  fontWeight: '400',
-                  lineHeight: '1.2',
-                  wordBreak: 'break-word',
-                  whiteSpace: 'normal',
-                  padding: '0 4px',
-                }}
-              >
-                {guest?.groom_side ? 'Owais Hasan Sayeed' : 'Ayesha Syeda Hussain'}
-              </h1>
-
-              <p
-                style={{
-                  fontSize: '1rem',
-                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                  color: '#B8860B',
-                  margin: '2px 0',
-                }}
-              >
-                with
-              </p>
-
-              <h1
-                style={{
-                  fontSize: 'clamp(1.6rem, 6vw, 2.4rem)',
-                  fontFamily: "var(--font-script), 'Great Vibes', cursive",
-                  color: '#8B6B23',
-                  margin: '0 0 8px 0',
-                  fontWeight: '400',
-                  lineHeight: '1.2',
-                  wordBreak: 'break-word',
-                  whiteSpace: 'normal',
-                  padding: '0 4px',
-                }}
-              >
-                {guest?.groom_side ? 'Ayesha Syeda Hussain' : 'Owais Hasan Sayeed'}
-              </h1>
-
-              <div style={{ color: '#C2A052', fontSize: '10px', margin: '0 0 10px 0', letterSpacing: '3px' }}>
-                ─── ❖ ───
-              </div>
-
-              <h2 style={{ fontSize: '0.85rem', letterSpacing: '2px', color: '#3B2414', margin: '0 0 6px 0', fontWeight: '700' }}>
-                DECEMBER 27, 2026
-              </h2>
-
-              <p style={{ fontSize: '0.74rem', letterSpacing: '1px', color: '#610515', margin: '2px 0 10px 0', fontWeight: '700' }}>
-                VALIMA AT 7 PM
-              </p>
-
-              <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 14px 0', fontWeight: '500' }}>
-                Stafford Center<br />
-                10505 Cash Rd,<br />
-                Stafford, TX 77477
-              </p>
-
+              />
               <button
                 onClick={() => setStep('rsvp')}
                 style={{
+                  marginTop: '16px',
                   backgroundColor: '#610515',
                   color: '#F4E8D2',
-                  padding: '10px 16px',
-                  fontSize: '0.74rem',
+                  padding: '12px 20px',
+                  fontSize: '0.8rem',
                   border: '1px solid #C2A052',
-                  borderRadius: '4px',
+                  borderRadius: '6px',
                   cursor: 'pointer',
                   fontWeight: '600',
                   letterSpacing: '1.5px',
                   textTransform: 'uppercase',
-                  boxShadow: '0 4px 15px rgba(97, 5, 21, 0.35)',
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
                   width: '100%',
-                  maxWidth: '240px',
+                  maxWidth: '260px',
                 }}
               >
                 Click to RSVP
               </button>
-            </section>
+            </div>
           )}
 
           {/* Countdown Timer */}
@@ -536,7 +380,6 @@ export default function InviteExperience({ guest }) {
             </h2>
 
             <div style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left' }}>
-              
               <div style={{ marginBottom: '14px' }}>
                 <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Getting In</p>
                 <p style={{ margin: 0 }}>
@@ -588,7 +431,6 @@ export default function InviteExperience({ guest }) {
                   <li>The Galleria</li>
                 </ul>
               </div>
-
             </div>
           </section>
 
