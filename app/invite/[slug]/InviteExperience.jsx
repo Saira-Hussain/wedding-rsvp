@@ -131,7 +131,7 @@ export default function InviteExperience({ guest }) {
           bottom: 0;
           width: 50vw;
           height: 100vh;
-          background-size: 200% 100%;
+          background-size: 100vw 100vh;
           background-repeat: no-repeat;
           z-index: 101;
           transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.2s;
@@ -140,14 +140,14 @@ export default function InviteExperience({ guest }) {
         .envelope-flap-left {
           left: 0;
           background-image: url('/envelope-left.jpg');
-          background-position: left center;
+          background-position: 0 0;
           transform-origin: left center;
         }
 
         .envelope-flap-right {
           right: 0;
           background-image: url('/envelope-right.jpg');
-          background-position: right center;
+          background-position: -50vw 0;
           transform-origin: right center;
         }
 
