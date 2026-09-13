@@ -81,7 +81,7 @@ export default function InviteExperience({ guest }) {
     >
       <style jsx global>{`
         .dynamic-bg {
-          background-size: cover;
+          background-size: contain;
           background-position: center;
           background-repeat: no-repeat;
           transition: background-image 0.8s ease-in-out;
@@ -92,15 +92,17 @@ export default function InviteExperience({ guest }) {
         @media (max-width: 768px) {
           .dynamic-bg.step-welcome {
             background-image: url('/welcome-mobile-bg.jpg') !important;
+            background-size: cover !important;
           }
           .dynamic-bg.step-details,
           .dynamic-bg.step-rsvp {
-            background-size: 100% 100% !important;
+            background-size: cover !important;
           }
         }
         .dynamic-bg.step-details,
         .dynamic-bg.step-rsvp {
           background-image: url('/welcome-bg.jpg');
+          background-size: cover;
         }
 
         .curtain-left, .curtain-right {
@@ -168,28 +170,31 @@ export default function InviteExperience({ guest }) {
             boxSizing: 'border-box',
           }}
         >
-          <div style={{ paddingTop: '5vh', width: '100%' }}>
-            <h1
+          <div style={{ paddingTop: '2vh', width: '100%' }}>
+            <span
               style={{
-                fontSize: 'clamp(1.5rem, 5vw, 2.2rem)',
+                display: 'inline-block',
+                backgroundColor: 'rgba(10, 2, 3, 0.75)',
                 color: '#F4E4BC',
+                padding: '8px 18px',
+                borderRadius: '20px',
+                fontSize: 'clamp(0.85rem, 3.5vw, 1.1rem)',
                 fontWeight: '400',
-                margin: 0,
                 letterSpacing: '1px',
-                textShadow: '0 2px 10px rgba(0,0,0,0.85)',
-                wordBreak: 'break-word',
-                lineHeight: '1.2',
+                border: '1px solid rgba(194, 160, 82, 0.4)',
+                backdropFilter: 'blur(4px)',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
               }}
             >
               Welcome, {guest?.family_name || 'Guest'}
-            </h1>
+            </span>
           </div>
 
-          <div style={{ paddingBottom: '3vh', width: '100%' }}>
+          <div style={{ paddingBottom: '2vh', width: '100%' }}>
             <button
               onClick={handleOpenCurtains}
               style={{
-                backgroundColor: 'rgba(20, 20, 20, 0.85)',
+                backgroundColor: 'rgba(20, 20, 20, 0.9)',
                 color: '#FFFFFF',
                 padding: '12px 24px',
                 fontSize: 'clamp(0.9rem, 3.8vw, 1.1rem)',
@@ -198,14 +203,14 @@ export default function InviteExperience({ guest }) {
                 cursor: 'pointer',
                 fontWeight: '600',
                 letterSpacing: '1px',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.6)',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
                 fontFamily: 'serif',
                 backdropFilter: 'blur(6px)',
                 width: '100%',
                 maxWidth: '280px',
               }}
             >
-              Bismillah
+              Enter Invitation
             </button>
           </div>
         </div>
