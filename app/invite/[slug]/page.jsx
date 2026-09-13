@@ -3,7 +3,7 @@ export const revalidate = 0;
 
 import { supabase } from '../../../lib/supabase';
 import { notFound } from 'next/navigation';
-import InviteExperience from './invite/[slug]/InviteExperience';
+import InviteExperience from './InviteExperience';
 
 export default async function InvitePage({ params }) {
   const resolvedParams = await params;
