@@ -52,8 +52,8 @@ export default function InviteExperience({ guest }) {
 
   const cardContainerStyle = {
     zIndex: 1,
-    maxWidth: '650px',
-    width: '90%',
+    maxWidth: '560px',
+    width: '92%',
     backgroundColor: '#F4E8D2',
     backgroundImage: "url('/gold-card-bg.jpg')",
     backgroundSize: 'cover',
@@ -133,29 +133,14 @@ export default function InviteExperience({ guest }) {
           transform: translateX(100%);
         }
 
-        /* Responsive Layout for Desktop vs Mobile */
-        .invitations-grid {
+        .stacked-invitation-item {
+          z-index: 1;
+          max-width: 560px;
+          width: 92%;
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 24px;
-          width: 90%;
-          max-width: 380px;
           margin-bottom: 28px;
-        }
-
-        @media (min-width: 768px) {
-          .invitations-grid {
-            flex-direction: row;
-            justify-content: center;
-            align-items: flex-start;
-            max-width: 800px;
-            gap: 32px;
-          }
-          .invitation-card-item {
-            flex: 1;
-            max-width: 380px;
-          }
         }
       `}</style>
 
@@ -267,84 +252,83 @@ export default function InviteExperience({ guest }) {
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           
-          {/* Invitation Cards Wrapper */}
-          <div className="invitations-grid">
-            {isShaadiInvited && (
-              <div className="invitation-card-item" style={{ zIndex: 1, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <img
-                  src={shaadiImgSrc}
-                  alt="Shaadi Invitation"
-                  style={{
-                    width: '100%',
-                    height: 'auto',
-                    borderRadius: '12px',
-                    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
-                    border: '2px solid #C2A052',
-                    display: 'block',
-                  }}
-                />
-                <button
-                  onClick={() => setStep('rsvp')}
-                  style={{
-                    marginTop: '16px',
-                    backgroundColor: '#610515',
-                    color: '#F4E8D2',
-                    padding: '12px 20px',
-                    fontSize: '0.8rem',
-                    border: '1px solid #C2A052',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontWeight: '600',
-                    letterSpacing: '1.5px',
-                    textTransform: 'uppercase',
-                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
-                    width: '100%',
-                    maxWidth: '260px',
-                  }}
-                >
-                  Click to RSVP
-                </button>
-              </div>
-            )}
+          {/* Card 1: Shaadi Invitation Image + RSVP Button */}
+          {isShaadiInvited && (
+            <div className="stacked-invitation-item">
+              <img
+                src={shaadiImgSrc}
+                alt="Shaadi Invitation"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '12px',
+                  boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+                  border: '2px solid #C2A052',
+                  display: 'block',
+                }}
+              />
+              <button
+                onClick={() => setStep('rsvp')}
+                style={{
+                  marginTop: '16px',
+                  backgroundColor: '#610515',
+                  color: '#F4E8D2',
+                  padding: '12px 24px',
+                  fontSize: '0.85rem',
+                  border: '1px solid #C2A052',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+                  width: '100%',
+                  maxWidth: '300px',
+                }}
+              >
+                Click to RSVP
+              </button>
+            </div>
+          )}
 
-            {isValimaInvited && (
-              <div className="invitation-card-item" style={{ zIndex: 1, width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <img
-                  src={valimaImgSrc}
-                  alt="Valima Invitation"
-                  style={{
-                    width: '100%',
-                    height: 'auto',
-                    borderRadius: '12px',
-                    boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
-                    border: '2px solid #C2A052',
-                    display: 'block',
-                  }}
-                />
-                <button
-                  onClick={() => setStep('rsvp')}
-                  style={{
-                    marginTop: '16px',
-                    backgroundColor: '#610515',
-                    color: '#F4E8D2',
-                    padding: '12px 20px',
-                    fontSize: '0.8rem',
-                    border: '1px solid #C2A052',
-                    borderRadius: '6px',
-                    cursor: 'pointer',
-                    fontWeight: '600',
-                    letterSpacing: '1.5px',
-                    textTransform: 'uppercase',
-                    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
-                    width: '100%',
-                    maxWidth: '260px',
-                  }}
-                >
-                  Click to RSVP
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Card 2: Valima Invitation Image + RSVP Button */}
+          {isValimaInvited && (
+            <div className="stacked-invitation-item">
+              <img
+                src={valimaImgSrc}
+                alt="Valima Invitation"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '12px',
+                  boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+                  border: '2px solid #C2A052',
+                  display: 'block',
+                }}
+              />
+              <button
+                onClick={() => setStep('rsvp')}
+                style={{
+                  marginTop: '16px',
+                  backgroundColor: '#610515',
+                  color: '#F4E8D2',
+                  padding: '12px 24px',
+                  fontSize: '0.85rem',
+                  border: '1px solid #C2A052',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  letterSpacing: '1.5px',
+                  textTransform: 'uppercase',
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+                  width: '100%',
+                  maxWidth: '300px',
+                }}
+              >
+                Click to RSVP
+              </button>
+            </div>
+          )}
 
           {/* Countdown Timer */}
           <section style={cardContainerStyle}>
