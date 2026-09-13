@@ -54,10 +54,7 @@ export default function InviteExperience({ guest }) {
     zIndex: 1,
     maxWidth: '560px',
     width: '92%',
-    backgroundColor: '#F4E8D2',
-    backgroundImage: "url('/gold-card-bg.jpg')",
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundColor: '#E4C6A3',
     border: '2px solid #C2A052',
     borderRadius: '12px',
     boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
@@ -66,6 +63,25 @@ export default function InviteExperience({ guest }) {
     textAlign: 'center',
     color: '#3B2414',
     marginBottom: '28px',
+  };
+
+  const goldButtonStyle = {
+    marginTop: '16px',
+    backgroundImage: "url('/gold-card-bg.jpg')",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    color: '#610515',
+    padding: '12px 24px',
+    fontSize: '0.85rem',
+    border: '2px solid #C2A052',
+    borderRadius: '6px',
+    cursor: 'pointer',
+    fontWeight: '700',
+    letterSpacing: '1.5px',
+    textTransform: 'uppercase',
+    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+    width: '100%',
+    maxWidth: '300px',
   };
 
   return (
@@ -269,22 +285,7 @@ export default function InviteExperience({ guest }) {
               />
               <button
                 onClick={() => setStep('rsvp')}
-                style={{
-                  marginTop: '16px',
-                  backgroundColor: '#610515',
-                  color: '#F4E8D2',
-                  padding: '12px 24px',
-                  fontSize: '0.85rem',
-                  border: '1px solid #C2A052',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontWeight: '600',
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
-                  width: '100%',
-                  maxWidth: '300px',
-                }}
+                style={goldButtonStyle}
               >
                 Click to RSVP
               </button>
@@ -308,22 +309,7 @@ export default function InviteExperience({ guest }) {
               />
               <button
                 onClick={() => setStep('rsvp')}
-                style={{
-                  marginTop: '16px',
-                  backgroundColor: '#610515',
-                  color: '#F4E8D2',
-                  padding: '12px 24px',
-                  fontSize: '0.85rem',
-                  border: '1px solid #C2A052',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontWeight: '600',
-                  letterSpacing: '1.5px',
-                  textTransform: 'uppercase',
-                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
-                  width: '100%',
-                  maxWidth: '300px',
-                }}
+                style={goldButtonStyle}
               >
                 Click to RSVP
               </button>
@@ -480,7 +466,7 @@ export default function InviteExperience({ guest }) {
             zIndex: 1,
             maxWidth: '450px',
             width: '90%',
-            backgroundColor: 'rgba(244, 232, 210, 0.96)',
+            backgroundColor: '#E4C6A3',
             border: '2px solid #C2A052',
             padding: '24px 18px',
             borderRadius: '12px',
