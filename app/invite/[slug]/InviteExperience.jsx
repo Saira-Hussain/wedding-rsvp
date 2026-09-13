@@ -72,7 +72,7 @@ export default function InviteExperience({ guest }) {
         alignItems: 'center',
         justifyContent: step === 'welcome' ? 'space-between' : 'flex-start',
         fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
-        backgroundColor: '#0a0203',
+        backgroundColor: '#0b0204',
         padding: step === 'details' ? '32px 12px 60px 12px' : '24px 12px',
         boxSizing: 'border-box',
         overflowX: 'hidden',
@@ -88,6 +88,7 @@ export default function InviteExperience({ guest }) {
         }
         .dynamic-bg.step-welcome {
           background-image: url('/welcome-bg.jpg');
+          background-color: #0b0204;
         }
         @media (max-width: 768px) {
           .dynamic-bg.step-welcome {
@@ -152,6 +153,22 @@ export default function InviteExperience({ guest }) {
           zIndex: 0,
         }}
       />
+
+      {/* Edge Blend Overlay for Desktop */}
+      {step === 'welcome' && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            zIndex: 0,
+            pointerEvents: 'none',
+            background: 'linear-gradient(to right, #0b0204 0%, transparent 25%, transparent 75%, #0b0204 100%)',
+          }}
+        />
+      )}
 
       {/* STEP 1: WELCOME */}
       {step === 'welcome' && (
