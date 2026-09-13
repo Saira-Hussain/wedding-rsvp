@@ -81,7 +81,7 @@ export default function InviteExperience({ guest }) {
     >
       <style jsx global>{`
         .dynamic-bg {
-          background-size: contain;
+          background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
           transition: background-image 0.8s ease-in-out;
@@ -170,24 +170,29 @@ export default function InviteExperience({ guest }) {
             boxSizing: 'border-box',
           }}
         >
-          <div style={{ paddingTop: '2vh', width: '100%' }}>
-            <span
+          <div style={{ paddingTop: '2vh' }}>
+            <div
               style={{
+                border: '1px solid #C2A052',
+                borderRadius: '50px',
+                padding: '8px 24px',
+                backgroundColor: 'rgba(10, 2, 3, 0.4)',
+                backdropFilter: 'blur(2px)',
                 display: 'inline-block',
-                backgroundColor: 'rgba(10, 2, 3, 0.75)',
-                color: '#F4E4BC',
-                padding: '8px 18px',
-                borderRadius: '20px',
-                fontSize: 'clamp(0.85rem, 3.5vw, 1.1rem)',
-                fontWeight: '400',
-                letterSpacing: '1px',
-                border: '1px solid rgba(194, 160, 82, 0.4)',
-                backdropFilter: 'blur(4px)',
-                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
               }}
             >
-              Welcome, {guest?.family_name || 'Guest'}
-            </span>
+              <h1
+                style={{
+                  fontSize: 'clamp(1rem, 3.5vw, 1.25rem)',
+                  color: '#F4E4BC',
+                  margin: 0,
+                  fontWeight: '400',
+                  letterSpacing: '0.5px',
+                }}
+              >
+                Welcome, {guest?.family_name || 'Guest'}
+              </h1>
+            </div>
           </div>
 
           <div style={{ paddingBottom: '2vh', width: '100%' }}>
