@@ -81,7 +81,7 @@ export default function InviteExperience({ guest }) {
     >
       <style jsx global>{`
         .dynamic-bg {
-          background-size: cover;
+          background-size: contain;
           background-position: center;
           background-repeat: no-repeat;
           transition: background-image 0.8s ease-in-out;
@@ -246,7 +246,6 @@ export default function InviteExperience({ guest }) {
                 بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
               </p>
 
-              {/* Conditional Host Wording */}
               {guest?.groom_side ? (
                 <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
                   Under the guardianship of Paternal Grandparents<br />
@@ -378,7 +377,6 @@ export default function InviteExperience({ guest }) {
                 بَارَكَ ٱللَّٰهُ لَهُمَا وَبَارَكَ عَلَيْهِمَا وَجَمَعَ بَيْنَهُمَا فِي خَيْرٍ
               </p>
 
-              {/* Conditional Host Wording for Valima */}
               {guest?.groom_side ? (
                 <p style={{ fontSize: '0.78rem', lineHeight: '1.4', color: '#3B2414', margin: '0 0 10px 0', fontStyle: 'italic', fontWeight: '500' }}>
                   Under the guardianship of Paternal Grandparents<br />
