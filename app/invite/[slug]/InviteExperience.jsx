@@ -215,7 +215,7 @@ export default function InviteExperience({ guest }) {
                 maxWidth: '280px',
               }}
             >
-              Enter Invitation
+              Bismillah
             </button>
           </div>
         </div>
