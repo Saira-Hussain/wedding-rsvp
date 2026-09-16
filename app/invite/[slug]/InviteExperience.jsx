@@ -109,7 +109,7 @@ export default function InviteExperience({ guest }) {
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: #3d050e;
+          background-color: #000000;
           transition: opacity 0.8s ease-in-out 0.8s, visibility 0.8s 0.8s;
           perspective: 1400px;
           overflow: hidden;
@@ -141,10 +141,10 @@ export default function InviteExperience({ guest }) {
           z-index: 101;
         }
 
-        /* Top Flap Container */
+        /* Top Flap Container Positioned Lower */
         .envelope-top-flap {
           position: absolute;
-          top: -15px;
+          top: 15px;
           left: 0;
           width: 100%;
           height: 52vh;
@@ -165,10 +165,10 @@ export default function InviteExperience({ guest }) {
           transform: rotateX(-120deg) translateY(-100px);
         }
 
-        /* Standalone Wax Seal positioned over flap tip */
+        /* Wax Seal Aligned to the lower flap point */
         .wax-seal-overlay {
           position: absolute;
-          bottom: -45px;
+          bottom: -20px;
           left: 50%;
           transform: translateX(-50%);
           width: 110px;
