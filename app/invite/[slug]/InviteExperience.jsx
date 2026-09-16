@@ -8,11 +8,14 @@ export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
   const [isOpening, setIsOpening] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
+    setIsMounted(true);
     const targetDate = new Date('2026-12-26T16:00:00');
+    
     const updateCountdown = () => {
       const now = new Date();
       const difference = targetDate.getTime() - now.getTime();
@@ -35,13 +38,8 @@ export default function InviteExperience({ guest }) {
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
   const isValimaInvited = guest?.invited_to_valima ?? true;
 
-  const shaadiImgSrc = guest?.groom_side
-    ? '/shaadi-groom.png'
-    : '/shaadi-bride.png';
-
-  const valimaImgSrc = guest?.groom_side
-    ? '/valima-groom.png'
-    : '/valima-bride.png';
+  const shaadiImgSrc = guest?.groom_side ? '/shaadi-groom.png' : '/shaadi-bride.png';
+  const valimaImgSrc = guest?.groom_side ? '/valima-groom.png' : '/valima-bride.png';
 
   const handleOpenCurtains = () => {
     setIsOpening(true);
@@ -104,7 +102,6 @@ export default function InviteExperience({ guest }) {
       }}
     >
       <style jsx global>{`
-        /* --- WAX SEAL OVERLAY ANIMATION --- */
         .envelope-overlay {
           position: fixed;
           inset: 0;
@@ -121,7 +118,7 @@ export default function InviteExperience({ guest }) {
         .envelope-overlay.open {
           opacity: 0;
           visibility: hidden;
-          pointer-events: none;
+          pointer-events: none !important;
         }
 
         .envelope-flap-left,
@@ -132,7 +129,7 @@ export default function InviteExperience({ guest }) {
           width: 50vw;
           height: 100vh;
           overflow: hidden;
-          background-color: #4a0d17; /* Solid backup color to cover transparency grid */
+          background-color: #4a0d17;
           z-index: 101;
           transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.2s;
         }
@@ -147,25 +144,18 @@ export default function InviteExperience({ guest }) {
           transform-origin: right center;
         }
 
-        .envelope-flap-left img {
+        .envelope-flap-left img,
+        .envelope-flap-right img {
           position: absolute;
           top: 0;
-          left: 0;
           width: 100vw;
           height: 100vh;
           object-fit: cover;
           max-width: none;
         }
 
-        .envelope-flap-right img {
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: 100vw;
-          height: 100vh;
-          object-fit: cover;
-          max-width: none;
-        }
+        .envelope-flap-left img { left: 0; }
+        .envelope-flap-right img { right: 0; }
 
         .envelope-overlay.open .envelope-flap-left {
           transform: translateX(-100%) rotateY(-15deg);
@@ -181,7 +171,7 @@ export default function InviteExperience({ guest }) {
           width: 130px;
           height: 130px;
           border: none;
-          background: #610515; /* Solid backup background for seal */
+          background: #610515;
           border-radius: 50%;
           cursor: pointer;
           outline: none;
@@ -206,9 +196,9 @@ export default function InviteExperience({ guest }) {
         .envelope-overlay.open .wax-seal-btn {
           transform: scale(1.4);
           opacity: 0;
+          pointer-events: none;
         }
 
-        /* --- EXISTING STYLES --- */
         .dynamic-bg {
           background-size: cover;
           background-position: center;
@@ -266,7 +256,7 @@ export default function InviteExperience({ guest }) {
         }
       `}</style>
 
-      {/* WAX SEAL INITIAL OVERLAY */}
+      {/* WAX SEAL OVERLAY */}
       <div className={`envelope-overlay ${isSealOpen ? 'open' : ''}`}>
         <div className="envelope-flap-left">
           <img src="/envelope-left.jpg" alt="Left Flap" />
@@ -444,10 +434,10 @@ export default function InviteExperience({ guest }) {
             </h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
               {[
-                { label: 'Days', val: timeLeft.days },
-                { label: 'Hours', val: timeLeft.hours },
-                { label: 'Mins', val: timeLeft.minutes },
-                { label: 'Secs', val: timeLeft.seconds },
+                { label: 'Days', val: isMounted ? timeLeft.days : 0 },
+                { label: 'Hours', val: isMounted ? timeLeft.hours : 0 },
+                { label: 'Mins', val: isMounted ? timeLeft.minutes : 0 },
+                { label: 'Secs', val: isMounted ? timeLeft.seconds : 0 },
               ].map((item, idx) => (
                 <div
                   key={idx}
