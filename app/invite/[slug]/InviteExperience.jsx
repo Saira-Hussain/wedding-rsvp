@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
-  const [isSealOpen, setIsSealOpen] = useState(false);
   const [step, setStep] = useState('welcome');
   const [isOpening, setIsOpening] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
@@ -110,15 +109,8 @@ export default function InviteExperience({ guest }) {
           align-items: center;
           justify-content: center;
           background-color: #000000;
-          transition: opacity 0.8s ease-in-out 0.8s, visibility 0.8s 0.8s;
           perspective: 1400px;
           overflow: hidden;
-        }
-
-        .envelope-overlay.open {
-          opacity: 0;
-          visibility: hidden;
-          pointer-events: none !important;
         }
 
         .envelope-container {
@@ -141,16 +133,14 @@ export default function InviteExperience({ guest }) {
           z-index: 101;
         }
 
-        /* Top Flap Container Positioned Lower */
         .envelope-top-flap {
           position: absolute;
-          top: 10px;
+          top: 15px;
           left: 0;
           width: 100%;
           height: 52vh;
           z-index: 103;
           transform-origin: top center;
-          transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
           transform-style: preserve-3d;
         }
 
@@ -159,29 +149,6 @@ export default function InviteExperience({ guest }) {
           height: 100%;
           object-fit: cover;
           object-position: top center;
-        }
-
-        .envelope-overlay.open .envelope-top-flap {
-          transform: rotateX(-120deg) translateY(-100px);
-        }
-
-        /* Wax Seal Aligned to the lower flap point */
-        .wax-seal-overlay {
-          position: absolute;
-          bottom: -20px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 110px;
-          height: 110px;
-          z-index: 104;
-          cursor: pointer;
-          filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.5));
-          transition: transform 0.2s ease, filter 0.2s ease;
-        }
-
-        .wax-seal-overlay:hover {
-          transform: translateX(-50%) scale(1.05);
-          filter: drop-shadow(0px 6px 14px rgba(0, 0, 0, 0.6));
         }
 
         .dynamic-bg {
@@ -240,35 +207,6 @@ export default function InviteExperience({ guest }) {
           margin-bottom: 28px;
         }
       `}</style>
-
-      {/* ENVELOPE OVERLAY */}
-      <div className={`envelope-overlay ${isSealOpen ? 'open' : ''}`}>
-        <div className="envelope-container">
-          {/* Lower Pocketfold Background */}
-          <img
-            src="/envelope-bottom.jpeg"
-            alt="Envelope Pocket Background"
-            className="envelope-base"
-          />
-
-          {/* Top Flap Container */}
-          <div className="envelope-top-flap">
-            <img
-              src="/envelope-top.jpg"
-              alt="Top Envelope Flap"
-              className="flap-bg"
-            />
-            
-            {/* Standalone Gold Wax Seal */}
-            <img
-              src="/wax-seal.png"
-              alt="Wax Seal"
-              className="wax-seal-overlay"
-              onClick={() => setIsSealOpen(true)}
-            />
-          </div>
-        </div>
-      </div>
 
       <div className={isOpening ? 'opening' : ''} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10 }}>
         {isOpening && (
