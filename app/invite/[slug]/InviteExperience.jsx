@@ -121,7 +121,6 @@ export default function InviteExperience({ guest }) {
           pointer-events: none !important;
         }
 
-        /* Base Envelope Body / Pocketfold Container */
         .envelope-container {
           position: relative;
           width: 100vw;
@@ -142,20 +141,20 @@ export default function InviteExperience({ guest }) {
           z-index: 101;
         }
 
-        /* Top Triangular Flap with attached Wax Seal */
+        /* Top Flap Shifted Upwards */
         .envelope-top-flap {
           position: absolute;
-          top: 0;
+          top: -40px;
           left: 0;
           width: 100%;
-          height: 60vh;
+          height: 52vh;
           z-index: 103;
           transform-origin: top center;
           transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
           transform-style: preserve-3d;
         }
 
-        .envelope-top-flap img {
+        .envelope-top-flap img.flap-bg {
           width: 100%;
           height: 100%;
           object-fit: cover;
@@ -166,20 +165,23 @@ export default function InviteExperience({ guest }) {
           transform: rotateX(-120deg) translateY(-100px);
         }
 
-        /* Invisible clickable hotspot directly over the rendered wax seal */
-        .wax-seal-hotspot {
+        /* Standalone Wax Seal positioned over the flap tip */
+        .wax-seal-overlay {
           position: absolute;
-          bottom: 2%;
+          bottom: -25px;
           left: 50%;
           transform: translateX(-50%);
-          width: 140px;
-          height: 140px;
-          border: none;
-          background: transparent;
-          border-radius: 50%;
-          cursor: pointer;
-          outline: none;
+          width: 110px;
+          height: 110px;
           z-index: 104;
+          cursor: pointer;
+          filter: drop-shadow(0px 4px 10px rgba(0, 0, 0, 0.5));
+          transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        .wax-seal-overlay:hover {
+          transform: translateX(-50%) scale(1.05);
+          filter: drop-shadow(0px 6px 14px rgba(0, 0, 0, 0.6));
         }
 
         .dynamic-bg {
@@ -244,22 +246,25 @@ export default function InviteExperience({ guest }) {
         <div className="envelope-container">
           {/* Lower Pocketfold Background */}
           <img
-            src="/envelope-bottom.jpeg"
+            src="/ChatGPT Image Sep 15, 2026, 10_22_28 PM (1).jpg"
             alt="Envelope Pocket Background"
             className="envelope-base"
           />
 
-          {/* Top Flap Image containing the embedded Seal */}
+          {/* Top Flap Container */}
           <div className="envelope-top-flap">
             <img
-              src="/envelope-top.jpg"
-              alt="Envelope Flap with Seal"
+              src="/image_9e196c.jpg"
+              alt="Top Envelope Flap"
+              className="flap-bg"
             />
-            {/* Click Trigger over Seal location */}
-            <button
-              className="wax-seal-hotspot"
+            
+            {/* Standalone Gold Seal Overlay */}
+            <img
+              src="/gold-seal.png"
+              alt="Wax Seal"
+              className="wax-seal-overlay"
               onClick={() => setIsSealOpen(true)}
-              aria-label="Unseal Envelope"
             />
           </div>
         </div>
