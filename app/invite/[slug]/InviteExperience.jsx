@@ -144,7 +144,7 @@ export default function InviteExperience({ guest }) {
         /* Top Flap Container */
         .envelope-top-flap {
           position: absolute;
-          top: -40px;
+          top: -15px;
           left: 0;
           width: 100%;
           height: 52vh;
@@ -165,10 +165,10 @@ export default function InviteExperience({ guest }) {
           transform: rotateX(-120deg) translateY(-100px);
         }
 
-        /* Standalone Wax Seal positioned over flap point */
+        /* Standalone Wax Seal positioned over flap tip */
         .wax-seal-overlay {
           position: absolute;
-          bottom: -25px;
+          bottom: -45px;
           left: 50%;
           transform: translateX(-50%);
           width: 110px;
