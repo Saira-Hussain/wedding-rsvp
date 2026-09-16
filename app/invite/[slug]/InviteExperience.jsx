@@ -109,7 +109,7 @@ export default function InviteExperience({ guest }) {
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: #0b1d17;
+          background-color: #4a0d17;
           transition: opacity 0.8s ease-in-out 0.6s, visibility 0.8s 0.6s;
           perspective: 1000px;
           overflow: hidden;
@@ -171,12 +171,12 @@ export default function InviteExperience({ guest }) {
           width: 130px;
           height: 130px;
           border: none;
-          background: #610515;
+          background: transparent;
           border-radius: 50%;
           cursor: pointer;
           outline: none;
           transition: transform 0.4s ease, opacity 0.5s ease;
-          filter: drop-shadow(0 10px 20px rgba(0,0,0,0.8));
+          filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
           display: flex;
           align-items: center;
           justify-content: center;
