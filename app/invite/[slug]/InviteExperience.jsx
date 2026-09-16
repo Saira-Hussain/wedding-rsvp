@@ -144,7 +144,7 @@ export default function InviteExperience({ guest }) {
         /* Top Flap Container Positioned Lower */
         .envelope-top-flap {
           position: absolute;
-          top: 15px;
+          top: 10px;
           left: 0;
           width: 100%;
           height: 52vh;
