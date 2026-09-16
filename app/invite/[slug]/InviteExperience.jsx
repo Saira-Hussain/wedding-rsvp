@@ -244,7 +244,7 @@ export default function InviteExperience({ guest }) {
         <div className="envelope-container">
           {/* Lower Pocketfold Background */}
           <img
-            src="/ChatGPT Image Sep 15, 2026, 10_22_28 PM (1).jpg"
+            src="/envelope-bottom.jpeg"
             alt="Envelope Pocket Background"
             className="envelope-base"
           />
@@ -252,7 +252,7 @@ export default function InviteExperience({ guest }) {
           {/* Top Flap Image containing the embedded Seal */}
           <div className="envelope-top-flap">
             <img
-              src="/Gemini_Generated_Image_38gzoe38gzoe38gz.jpeg"
+              src="/envelope-top.jpg"
               alt="Envelope Flap with Seal"
             />
             {/* Click Trigger over Seal location */}
