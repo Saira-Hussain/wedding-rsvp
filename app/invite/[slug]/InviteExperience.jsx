@@ -141,7 +141,7 @@ export default function InviteExperience({ guest }) {
           z-index: 101;
         }
 
-        /* Top Flap Shifted Upwards */
+        /* Top Flap Container */
         .envelope-top-flap {
           position: absolute;
           top: -40px;
@@ -165,7 +165,7 @@ export default function InviteExperience({ guest }) {
           transform: rotateX(-120deg) translateY(-100px);
         }
 
-        /* Standalone Wax Seal positioned over the flap tip */
+        /* Standalone Wax Seal positioned over flap point */
         .wax-seal-overlay {
           position: absolute;
           bottom: -25px;
@@ -246,7 +246,7 @@ export default function InviteExperience({ guest }) {
         <div className="envelope-container">
           {/* Lower Pocketfold Background */}
           <img
-            src="/ChatGPT Image Sep 15, 2026, 10_22_28 PM (1).jpg"
+            src="/envelope-bottom.jpeg"
             alt="Envelope Pocket Background"
             className="envelope-base"
           />
@@ -254,14 +254,14 @@ export default function InviteExperience({ guest }) {
           {/* Top Flap Container */}
           <div className="envelope-top-flap">
             <img
-              src="/image_9e196c.jpg"
+              src="/envelope-top.jpg"
               alt="Top Envelope Flap"
               className="flap-bg"
             />
             
-            {/* Standalone Gold Seal Overlay */}
+            {/* Standalone Gold Wax Seal */}
             <img
-              src="/gold-seal.png"
+              src="/wax-seal.png"
               alt="Wax Seal"
               className="wax-seal-overlay"
               onClick={() => setIsSealOpen(true)}
