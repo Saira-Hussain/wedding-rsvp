@@ -4,17 +4,11 @@ import { useState } from 'react';
 import { supabase } from '../../../lib/supabase';
 
 export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
-  const isNikkahInvited = guest?.invited_to_nikkah ?? false;
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
   const isValimaInvited = guest?.invited_to_valima ?? false;
 
   const maxShaadi = guest?.max_guests_shaadi ?? 1;
   const maxValima = guest?.max_guests_valima ?? 1;
-
-  // Nikkah state
-  const [attendingNikkah, setAttendingNikkah] = useState(
-    guest?.has_rsvped ? (guest?.attending_nikkah ? 'yes' : 'no') : 'yes'
-  );
 
   // Shaadi state
   const [attendingShaadi, setAttendingShaadi] = useState(
@@ -52,11 +46,9 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       return;
     }
 
-    // Sanitize integer counts so NaN is never sent to Postgres smallint columns
     const parsedShaadi = parseInt(shaadiCount, 10);
     const parsedValima = parseInt(valimaCount, 10);
 
-    const isAttendingNikkah = isNikkahInvited && attendingNikkah === 'yes';
     const finalShaadiCount =
       isShaadiInvited && attendingShaadi === 'yes'
         ? (isNaN(parsedShaadi) ? 1 : parsedShaadi)
@@ -67,7 +59,6 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
         : 0;
 
     const payload = {
-      attending_nikkah: isAttendingNikkah,
       rsvp_count_shaadi: finalShaadiCount,
       rsvp_count_valima: finalValimaCount,
       has_rsvped: true,
@@ -82,7 +73,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
         .eq('id', guest.id);
 
       if (error) {
-        console.error('Supabase update error details:', error.message, error.details, error.hint);
+        console.error('Supabase update error details:', error.message, error.details);
         setErrorMessage(`Failed to submit RSVP: ${error.message}`);
       } else {
         if (onSeatsUpdate) {
@@ -123,12 +114,6 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
           Thank You!
         </h3>
 
-        {isNikkahInvited && (
-          <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.5', margin: '4px 0' }}>
-            <strong>Nikkah:</strong> {attendingNikkah === 'yes' ? 'Attending' : 'Declined'}
-          </p>
-        )}
-
         {isShaadiInvited && (
           <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.5', margin: '4px 0' }}>
             <strong>Shaadi:</strong> {finalShaadiCount > 0 ? `${finalShaadiCount} ${finalShaadiCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
@@ -162,38 +147,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
 
   return (
     <form onSubmit={handleSubmit} style={{ textAlign: 'left', marginTop: '10px' }}>
-      {/* 1. NIKKAH SECTION */}
-      {isNikkahInvited && (
-        <div style={{ marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #D4AF37' }}>
-          <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
-            Will you be attending the Nikkah? (4 PM)
-          </label>
-          <div style={{ display: 'flex', gap: '20px', marginBottom: '12px' }}>
-            <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
-              <input
-                type="radio"
-                name="attendingNikkah"
-                value="yes"
-                checked={attendingNikkah === 'yes'}
-                onChange={() => setAttendingNikkah('yes')}
-              />
-              Joyfully Accept
-            </label>
-            <label style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: '#333' }}>
-              <input
-                type="radio"
-                name="attendingNikkah"
-                value="no"
-                checked={attendingNikkah === 'no'}
-                onChange={() => setAttendingNikkah('no')}
-              />
-              Regretfully Decline
-            </label>
-          </div>
-        </div>
-      )}
-
-      {/* 2. SHAADI SECTION */}
+      {/* 1. SHAADI SECTION */}
       {isShaadiInvited && (
         <div style={{ marginBottom: '20px', paddingBottom: isValimaInvited ? '16px' : '0', borderBottom: isValimaInvited ? '1px solid #D4AF37' : 'none' }}>
           <p style={{ color: '#5B4332', fontSize: '0.95rem', marginBottom: '8px' }}>
@@ -255,7 +209,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
         </div>
       )}
 
-      {/* 3. VALIMA SECTION */}
+      {/* 2. VALIMA SECTION */}
       {isValimaInvited && (
         <div style={{ marginBottom: '20px' }}>
           <p style={{ color: '#5B4332', fontSize: '0.95rem', marginBottom: '8px' }}>
