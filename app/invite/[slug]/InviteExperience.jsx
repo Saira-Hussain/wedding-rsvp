@@ -109,9 +109,9 @@ export default function InviteExperience({ guest }) {
           display: flex;
           align-items: center;
           justify-content: center;
-          background-color: #4a0d17;
-          transition: opacity 0.8s ease-in-out 0.6s, visibility 0.8s 0.6s;
-          perspective: 1000px;
+          background-color: #3d050e;
+          transition: opacity 0.8s ease-in-out 0.8s, visibility 0.8s 0.8s;
+          perspective: 1400px;
           overflow: hidden;
         }
 
@@ -121,82 +121,65 @@ export default function InviteExperience({ guest }) {
           pointer-events: none !important;
         }
 
-        .envelope-flap-top,
-        .envelope-flap-bottom {
-          position: absolute;
-          left: 0;
-          right: 0;
-          width: 100vw;
-          height: 50vh;
-          overflow: hidden;
-          background-color: #4a0d17;
-          z-index: 101;
-          transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.2s;
-        }
-
-        .envelope-flap-top {
-          top: 0;
-          transform-origin: top center;
-        }
-
-        .envelope-flap-bottom {
-          bottom: 0;
-          transform-origin: bottom center;
-        }
-
-        .envelope-flap-top img,
-        .envelope-flap-bottom img {
-          position: absolute;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          object-fit: cover;
-          max-width: none;
-        }
-
-        .envelope-flap-top img { top: 0; }
-        .envelope-flap-bottom img { bottom: 0; }
-
-        .envelope-overlay.open .envelope-flap-top {
-          transform: translateY(-100%) rotateX(15deg);
-        }
-
-        .envelope-overlay.open .envelope-flap-bottom {
-          transform: translateY(100%) rotateX(-15deg);
-        }
-
-        .wax-seal-btn {
+        /* Base Envelope Body / Pocketfold Container */
+        .envelope-container {
           position: relative;
-          z-index: 102;
-          width: 130px;
-          height: 130px;
+          width: 100vw;
+          max-width: 500px;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .envelope-base {
+          position: absolute;
+          inset: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          z-index: 101;
+        }
+
+        /* Top Triangular Flap with attached Wax Seal */
+        .envelope-top-flap {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 60vh;
+          z-index: 103;
+          transform-origin: top center;
+          transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+          transform-style: preserve-3d;
+        }
+
+        .envelope-top-flap img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: top center;
+        }
+
+        .envelope-overlay.open .envelope-top-flap {
+          transform: rotateX(-120deg) translateY(-100px);
+        }
+
+        /* Invisible clickable hotspot directly over the rendered wax seal */
+        .wax-seal-hotspot {
+          position: absolute;
+          bottom: 2%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 140px;
+          height: 140px;
           border: none;
           background: transparent;
           border-radius: 50%;
           cursor: pointer;
           outline: none;
-          transition: transform 0.4s ease, opacity 0.5s ease;
-          filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .wax-seal-btn img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          transition: transform 0.3s ease;
-        }
-
-        .wax-seal-btn:hover img {
-          transform: scale(1.08);
-        }
-
-        .envelope-overlay.open .wax-seal-btn {
-          transform: scale(1.4);
-          opacity: 0;
-          pointer-events: none;
+          z-index: 104;
         }
 
         .dynamic-bg {
@@ -256,21 +239,30 @@ export default function InviteExperience({ guest }) {
         }
       `}</style>
 
-      {/* WAX SEAL OVERLAY */}
+      {/* ENVELOPE OVERLAY */}
       <div className={`envelope-overlay ${isSealOpen ? 'open' : ''}`}>
-        <div className="envelope-flap-top">
-          <img src="/envelope-left.jpg" alt="Top Flap" />
+        <div className="envelope-container">
+          {/* Lower Pocketfold Background */}
+          <img
+            src="/ChatGPT Image Sep 15, 2026, 10_22_28 PM (1).jpg"
+            alt="Envelope Pocket Background"
+            className="envelope-base"
+          />
+
+          {/* Top Flap Image containing the embedded Seal */}
+          <div className="envelope-top-flap">
+            <img
+              src="/Gemini_Generated_Image_38gzoe38gzoe38gz.jpeg"
+              alt="Envelope Flap with Seal"
+            />
+            {/* Click Trigger over Seal location */}
+            <button
+              className="wax-seal-hotspot"
+              onClick={() => setIsSealOpen(true)}
+              aria-label="Unseal Envelope"
+            />
+          </div>
         </div>
-        <div className="envelope-flap-bottom">
-          <img src="/envelope-right.jpg" alt="Bottom Flap" />
-        </div>
-        <button
-          className="wax-seal-btn"
-          onClick={() => setIsSealOpen(true)}
-          aria-label="Open Invitation"
-        >
-          <img src="/wax-seal.png" alt="Wax Seal" />
-        </button>
       </div>
 
       <div className={isOpening ? 'opening' : ''} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10 }}>
