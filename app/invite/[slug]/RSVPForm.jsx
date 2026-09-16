@@ -8,18 +8,12 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
   const isValimaInvited = guest?.invited_to_valima ?? false;
 
-  const maxNikkah = guest?.max_guests_nikkah ?? 1;
   const maxShaadi = guest?.max_guests_shaadi ?? 1;
   const maxValima = guest?.max_guests_valima ?? 1;
 
-  // Nikkah state: Defaults to 'yes' for first-time guests, retains saved choice if already RSVPed
+  // Nikkah state: Tracks attendance choice only
   const [attendingNikkah, setAttendingNikkah] = useState(
-    guest?.has_rsvped ? ((guest?.rsvp_count_nikkah ?? 0) > 0 ? 'yes' : 'no') : 'yes'
-  );
-  const [nikkahCount, setNikkahCount] = useState(
-    guest?.rsvp_count_nikkah && guest.rsvp_count_nikkah > 0
-      ? guest.rsvp_count_nikkah
-      : maxNikkah
+    guest?.has_rsvped ? (guest?.attending_nikkah ? 'yes' : 'no') : 'yes'
   );
 
   // Shaadi state: Defaults to 'yes' for first-time guests, retains saved choice if already RSVPed
@@ -58,7 +52,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       return;
     }
 
-    const finalNikkahCount = isNikkahInvited && attendingNikkah === 'yes' ? parseInt(nikkahCount, 10) : 0;
+    const isAttendingNikkah = isNikkahInvited && attendingNikkah === 'yes';
     const finalShaadiCount = isShaadiInvited && attendingShaadi === 'yes' ? parseInt(shaadiCount, 10) : 0;
     const finalValimaCount = isValimaInvited && attendingValima === 'yes' ? parseInt(valimaCount, 10) : 0;
 
@@ -66,7 +60,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       const { error } = await supabase
         .from('guests')
         .update({
-          rsvp_count_nikkah: finalNikkahCount,
+          attending_nikkah: isAttendingNikkah,
           rsvp_count_shaadi: finalShaadiCount,
           rsvp_count_valima: finalValimaCount,
           has_rsvped: true,
@@ -100,7 +94,6 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   };
 
   if (submitted) {
-    const finalNikkahCount = isNikkahInvited && attendingNikkah === 'yes' ? parseInt(nikkahCount, 10) : 0;
     const finalShaadiCount = isShaadiInvited && attendingShaadi === 'yes' ? parseInt(shaadiCount, 10) : 0;
     const finalValimaCount = isValimaInvited && attendingValima === 'yes' ? parseInt(valimaCount, 10) : 0;
 
@@ -112,7 +105,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
         
         {isNikkahInvited && (
           <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.5', margin: '4px 0' }}>
-            <strong>Nikkah:</strong> {finalNikkahCount > 0 ? `${finalNikkahCount} ${finalNikkahCount === 1 ? 'guest' : 'guests'}` : 'Declined'}
+            <strong>Nikkah:</strong> {attendingNikkah === 'yes' ? 'Attending' : 'Declined'}
           </p>
         )}
 
@@ -152,9 +145,6 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       {/* 1. NIKKAH SECTION */}
       {isNikkahInvited && (
         <div style={{ marginBottom: '20px', paddingBottom: '16px', borderBottom: '1px solid #D4AF37' }}>
-          <p style={{ color: '#5B4332', fontSize: '0.95rem', marginBottom: '8px' }}>
-            We have reserved <strong>{maxNikkah}</strong> seats in your honor
-          </p>
           <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '8px', color: '#610515', fontSize: '1.05rem' }}>
             Will you be attending the Nikkah? (4 PM)
           </label>
@@ -180,34 +170,6 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
               Regretfully Decline
             </label>
           </div>
-
-          {attendingNikkah === 'yes' && (
-            <div>
-              <label htmlFor="nikkahCount" style={{ display: 'block', fontSize: '0.88rem', fontWeight: '600', marginBottom: '6px', color: '#333' }}>
-                Guests attending Nikkah:
-              </label>
-              <select
-                id="nikkahCount"
-                value={nikkahCount}
-                onChange={(e) => setNikkahCount(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '8px 10px',
-                  borderRadius: '6px',
-                  border: '1px solid #CCC',
-                  fontSize: '15px',
-                  backgroundColor: '#FFF',
-                  color: '#333',
-                }}
-              >
-                {Array.from({ length: maxNikkah }, (_, i) => i + 1).map((num) => (
-                  <option key={num} value={num}>
-                    {num} {num === 1 ? 'Guest' : 'Guests'}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
         </div>
       )}
 
