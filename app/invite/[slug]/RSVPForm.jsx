@@ -11,12 +11,12 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   const maxShaadi = guest?.max_guests_shaadi ?? 1;
   const maxValima = guest?.max_guests_valima ?? 1;
 
-  // Nikkah state: Tracks attendance choice only
+  // Nikkah state
   const [attendingNikkah, setAttendingNikkah] = useState(
     guest?.has_rsvped ? (guest?.attending_nikkah ? 'yes' : 'no') : 'yes'
   );
 
-  // Shaadi state: Defaults to 'yes' for first-time guests, retains saved choice if already RSVPed
+  // Shaadi state
   const [attendingShaadi, setAttendingShaadi] = useState(
     guest?.has_rsvped ? ((guest?.rsvp_count_shaadi ?? 0) > 0 ? 'yes' : 'no') : 'yes'
   );
@@ -26,7 +26,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       : maxShaadi
   );
 
-  // Valima state: Defaults to 'yes' for first-time guests, retains saved choice if already RSVPed
+  // Valima state
   const [attendingValima, setAttendingValima] = useState(
     guest?.has_rsvped ? ((guest?.rsvp_count_valima ?? 0) > 0 ? 'yes' : 'no') : 'yes'
   );
@@ -52,26 +52,38 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
       return;
     }
 
+    // Sanitize integer counts so NaN is never sent to Postgres smallint columns
+    const parsedShaadi = parseInt(shaadiCount, 10);
+    const parsedValima = parseInt(valimaCount, 10);
+
     const isAttendingNikkah = isNikkahInvited && attendingNikkah === 'yes';
-    const finalShaadiCount = isShaadiInvited && attendingShaadi === 'yes' ? parseInt(shaadiCount, 10) : 0;
-    const finalValimaCount = isValimaInvited && attendingValima === 'yes' ? parseInt(valimaCount, 10) : 0;
+    const finalShaadiCount =
+      isShaadiInvited && attendingShaadi === 'yes'
+        ? (isNaN(parsedShaadi) ? 1 : parsedShaadi)
+        : 0;
+    const finalValimaCount =
+      isValimaInvited && attendingValima === 'yes'
+        ? (isNaN(parsedValima) ? 1 : parsedValima)
+        : 0;
+
+    const payload = {
+      attending_nikkah: isAttendingNikkah,
+      rsvp_count_shaadi: finalShaadiCount,
+      rsvp_count_valima: finalValimaCount,
+      has_rsvped: true,
+      notes: dua.trim() === '' ? null : dua.trim(),
+      updated_at: new Date().toISOString(),
+    };
 
     try {
       const { error } = await supabase
         .from('guests')
-        .update({
-          attending_nikkah: isAttendingNikkah,
-          rsvp_count_shaadi: finalShaadiCount,
-          rsvp_count_valima: finalValimaCount,
-          has_rsvped: true,
-          notes: dua,
-          updated_at: new Date().toISOString(),
-        })
+        .update(payload)
         .eq('id', guest.id);
 
       if (error) {
-        console.error('Supabase update error:', error);
-        setErrorMessage('Failed to submit RSVP. Please try again.');
+        console.error('Supabase update error details:', error.message, error.details, error.hint);
+        setErrorMessage(`Failed to submit RSVP: ${error.message}`);
       } else {
         if (onSeatsUpdate) {
           onSeatsUpdate();
@@ -94,15 +106,23 @@ export default function RSVPForm({ guest, onSeatsUpdate, onEdit }) {
   };
 
   if (submitted) {
-    const finalShaadiCount = isShaadiInvited && attendingShaadi === 'yes' ? parseInt(shaadiCount, 10) : 0;
-    const finalValimaCount = isValimaInvited && attendingValima === 'yes' ? parseInt(valimaCount, 10) : 0;
+    const parsedShaadi = parseInt(shaadiCount, 10);
+    const parsedValima = parseInt(valimaCount, 10);
+    const finalShaadiCount =
+      isShaadiInvited && attendingShaadi === 'yes'
+        ? (isNaN(parsedShaadi) ? 1 : parsedShaadi)
+        : 0;
+    const finalValimaCount =
+      isValimaInvited && attendingValima === 'yes'
+        ? (isNaN(parsedValima) ? 1 : parsedValima)
+        : 0;
 
     return (
       <div style={{ textAlign: 'center', padding: '20px 0' }}>
         <h3 style={{ fontSize: '24px', color: '#8C733E', marginBottom: '12px' }}>
           Thank You!
         </h3>
-        
+
         {isNikkahInvited && (
           <p style={{ fontSize: '15px', color: '#555', lineHeight: '1.5', margin: '4px 0' }}>
             <strong>Nikkah:</strong> {attendingNikkah === 'yes' ? 'Attending' : 'Declined'}
