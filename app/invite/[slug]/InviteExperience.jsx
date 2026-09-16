@@ -121,48 +121,48 @@ export default function InviteExperience({ guest }) {
           pointer-events: none !important;
         }
 
-        .envelope-flap-left,
-        .envelope-flap-right {
+        .envelope-flap-top,
+        .envelope-flap-bottom {
           position: absolute;
-          top: 0;
-          bottom: 0;
-          width: 50vw;
-          height: 100vh;
+          left: 0;
+          right: 0;
+          width: 100vw;
+          height: 50vh;
           overflow: hidden;
           background-color: #4a0d17;
           z-index: 101;
           transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1) 0.2s;
         }
 
-        .envelope-flap-left {
-          left: 0;
-          transform-origin: left center;
-        }
-
-        .envelope-flap-right {
-          right: 0;
-          transform-origin: right center;
-        }
-
-        .envelope-flap-left img,
-        .envelope-flap-right img {
-          position: absolute;
+        .envelope-flap-top {
           top: 0;
+          transform-origin: top center;
+        }
+
+        .envelope-flap-bottom {
+          bottom: 0;
+          transform-origin: bottom center;
+        }
+
+        .envelope-flap-top img,
+        .envelope-flap-bottom img {
+          position: absolute;
+          left: 0;
           width: 100vw;
           height: 100vh;
           object-fit: cover;
           max-width: none;
         }
 
-        .envelope-flap-left img { left: 0; }
-        .envelope-flap-right img { right: 0; }
+        .envelope-flap-top img { top: 0; }
+        .envelope-flap-bottom img { bottom: 0; }
 
-        .envelope-overlay.open .envelope-flap-left {
-          transform: translateX(-100%) rotateY(-15deg);
+        .envelope-overlay.open .envelope-flap-top {
+          transform: translateY(-100%) rotateX(15deg);
         }
 
-        .envelope-overlay.open .envelope-flap-right {
-          transform: translateX(100%) rotateY(15deg);
+        .envelope-overlay.open .envelope-flap-bottom {
+          transform: translateY(100%) rotateX(-15deg);
         }
 
         .wax-seal-btn {
@@ -258,11 +258,11 @@ export default function InviteExperience({ guest }) {
 
       {/* WAX SEAL OVERLAY */}
       <div className={`envelope-overlay ${isSealOpen ? 'open' : ''}`}>
-        <div className="envelope-flap-left">
-          <img src="/envelope-left.jpg" alt="Left Flap" />
+        <div className="envelope-flap-top">
+          <img src="/envelope-left.jpg" alt="Top Flap" />
         </div>
-        <div className="envelope-flap-right">
-          <img src="/envelope-right.jpg" alt="Right Flap" />
+        <div className="envelope-flap-bottom">
+          <img src="/envelope-right.jpg" alt="Bottom Flap" />
         </div>
         <button
           className="wax-seal-btn"
