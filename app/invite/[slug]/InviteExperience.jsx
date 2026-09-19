@@ -5,19 +5,24 @@ import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
-  const [hasStarted, setHasStarted] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
   const [isMounted, setIsMounted] = useState(false);
 
   const videoRef = useRef(null);
-
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
+  // Auto-play the video as soon as the component mounts
   useEffect(() => {
     setIsMounted(true);
+
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.log('Autoplay blocked or waiting for user interaction:', err);
+      });
+    }
+
     const targetDate = new Date('2026-12-26T16:00:00');
-    
     const updateCountdown = () => {
       const now = new Date();
       const difference = targetDate.getTime() - now.getTime();
@@ -42,20 +47,6 @@ export default function InviteExperience({ guest }) {
 
   const shaadiImgSrc = guest?.groom_side ? '/shaadi-groom.png' : '/shaadi-bride.png';
   const valimaImgSrc = guest?.groom_side ? '/valima-groom.png' : '/valima-bride.png';
-
-  // Trigger Video Playback & Transition to Details
-  const handleOpenEnvelope = () => {
-    setHasStarted(true);
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch((err) => console.error('Video error:', err));
-    }
-  };
-
-  const handleVideoEnded = () => {
-    setVideoEnded(true);
-    setStep('details');
-  };
 
   const cardContainerStyle = {
     zIndex: 1,
@@ -109,39 +100,7 @@ export default function InviteExperience({ guest }) {
         overflowY: 'auto',
       }}
     >
-      <style jsx global>{`
-        .dynamic-bg {
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-          transition: background-image 0.8s ease-in-out;
-        }
-        .dynamic-bg.step-welcome {
-          background-image: url('/welcome-bg.jpg');
-        }
-        @media (max-width: 768px) {
-          .dynamic-bg.step-welcome {
-            background-image: url('/welcome-mobile-bg.jpg') !important;
-          }
-        }
-        .dynamic-bg.step-details,
-        .dynamic-bg.step-rsvp {
-          background-image: none;
-          background-color: #000000;
-        }
-
-        .stacked-invitation-item {
-          z-index: 1;
-          max-width: 560px;
-          width: 92%;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          margin-bottom: 28px;
-        }
-      `}</style>
-
-      {/* 1. VIDEO OVERLAY (Plays when Bismillah is tapped) */}
+      {/* 1. INTRO VIDEO OVERLAY (Plays first automatically) */}
       {!videoEnded && (
         <div
           style={{
@@ -152,16 +111,15 @@ export default function InviteExperience({ guest }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            opacity: hasStarted ? 1 : 0,
-            pointerEvents: hasStarted ? 'auto' : 'none',
-            transition: 'opacity 0.5s ease-in-out',
           }}
         >
           <video
             ref={videoRef}
             src="/envelope.mp4"
+            autoPlay
+            muted
             playsInline
-            onEnded={handleVideoEnded}
+            onEnded={() => setVideoEnded(true)}
             style={{
               width: '100%',
               height: '100%',
@@ -172,7 +130,7 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 2. BACKGROUND IMAGE CONTAINER */}
+      {/* 2. DYNAMIC BACKGROUND */}
       <div
         className={`dynamic-bg step-${step}`}
         style={{
@@ -200,8 +158,8 @@ export default function InviteExperience({ guest }) {
         />
       )}
 
-      {/* STEP 1: WELCOME */}
-      {step === 'welcome' && (
+      {/* STEP 1: WELCOME + BISMILLAH BUTTON */}
+      {videoEnded && step === 'welcome' && (
         <div
           style={{
             position: 'relative',
@@ -244,7 +202,7 @@ export default function InviteExperience({ guest }) {
 
           <div style={{ paddingBottom: '2vh', width: '100%' }}>
             <button
-              onClick={handleOpenEnvelope}
+              onClick={() => setStep('details')}
               style={{
                 backgroundColor: 'rgba(20, 20, 20, 0.9)',
                 color: '#FFFFFF',
@@ -268,10 +226,9 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* STEP 2: SCROLLABLE CARDS */}
+      {/* STEP 2: SCROLLABLE CARDS & DETAILS */}
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          
           {isShaadiInvited && (
             <div className="stacked-invitation-item">
               <img
@@ -286,10 +243,7 @@ export default function InviteExperience({ guest }) {
                   display: 'block',
                 }}
               />
-              <button
-                onClick={() => setStep('rsvp')}
-                style={goldButtonStyle}
-              >
+              <button onClick={() => setStep('rsvp')} style={goldButtonStyle}>
                 Click to RSVP
               </button>
             </div>
@@ -309,16 +263,13 @@ export default function InviteExperience({ guest }) {
                   display: 'block',
                 }}
               />
-              <button
-                onClick={() => setStep('rsvp')}
-                style={goldButtonStyle}
-              >
+              <button onClick={() => setStep('rsvp')} style={goldButtonStyle}>
                 Click to RSVP
               </button>
             </div>
           )}
 
-          {/* Countdown Timer */}
+          {/* Countdown */}
           <section style={cardContainerStyle}>
             <h2 style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
               Counting Down
@@ -350,12 +301,11 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* Travel Card */}
+          {/* Travel & QA Sections */}
           <section style={cardContainerStyle}>
             <h2 style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
               Travel
             </h2>
-
             <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
               <div style={{ marginBottom: '14px' }}>
                 <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Getting In</p>
@@ -363,12 +313,7 @@ export default function InviteExperience({ guest }) {
                   We recommend flying into <strong>George Bush Intercontinental Airport (IAH)</strong>! <strong>William P. Hobby Airport (HOU)</strong> is another good option depending on where you’re staying.
                 </p>
               </div>
-
-              <div style={{ marginBottom: '14px' }}>
-                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Getting Around</p>
-                <p style={{ margin: '0 0 6px 0' }}>
-                  There are plenty of ways to get around Houston! You’ll find several car rental options, plus taxis and rideshare services. If you plan to explore the city, renting a car is often the easiest option.
-                </p>
+              <div>
                 <a
                   href="https://www.fly2houston.com/iah/ground-transportation"
                   target="_blank"
@@ -378,86 +323,8 @@ export default function InviteExperience({ guest }) {
                   IAH Ground Transportation Information
                 </a>
               </div>
-
-              <div style={{ marginBottom: '14px' }}>
-                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>High Season in Houston</p>
-                <p style={{ margin: 0 }}>
-                  Houston stays busy all year, and hotels fill up fast on wedding weekends. Book your travel early to get the best rates and availability.
-                </p>
-              </div>
-
-              <div style={{ marginBottom: '14px' }}>
-                <p style={{ fontWeight: '700', margin: '0 0 4px 0', color: '#610515' }}>Our Favorite Restaurants</p>
-                <ul style={{ margin: 0, paddingLeft: '18px', listStyleType: 'disc' }}>
-                  <li>Aga's</li>
-                  <li>Ma's House</li>
-                  <li>Bundu Khan</li>
-                  <li>Levant</li>
-                </ul>
-              </div>
-
-              <div>
-                <p style={{ fontWeight: '700', margin: '0 0 4px 0', color: '#610515' }}>Things to Do in Houston</p>
-                <ul style={{ margin: 0, paddingLeft: '18px', listStyleType: 'disc' }}>
-                  <li>Space Center Houston</li>
-                  <li>Museum District</li>
-                  <li>Buffalo Bayou Park</li>
-                  <li>Houston Zoo</li>
-                  <li>The Menil Collection</li>
-                  <li>Discovery Green</li>
-                  <li>The Galleria</li>
-                </ul>
-              </div>
             </div>
           </section>
-
-          {/* Q&A Card */}
-          <section style={cardContainerStyle}>
-            <h2 style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#610515', marginBottom: '6px', textTransform: 'uppercase', fontWeight: '700' }}>
-              Questions & Answers
-            </h2>
-            <p style={{ fontSize: '0.8rem', color: '#8B6B23', fontStyle: 'italic', marginBottom: '16px' }}>
-              If you have questions, please check our Q & A section first!
-            </p>
-            
-            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
-              <div style={{ marginBottom: '12px' }}>
-                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>When is the RSVP deadline?</p>
-                <p style={{ margin: 0 }}>Please RSVP by November 1st so we can get an accurate headcount. :)</p>
-              </div>
-
-              <div style={{ marginBottom: '12px' }}>
-                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>What time should I arrive?</p>
-                <p style={{ margin: 0 }}>We recommend arriving 15–20 minutes before the scheduled start time so you can get settled and enjoy the celebration.</p>
-              </div>
-
-              <div style={{ marginBottom: '12px' }}>
-                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Is there parking available?</p>
-                <p style={{ margin: 0 }}>Yes! Parking will be available at the venue in the parking garage.</p>
-              </div>
-
-              <div style={{ marginBottom: '12px' }}>
-                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Can we use our phones and cameras to take photos during the wedding?</p>
-                <p style={{ margin: 0 }}>Absolutely! Capture all the memories you’d like — just please don’t block our photographer’s shots. They’re talented, we promise :)</p>
-              </div>
-
-              <div style={{ marginBottom: '12px' }}>
-                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>What is the dress code?</p>
-                <p style={{ margin: 0 }}>Formal / Traditional South Asian attire.</p>
-              </div>
-
-              <div style={{ marginBottom: '12px' }}>
-                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Can I bring additional guests?</p>
-                <p style={{ margin: 0 }}>Please refer to the seats allocated in your RSVP form step.</p>
-              </div>
-
-              <div>
-                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>What will the weather be like?</p>
-                <p style={{ margin: 0 }}>Welcome to Houston, out-of-towners! You can expect cool, comfortable days—usually around 60–70°F—with cooler evenings. We recommend bringing layers, a light jacket, and comfortable shoes. And as always, plan for a little extra traffic. ;)</p>
-              </div>
-            </div>
-          </section>
-
         </div>
       )}
 
