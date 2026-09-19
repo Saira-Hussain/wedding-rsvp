@@ -8,13 +8,20 @@ export default function InviteExperience({ guest }) {
   const [videoEnded, setVideoEnded] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
   const [isMounted, setIsMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const videoRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-  // Auto-play the video as soon as the component mounts
   useEffect(() => {
     setIsMounted(true);
+
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
 
     if (videoRef.current) {
       videoRef.current.play().catch((err) => {
@@ -39,7 +46,10 @@ export default function InviteExperience({ guest }) {
 
     updateCountdown();
     const timer = setInterval(updateCountdown, 1000);
-    return () => clearInterval(timer);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
@@ -47,6 +57,8 @@ export default function InviteExperience({ guest }) {
 
   const shaadiImgSrc = guest?.groom_side ? '/shaadi-groom.png' : '/shaadi-bride.png';
   const valimaImgSrc = guest?.groom_side ? '/valima-groom.png' : '/valima-bride.png';
+
+  const welcomeBgImage = isMobile ? "url('/welcome-mobile-bg.jpg')" : "url('/welcome-bg.jpg')";
 
   const cardContainerStyle = {
     zIndex: 1,
@@ -100,7 +112,7 @@ export default function InviteExperience({ guest }) {
         overflowY: 'auto',
       }}
     >
-      {/* 1. INTRO VIDEO OVERLAY (Plays first automatically) */}
+      {/* 1. INTRO VIDEO OVERLAY */}
       {!videoEnded && (
         <div
           style={{
@@ -130,9 +142,8 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 2. DYNAMIC BACKGROUND */}
+      {/* 2. INLINE DYNAMIC BACKGROUND */}
       <div
-        className={`dynamic-bg step-${step}`}
         style={{
           position: 'fixed',
           top: 0,
@@ -140,6 +151,12 @@ export default function InviteExperience({ guest }) {
           width: '100%',
           height: '100%',
           zIndex: 0,
+          backgroundImage: step === 'welcome' ? welcomeBgImage : 'none',
+          backgroundColor: step === 'welcome' ? 'transparent' : '#000000',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          transition: 'background-image 0.8s ease-in-out',
         }}
       />
 
@@ -230,7 +247,17 @@ export default function InviteExperience({ guest }) {
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           {isShaadiInvited && (
-            <div className="stacked-invitation-item">
+            <div
+              style={{
+                zIndex: 1,
+                maxWidth: '560px',
+                width: '92%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginBottom: '28px',
+              }}
+            >
               <img
                 src={shaadiImgSrc}
                 alt="Shaadi Invitation"
@@ -250,7 +277,17 @@ export default function InviteExperience({ guest }) {
           )}
 
           {isValimaInvited && (
-            <div className="stacked-invitation-item">
+            <div
+              style={{
+                zIndex: 1,
+                maxWidth: '560px',
+                width: '92%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginBottom: '28px',
+              }}
+            >
               <img
                 src={valimaImgSrc}
                 alt="Valima Invitation"
@@ -301,7 +338,7 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* Travel & QA Sections */}
+          {/* Travel Card */}
           <section style={cardContainerStyle}>
             <h2 style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
               Travel
