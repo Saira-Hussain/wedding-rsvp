@@ -1,13 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
-  const [isOpening, setIsOpening] = useState(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [videoEnded, setVideoEnded] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
   const [isMounted, setIsMounted] = useState(false);
+
+  const videoRef = useRef(null);
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
@@ -40,12 +43,18 @@ export default function InviteExperience({ guest }) {
   const shaadiImgSrc = guest?.groom_side ? '/shaadi-groom.png' : '/shaadi-bride.png';
   const valimaImgSrc = guest?.groom_side ? '/valima-groom.png' : '/valima-bride.png';
 
-  const handleOpenCurtains = () => {
-    setIsOpening(true);
-    setTimeout(() => {
-      setStep('details');
-      setIsOpening(false);
-    }, 900);
+  // Trigger Video Playback & Transition to Details
+  const handleOpenEnvelope = () => {
+    setHasStarted(true);
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play().catch((err) => console.error('Video error:', err));
+    }
+  };
+
+  const handleVideoEnded = () => {
+    setVideoEnded(true);
+    setStep('details');
   };
 
   const cardContainerStyle = {
@@ -101,56 +110,6 @@ export default function InviteExperience({ guest }) {
       }}
     >
       <style jsx global>{`
-        .envelope-overlay {
-          position: fixed;
-          inset: 0;
-          z-index: 100;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: #000000;
-          perspective: 1400px;
-          overflow: hidden;
-        }
-
-        .envelope-container {
-          position: relative;
-          width: 100vw;
-          max-width: 500px;
-          height: 100vh;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .envelope-base {
-          position: absolute;
-          inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          z-index: 101;
-        }
-
-        .envelope-top-flap {
-          position: absolute;
-          top: 15px;
-          left: 0;
-          width: 100%;
-          height: 52vh;
-          z-index: 103;
-          transform-origin: top center;
-          transform-style: preserve-3d;
-        }
-
-        .envelope-top-flap img.flap-bg {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: top center;
-        }
-
         .dynamic-bg {
           background-size: cover;
           background-position: center;
@@ -171,32 +130,6 @@ export default function InviteExperience({ guest }) {
           background-color: #000000;
         }
 
-        .curtain-left, .curtain-right {
-          position: fixed;
-          top: 0;
-          width: 50%;
-          height: 100%;
-          background-image: url('/welcome-bg.jpg');
-          background-size: cover;
-          background-repeat: no-repeat;
-          z-index: 10;
-          transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-        .curtain-left {
-          left: 0;
-          background-position: left center;
-        }
-        .curtain-right {
-          right: 0;
-          background-position: right center;
-        }
-        .opening .curtain-left {
-          transform: translateX(-100%);
-        }
-        .opening .curtain-right {
-          transform: translateX(100%);
-        }
-
         .stacked-invitation-item {
           z-index: 1;
           max-width: 560px;
@@ -208,15 +141,38 @@ export default function InviteExperience({ guest }) {
         }
       `}</style>
 
-      <div className={isOpening ? 'opening' : ''} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 10 }}>
-        {isOpening && (
-          <>
-            <div className="curtain-left" />
-            <div className="curtain-right" />
-          </>
-        )}
-      </div>
+      {/* 1. VIDEO OVERLAY (Plays when Bismillah is tapped) */}
+      {!videoEnded && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            backgroundColor: '#000000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            opacity: hasStarted ? 1 : 0,
+            pointerEvents: hasStarted ? 'auto' : 'none',
+            transition: 'opacity 0.5s ease-in-out',
+          }}
+        >
+          <video
+            ref={videoRef}
+            src="/envelope.mp4"
+            playsInline
+            onEnded={handleVideoEnded}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              maxWidth: '500px',
+            }}
+          />
+        </div>
+      )}
 
+      {/* 2. BACKGROUND IMAGE CONTAINER */}
       <div
         className={`dynamic-bg step-${step}`}
         style={{
@@ -288,7 +244,7 @@ export default function InviteExperience({ guest }) {
 
           <div style={{ paddingBottom: '2vh', width: '100%' }}>
             <button
-              onClick={handleOpenCurtains}
+              onClick={handleOpenEnvelope}
               style={{
                 backgroundColor: 'rgba(20, 20, 20, 0.9)',
                 color: '#FFFFFF',
