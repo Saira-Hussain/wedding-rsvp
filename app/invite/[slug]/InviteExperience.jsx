@@ -513,6 +513,18 @@ export default function InviteExperience({ guest }) {
               To Celebrate With You 🤍
             </h2>
 
+            <p
+              style={{
+                fontSize: '1.45rem',
+                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
+                fontStyle: 'italic',
+                fontWeight: '600',
+                color: '#610515',
+                margin: '20px 0 4px 0',
+              }}
+            >
+              With love, Ayesha & Owais
+            </p>
 
             <p
               style={{
@@ -538,26 +550,28 @@ export default function InviteExperience({ guest }) {
               JazakAllah Khair for being part of our special day.
             </p>
 
-             <p
-              style={{
-                fontSize: '1.45rem',
-                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
-                fontStyle: 'italic',
-                fontWeight: '600',
-                color: '#610515',
-                margin: '20px 0 4px 0',
-              }}
-            >
-              With love, Ayesha & Owais
-            </p>
-
             {/* Gold SVG Ornament */}
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
               <svg width="60" height="16" viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 8H22" stroke="#C2A052" strokeWidth="1" />
                 <polygon points="30,2 36,8 30,14 24,8" fill="#C2A052" />
                 <path d="M38 8H60" stroke="#C2A052" strokeWidth="1" />
               </svg>
+            </div>
+
+            {/* Ring Box Picture */}
+            <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <img
+                src="/ring box.png"
+                alt="Ring Box"
+                style={{
+                  maxWidth: '120px',
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  margin: '0 auto',
+                }}
+              />
             </div>
           </section>
         </div>
