@@ -82,9 +82,9 @@ export default function InviteExperience({ guest }) {
       'PRODID:-//Wedding Invitation//EN',
       'BEGIN:VEVENT',
       'SUMMARY:Ayesha & Owais Wedding',
-      'DESCRIPTION:Nikah at 3:00 PM followed by Shaadi Reception at 6:00 PM.',
+      'DESCRIPTION:Nikah at 3:30 PM followed by Shaadi Reception at 6:00 PM.',
       'LOCATION:Houston Marriott Sugar Land Town Center\\, 16090 City Walk\\, Sugar Land\\, TX 77479',
-      'DTSTART:20261226T150000',
+      'DTSTART:20261226T153000',
       'DTEND:20261226T230000',
       'END:VEVENT',
       'END:VCALENDAR',
@@ -281,26 +281,29 @@ export default function InviteExperience({ guest }) {
             paddingBottom: 'calc(env(safe-area-inset-bottom) + 32px)',
           }}
         >
-          {/* TOTAL BLACK BACKGROUND & PLAIN FONT */}
+          {/* COMPACT & ELEGANT WELCOME HEADER */}
           <div
             style={{
-              padding: '12px 28px',
+              padding: '6px 18px',
               border: '1px solid #C2A052',
-              borderRadius: '30px',
+              borderRadius: '20px',
               backgroundColor: '#000000',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.8)',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
               margin: '0 16px',
+              maxWidth: '90%',
+              boxSizing: 'border-box',
             }}
           >
             <h1
               style={{
                 color: '#FAF3E0',
-                fontSize: 'clamp(1.2rem, 3.8vw, 1.9rem)',
+                fontSize: 'clamp(0.75rem, 2.5vw, 1.05rem)',
                 fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
                 fontWeight: '600',
-                letterSpacing: '2px',
+                letterSpacing: '1.5px',
                 margin: 0,
                 textTransform: 'uppercase',
+                whiteSpace: 'nowrap',
               }}
             >
               Welcome {guest?.family_name || 'Family'}
@@ -338,20 +341,20 @@ export default function InviteExperience({ guest }) {
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           
-          {/* WELCOME HEADER WITH MATCHING BACKGROUND */}
+          {/* LARGER WELCOME HEADER */}
           <section
             style={{
               ...cardContainerStyle,
               marginBottom: '20px',
-              padding: '20px 16px',
+              padding: '24px 18px',
             }}
           >
             <h2
               style={{
-                fontSize: '1.4rem',
+                fontSize: '1.8rem',
                 fontFamily: "'Great Vibes', 'Dancing Script', cursive",
                 color: '#610515',
-                margin: '0 0 4px 0',
+                margin: '0 0 6px 0',
                 fontWeight: '400',
               }}
             >
@@ -359,7 +362,7 @@ export default function InviteExperience({ guest }) {
             </h2>
             <p
               style={{
-                fontSize: '0.85rem',
+                fontSize: '0.9rem',
                 letterSpacing: '2px',
                 textTransform: 'uppercase',
                 color: '#8B6B23',
@@ -581,7 +584,6 @@ export default function InviteExperience({ guest }) {
               Wedding Timeline
             </h2>
 
-            {/* GOLD CARD STYLING FOR DATE PILL */}
             <div
               style={{
                 backgroundImage: "url('/gold-card-bg.jpg')",
@@ -643,6 +645,7 @@ export default function InviteExperience({ guest }) {
                     border: '1px solid rgba(194, 160, 82, 0.4)',
                   }}
                 >
+                  {/* UPDATED TIME TO 3:30 PM */}
                   <span
                     style={{
                       backgroundColor: '#F4E4BC',
@@ -655,7 +658,7 @@ export default function InviteExperience({ guest }) {
                       marginBottom: '8px',
                     }}
                   >
-                    3:00 PM
+                    3:30 PM
                   </span>
                   <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#610515' }}>Nikah Ceremony</h3>
                   <p style={{ margin: 0, fontSize: '0.85rem', lineHeight: '1.5', color: '#555', fontStyle: 'italic' }}>
@@ -664,7 +667,7 @@ export default function InviteExperience({ guest }) {
                 </div>
               </div>
 
-              {/* GOLD CARD STYLING FOR "FOLLOWED BY" PILL */}
+              {/* Followed By Pill */}
               <div style={{ textAlign: 'center', margin: '-10px 0 14px -40px' }}>
                 <span
                   style={{
@@ -880,16 +883,18 @@ export default function InviteExperience({ guest }) {
           <section style={cardContainerStyle}>
             <h2
               style={{
-                fontSize: '0.95rem',
+                fontSize: 'clamp(0.9rem, 3.8vw, 1.1rem)',
                 letterSpacing: '1px',
                 color: '#610515',
                 marginBottom: '16px',
                 textTransform: 'uppercase',
                 fontWeight: '700',
-                whiteSpace: 'nowrap',
+                lineHeight: '1.4',
+                wordBreak: 'break-word',
               }}
             >
-              We can't wait to celebrate with you
+              We can't wait to <br />
+              celebrate with you
             </h2>
 
             <p
