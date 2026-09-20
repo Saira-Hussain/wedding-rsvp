@@ -10,6 +10,7 @@ export default function InviteExperience({ guest }) {
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [openQaIndex, setOpenQaIndex] = useState(null); // Added state for collapsible Q&A
 
   const videoRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -1250,6 +1251,7 @@ export default function InviteExperience({ guest }) {
               })}
             </div>
           </section>
+
           {/* FINAL CLOSING CARD */}
           <section style={cardContainerStyle}>
             <h2
