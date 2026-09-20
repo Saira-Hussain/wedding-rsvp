@@ -60,8 +60,7 @@ export default function InviteExperience({ guest }) {
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
           console.warn('Mobile video playback prevented:', err);
-          // Fallback for Mobile Low Power Mode or unsupported video codecs:
-          // Immediately skip video step so user isn't stuck on black screen
+          // Fallback for Mobile Low Power Mode or unsupported video codecs
           setVideoEnded(true);
         });
       }
@@ -181,7 +180,7 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 2. INITIAL TRIGGER OVERLAY (TAP ANYWHERE TO OPEN) */}
+      {/* 2. INVISIBLE FULL-SCREEN TAP TRIGGER */}
       {!videoStarted && (
         <div
           onClick={handleStartVideo}
@@ -189,70 +188,10 @@ export default function InviteExperience({ guest }) {
             position: 'fixed',
             inset: 0,
             zIndex: 10,
-            backgroundColor: 'rgba(0, 0, 0, 0.15)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingTop: 'calc(env(safe-area-inset-top) + 36px)',
-            paddingBottom: 'calc(env(safe-area-inset-bottom) + 40px)',
-            paddingLeft: '24px',
-            paddingRight: '24px',
-            boxSizing: 'border-box',
-            textAlign: 'center',
             cursor: 'pointer',
+            backgroundColor: 'transparent',
           }}
-        >
-          {/* Readability Pill for Welcome Text */}
-          <div
-            style={{
-              backgroundColor: 'rgba(10, 2, 3, 0.65)',
-              border: '1px solid #C2A052',
-              borderRadius: '50px',
-              padding: '10px 28px',
-              backdropFilter: 'blur(8px)',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
-              display: 'inline-block',
-            }}
-          >
-            <p
-              style={{
-                color: '#F4E4BC',
-                fontSize: '1.25rem',
-                letterSpacing: '1px',
-                fontStyle: 'italic',
-                margin: 0,
-                fontWeight: '500',
-              }}
-            >
-              Welcome, {guest?.family_name || 'Guest'}
-            </p>
-          </div>
-
-          {/* Gold Card Call-to-Action Box */}
-          <div
-            style={{
-              backgroundImage: "url('/gold-card-bg.jpg')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              color: '#610515',
-              padding: '16px 32px',
-              fontSize: '0.9rem',
-              border: '2px solid #C2A052',
-              borderRadius: '50px',
-              fontWeight: '700',
-              letterSpacing: '1.5px',
-              textTransform: 'uppercase',
-              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.5)',
-              fontFamily: 'serif',
-              width: '100%',
-              maxWidth: '340px',
-              userSelect: 'none',
-            }}
-          >
-            Press the Seal to Open Invitation
-          </div>
-        </div>
+        />
       )}
 
       {/* 3. RESPONSIVE DYNAMIC BACKGROUND (AFTER VIDEO ENDS) */}
