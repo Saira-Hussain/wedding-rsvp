@@ -121,10 +121,10 @@ export default function InviteExperience({ guest }) {
         justifyContent: step === 'welcome' ? 'space-between' : 'flex-start',
         fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
         backgroundColor: '#000000',
-        padding: step === 'details' ? '32px 16px 60px 16px' : '24px 16px',
+        padding: step === 'details' ? '32px 16px 60px 16px' : '0px',
         boxSizing: 'border-box',
         overflowX: 'hidden',
-        overflowY: 'auto',
+        overflowY: step === 'welcome' ? 'hidden' : 'auto',
       }}
     >
       {/* 1. INTRO VIDEO OVERLAY */}
@@ -164,11 +164,11 @@ export default function InviteExperience({ guest }) {
           top: 0,
           left: 0,
           width: '100%',
-          height: '100%',
+          height: '100dvh',
           zIndex: 0,
           backgroundImage: step === 'welcome' ? welcomeBgImage : 'none',
           backgroundColor: step === 'welcome' ? 'transparent' : '#000000',
-          backgroundSize: 'contain',
+          backgroundSize: isMobile ? 'cover' : 'contain',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           transition: 'background-image 0.8s ease-in-out',
@@ -182,7 +182,7 @@ export default function InviteExperience({ guest }) {
             top: 0,
             left: 0,
             width: '100%',
-            height: '100%',
+            height: '100dvh',
             zIndex: 0,
             pointerEvents: 'none',
             background:
@@ -199,15 +199,15 @@ export default function InviteExperience({ guest }) {
             zIndex: 1,
             width: '100%',
             maxWidth: '1200px',
-            height: '100vh',
+            height: '100dvh',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
             textAlign: 'center',
             boxSizing: 'border-box',
-            paddingTop: '3vh',
-            paddingBottom: '5vh',
+            paddingTop: 'calc(env(safe-area-inset-top) + 24px)',
+            paddingBottom: 'calc(env(safe-area-inset-bottom) + 32px)',
           }}
         >
           {/* Top Badge */}
@@ -237,7 +237,7 @@ export default function InviteExperience({ guest }) {
           </div>
 
           {/* Bottom Button */}
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box' }}>
             <button
               onClick={() => setStep('details')}
               style={{
@@ -254,7 +254,7 @@ export default function InviteExperience({ guest }) {
                 fontFamily: 'serif',
                 backdropFilter: 'blur(6px)',
                 width: '100%',
-                maxWidth: '240px',
+                maxWidth: '260px',
               }}
             >
               Bismillah
