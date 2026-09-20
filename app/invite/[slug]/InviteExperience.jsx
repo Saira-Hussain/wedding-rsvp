@@ -149,7 +149,7 @@ export default function InviteExperience({ guest }) {
 
  const goldButtonStyle = {
   marginTop: '24px',
-  backgroundColor: '#AE7A44'
+  backgroundColor: '#AE7A44',
   color: '#610515',
   padding: '12px 24px',
   fontSize: '0.85rem',
