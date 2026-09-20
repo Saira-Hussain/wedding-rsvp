@@ -167,46 +167,62 @@ export default function InviteExperience({ guest }) {
             position: 'fixed',
             inset: 0,
             zIndex: 10,
-            backgroundColor: 'rgba(0, 0, 0, 0.25)',
+            backgroundColor: 'rgba(0, 0, 0, 0.15)',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingTop: 'calc(env(safe-area-inset-top) + 40px)',
-            paddingBottom: 'calc(env(safe-area-inset-bottom) + 50px)',
+            paddingTop: 'calc(env(safe-area-inset-top) + 36px)',
+            paddingBottom: 'calc(env(safe-area-inset-bottom) + 40px)',
             paddingLeft: '24px',
             paddingRight: '24px',
             boxSizing: 'border-box',
             textAlign: 'center',
           }}
         >
-          <p
+          {/* Welcome Text Pill Container */}
+          <div
             style={{
-              color: '#F4E4BC',
-              fontSize: '1.35rem',
-              letterSpacing: '1px',
-              fontStyle: 'italic',
-              margin: 0,
-              textShadow: '0 2px 10px rgba(0, 0, 0, 0.8)',
+              backgroundColor: 'rgba(10, 2, 3, 0.65)',
+              border: '1px solid #C2A052',
+              borderRadius: '50px',
+              padding: '10px 28px',
+              backdropFilter: 'blur(8px)',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
+              display: 'inline-block',
             }}
           >
-            Welcome, {guest?.family_name || 'Guest'}
-          </p>
+            <p
+              style={{
+                color: '#F4E4BC',
+                fontSize: '1.25rem',
+                letterSpacing: '1px',
+                fontStyle: 'italic',
+                margin: 0,
+                fontWeight: '500',
+              }}
+            >
+              Welcome, {guest?.family_name || 'Guest'}
+            </p>
+          </div>
 
+          {/* Gold Textured Button */}
           <button
             onClick={handleStartVideo}
             style={{
-              backgroundColor: 'rgba(20, 20, 20, 0.95)',
-              color: '#F4E4BC',
+              backgroundImage: "url('/gold-card-bg.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              color: '#610515',
               padding: '16px 32px',
-              fontSize: '0.95rem',
+              fontSize: '0.9rem',
               border: '2px solid #C2A052',
               borderRadius: '50px',
               cursor: 'pointer',
-              fontWeight: '600',
+              fontWeight: '700',
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
-              boxShadow: '0 6px 20px rgba(0, 0, 0, 0.6)',
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.5)',
               fontFamily: 'serif',
               width: '100%',
               maxWidth: '340px',
