@@ -147,24 +147,22 @@ export default function InviteExperience({ guest }) {
     color: '#610515',
   };
 
-  const goldButtonStyle = {
-    marginTop: '24px',
-    backgroundImage: "url('/gold-card-bg.jpg')",
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    color: '#610515',
-    padding: '12px 24px',
-    fontSize: '0.85rem',
-    border: '2px solid #C2A052',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontWeight: '700',
-    letterSpacing: '1.5px',
-    textTransform: 'uppercase',
-    boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
-    width: '100%',
-    maxWidth: '300px',
-  };
+ const goldButtonStyle = {
+  marginTop: '24px',
+  backgroundColor: '#AE7A44'
+  color: '#610515',
+  padding: '12px 24px',
+  fontSize: '0.85rem',
+  border: '2px solid #AE7A44',
+  borderRadius: '6px',
+  cursor: 'pointer',
+  fontWeight: '700',
+  letterSpacing: '1.5px',
+  textTransform: 'uppercase',
+  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
+  width: '100%',
+  maxWidth: '300px',
+};
 
   return (
     <main
@@ -667,7 +665,7 @@ export default function InviteExperience({ guest }) {
 
               <div
                 style={{
-                  backgroundImage: "url('/gold-card-bg.jpg')",
+                  backgroundColor: '#AE7A44',
                   backgroundSize: 'cover',
                   backgroundPosition: 'center',
                   border: '1px solid #C2A052',
