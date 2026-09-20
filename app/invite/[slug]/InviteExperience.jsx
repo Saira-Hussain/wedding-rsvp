@@ -254,7 +254,7 @@ export default function InviteExperience({ guest }) {
         />
       )}
 
-      {/* STEP 1: WELCOME BUTTON */}
+      {/* STEP 1: WELCOME SCREEN WITH FAMILY NAME & BUTTON */}
       {videoEnded && step === 'welcome' && (
         <div
           style={{
@@ -272,7 +272,23 @@ export default function InviteExperience({ guest }) {
             paddingBottom: 'calc(env(safe-area-inset-bottom) + 32px)',
           }}
         >
-          <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box' }}>
+          <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            {/* WELCOME FAMILY HEADING */}
+            <h1
+              style={{
+                color: '#FAF3E0',
+                fontSize: 'clamp(1.5rem, 4vw, 2.2rem)',
+                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
+                fontWeight: '600',
+                letterSpacing: '2px',
+                textShadow: '0 2px 10px rgba(0,0,0,0.9)',
+                margin: '0 0 16px 0',
+                textTransform: 'uppercase',
+              }}
+            >
+              Welcome {guest?.family_name || 'Family'}
+            </h1>
+
             <button
               onClick={() => setStep('details')}
               style={{
@@ -390,7 +406,6 @@ export default function InviteExperience({ guest }) {
               ))}
             </div>
 
-            {/* REQUEST 3: ADD TO CALENDAR BUTTON */}
             <button
               onClick={handleDownloadCalendar}
               style={{
@@ -413,7 +428,7 @@ export default function InviteExperience({ guest }) {
             </button>
           </section>
 
-          {/* REQUEST 1: MAPS & VENUE LOCATION */}
+          {/* MAPS & VENUE LOCATION */}
           <section style={cardContainerStyle}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '16px' }}>
               <div
@@ -503,7 +518,7 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* REQUEST 2: WEDDING TIMELINE */}
+          {/* WEDDING TIMELINE */}
           <section style={cardContainerStyle}>
             <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
               ITINERARY OF EVENTS
@@ -586,8 +601,8 @@ export default function InviteExperience({ guest }) {
                     3:00 PM
                   </span>
                   <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#610515' }}>Nikah Ceremony</h3>
-                  <p style={{ margin: 0, fontSize: '0.8rem', lineHeight: '1.5', color: '#555' }}>
-                    Solemnization of marriage following the Sunnah, Quran recitation, and heartfelt Duas for the newlyweds.
+                  <p style={{ margin: 0, fontSize: '0.85rem', lineHeight: '1.5', color: '#555', fontStyle: 'italic' }}>
+                    "And We Created You in Pairs" (Surah An-Naba, 78:8)
                   </p>
                 </div>
               </div>
@@ -652,8 +667,8 @@ export default function InviteExperience({ guest }) {
                     6:00 PM
                   </span>
                   <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#610515' }}>Shaadi Reception</h3>
-                  <p style={{ margin: 0, fontSize: '0.8rem', lineHeight: '1.5', color: '#555' }}>
-                    Grand banquet dinner, family congratulations, photo sessions, and joyful celebration.
+                  <p style={{ margin: 0, fontSize: '0.85rem', lineHeight: '1.5', color: '#555', fontStyle: 'italic' }}>
+                    An Evening to Remember
                   </p>
                 </div>
               </div>
@@ -863,7 +878,7 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* DEDICATED RING BOX SECTION */}
+          {/* RING BOX SECTION */}
           <section
             style={{
               ...cardContainerStyle,
