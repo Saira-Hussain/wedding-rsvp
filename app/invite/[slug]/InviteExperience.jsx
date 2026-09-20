@@ -160,9 +160,10 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 2. INITIAL TRIGGER OVERLAY (TOP TEXT, BOTTOM BUTTON) */}
+      {/* 2. INITIAL TRIGGER OVERLAY (TAP ANYWHERE TO OPEN) */}
       {!videoStarted && (
         <div
+          onClick={handleStartVideo}
           style={{
             position: 'fixed',
             inset: 0,
@@ -178,9 +179,10 @@ export default function InviteExperience({ guest }) {
             paddingRight: '24px',
             boxSizing: 'border-box',
             textAlign: 'center',
+            cursor: 'pointer',
           }}
         >
-          {/* Welcome Text Pill Container */}
+          {/* Readability Pill for Welcome Text */}
           <div
             style={{
               backgroundColor: 'rgba(10, 2, 3, 0.65)',
@@ -206,9 +208,8 @@ export default function InviteExperience({ guest }) {
             </p>
           </div>
 
-          {/* Gold Textured Button */}
-          <button
-            onClick={handleStartVideo}
+          {/* Gold Card Call-to-Action Box */}
+          <div
             style={{
               backgroundImage: "url('/gold-card-bg.jpg')",
               backgroundSize: 'cover',
@@ -218,7 +219,6 @@ export default function InviteExperience({ guest }) {
               fontSize: '0.9rem',
               border: '2px solid #C2A052',
               borderRadius: '50px',
-              cursor: 'pointer',
               fontWeight: '700',
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
@@ -226,10 +226,11 @@ export default function InviteExperience({ guest }) {
               fontFamily: 'serif',
               width: '100%',
               maxWidth: '340px',
+              userSelect: 'none',
             }}
           >
             Press the Seal to Open Invitation
-          </button>
+          </div>
         </div>
       )}
 
