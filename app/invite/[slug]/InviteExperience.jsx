@@ -131,14 +131,43 @@ export default function InviteExperience({ guest }) {
         overflowY: step === 'welcome' ? 'hidden' : 'auto',
       }}
     >
-      {/* 1. INITIAL TRIGGER: PRESS SEAL TO OPEN INVITATION */}
+      {/* 1. BACKGROUND VIDEO LAYER */}
+      {!videoEnded && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 0,
+            backgroundColor: '#000000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <video
+            ref={videoRef}
+            src="/envelope.mp4"
+            muted
+            playsInline
+            onEnded={() => setVideoEnded(true)}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              maxWidth: '500px',
+            }}
+          />
+        </div>
+      )}
+
+      {/* 2. INITIAL TRIGGER OVERLAY (ON TOP OF VIDEO) */}
       {!videoStarted && (
         <div
           style={{
             position: 'fixed',
             inset: 0,
-            zIndex: 110,
-            backgroundColor: '#000000',
+            zIndex: 10,
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -180,55 +209,27 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 2. INTRO VIDEO OVERLAY */}
-      {videoStarted && !videoEnded && (
+      {/* 3. RESPONSIVE DYNAMIC BACKGROUND (APPEARS AFTER VIDEO) */}
+      {videoEnded && (
         <div
           style={{
             position: 'fixed',
-            inset: 0,
-            zIndex: 100,
-            backgroundColor: '#000000',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100dvh',
+            zIndex: 0,
+            backgroundImage: step === 'welcome' ? welcomeBgImage : 'none',
+            backgroundColor: step === 'welcome' ? 'transparent' : '#000000',
+            backgroundSize: isMobile ? 'cover' : 'contain',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            transition: 'background-image 0.8s ease-in-out',
           }}
-        >
-          <video
-            ref={videoRef}
-            src="/envelope.mp4"
-            autoPlay
-            muted
-            playsInline
-            onEnded={() => setVideoEnded(true)}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              maxWidth: '500px',
-            }}
-          />
-        </div>
+        />
       )}
 
-      {/* 3. RESPONSIVE DYNAMIC BACKGROUND */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100dvh',
-          zIndex: 0,
-          backgroundImage: step === 'welcome' ? welcomeBgImage : 'none',
-          backgroundColor: step === 'welcome' ? 'transparent' : '#000000',
-          backgroundSize: isMobile ? 'cover' : 'contain',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          transition: 'background-image 0.8s ease-in-out',
-        }}
-      />
-
-      {step === 'welcome' && (
+      {step === 'welcome' && videoEnded && (
         <div
           style={{
             position: 'fixed',
