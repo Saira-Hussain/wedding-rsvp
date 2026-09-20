@@ -412,8 +412,18 @@ export default function InviteExperience({ guest }) {
 
           {/* Our Favorite Restaurants */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>A FEW OF OUR FAVORITES! </h2>
-            <h3 style={sectionHeadingStyle}> Hungry in houston? Here are a few places we love! </h3>
+            <h2 style={sectionHeadingStyle}>A Few of Our Favorites!</h2>
+            <p
+              style={{
+                fontSize: '0.85rem',
+                color: '#8B6B23',
+                fontWeight: '600',
+                margin: '-8px 0 16px 0',
+                letterSpacing: '0.5px',
+              }}
+            >
+              Hungry in Houston? Here are a few places we love!
+            </p>
             <ul style={{ fontSize: '0.85rem', lineHeight: '1.8', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
               <li><strong>Aga's Restaurant & Catering</strong></li>
               <li><strong>Ma's House</strong></li>
@@ -490,45 +500,35 @@ export default function InviteExperience({ guest }) {
           <section style={{ ...cardContainerStyle, padding: '36px 24px', marginBottom: '12px' }}>
             <h2
               style={{
-                fontSize: '1.05rem',
+                fontSize: '1.15rem',
                 letterSpacing: '2px',
                 color: '#610515',
-                marginBottom: '8px',
+                marginBottom: '16px',
                 textTransform: 'uppercase',
                 fontWeight: '700',
+                lineHeight: '1.5',
               }}
             >
-              We Can’t Wait
-            </h2>
-            <h3
-              style={{
-                fontSize: '1.25rem',
-                letterSpacing: '2.5px',
-                color: '#610515',
-                margin: '0 0 16px 0',
-                textTransform: 'uppercase',
-                fontWeight: '700',
-              }}
-            >
+              We Can’t Wait <br />
               To Celebrate With You 🤍
-            </h3>
+            </h2>
 
             <p
               style={{
-                fontSize: '1.6rem',
+                fontSize: '1.45rem',
                 fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
                 fontStyle: 'italic',
                 fontWeight: '600',
                 color: '#610515',
-                margin: '16px 0 4px 0',
+                margin: '20px 0 4px 0',
               }}
             >
-              Ayesha & Owais
+              With love, Ayesha & Owais
             </p>
 
             <p
               style={{
-                fontSize: '0.85rem',
+                fontSize: '0.8rem',
                 letterSpacing: '1.5px',
                 textTransform: 'uppercase',
                 color: '#8B6B23',
@@ -544,7 +544,7 @@ export default function InviteExperience({ guest }) {
                 fontSize: '0.9rem',
                 lineHeight: '1.6',
                 color: '#3B2414',
-                margin: '0 0 20px 0',
+                margin: '0 0 24px 0',
               }}
             >
               JazakAllah Khair for being part of our special day.
