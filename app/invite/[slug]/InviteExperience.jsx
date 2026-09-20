@@ -160,48 +160,56 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 2. INITIAL TRIGGER OVERLAY (ON TOP OF VIDEO) */}
+      {/* 2. INITIAL TRIGGER OVERLAY (TOP TEXT, BOTTOM BUTTON) */}
       {!videoStarted && (
         <div
           style={{
             position: 'fixed',
             inset: 0,
             zIndex: 10,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            backgroundColor: 'rgba(0, 0, 0, 0.25)',
             display: 'flex',
             flexDirection: 'column',
+            justifyContent: 'space-between',
             alignItems: 'center',
-            justifyContent: 'center',
-            padding: '24px',
+            paddingTop: 'calc(env(safe-area-inset-top) + 40px)',
+            paddingBottom: 'calc(env(safe-area-inset-bottom) + 50px)',
+            paddingLeft: '24px',
+            paddingRight: '24px',
+            boxSizing: 'border-box',
             textAlign: 'center',
           }}
         >
           <p
             style={{
               color: '#F4E4BC',
-              fontSize: '1.2rem',
+              fontSize: '1.35rem',
               letterSpacing: '1px',
-              marginBottom: '20px',
               fontStyle: 'italic',
+              margin: 0,
+              textShadow: '0 2px 10px rgba(0, 0, 0, 0.8)',
             }}
           >
             Welcome, {guest?.family_name || 'Guest'}
           </p>
+
           <button
             onClick={handleStartVideo}
             style={{
               backgroundColor: 'rgba(20, 20, 20, 0.95)',
               color: '#F4E4BC',
               padding: '16px 32px',
-              fontSize: '1rem',
+              fontSize: '0.95rem',
               border: '2px solid #C2A052',
               borderRadius: '50px',
               cursor: 'pointer',
               fontWeight: '600',
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
-              boxShadow: '0 6px 20px rgba(194, 160, 82, 0.3)',
+              boxShadow: '0 6px 20px rgba(0, 0, 0, 0.6)',
               fontFamily: 'serif',
+              width: '100%',
+              maxWidth: '340px',
             }}
           >
             Press the Seal to Open Invitation
@@ -209,7 +217,7 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 3. RESPONSIVE DYNAMIC BACKGROUND (APPEARS AFTER VIDEO) */}
+      {/* 3. RESPONSIVE DYNAMIC BACKGROUND (AFTER VIDEO ENDS) */}
       {videoEnded && (
         <div
           style={{
