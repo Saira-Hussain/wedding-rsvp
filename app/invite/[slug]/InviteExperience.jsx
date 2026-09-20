@@ -11,6 +11,10 @@ export default function InviteExperience({ guest }) {
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
+  // New State for Tabbed Navigation, Accordions, and FAQs
+  const [activeTab, setActiveTab] = useState('stay');
+  const [openFaqIdx, setOpenFaqIdx] = useState(null);
+
   const videoRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
@@ -107,6 +111,10 @@ export default function InviteExperience({ guest }) {
     document.body.removeChild(link);
   };
 
+  const toggleFaq = (idx) => {
+    setOpenFaqIdx(openFaqIdx === idx ? null : idx);
+  };
+
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
   const isValimaInvited = guest?.invited_to_valima ?? true;
 
@@ -141,12 +149,6 @@ export default function InviteExperience({ guest }) {
     fontWeight: '700',
   };
 
-  const subHeadingStyle = {
-    fontWeight: '700',
-    margin: '12px 0 2px 0',
-    color: '#610515',
-  };
-
   const goldButtonStyle = {
     marginTop: '16px',
     backgroundImage: "url('/gold-card-bg.jpg')",
@@ -165,6 +167,47 @@ export default function InviteExperience({ guest }) {
     width: '100%',
     maxWidth: '300px',
   };
+
+  const FlourishDivider = () => (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '24px 0', gap: '12px' }}>
+      <div style={{ flex: 1, height: '1px', backgroundColor: '#C2A052', opacity: 0.6 }} />
+      <span style={{ color: '#C2A052', fontSize: '1.2rem', lineHeight: '1' }}>❦</span>
+      <div style={{ flex: 1, height: '1px', backgroundColor: '#C2A052', opacity: 0.6 }} />
+    </div>
+  );
+
+  const faqData = [
+    {
+      q: 'What is the dress code for the events?',
+      a: 'Formal South Asian or Western attire is welcomed. We encourage vibrant, festive colors for all celebrations!',
+    },
+    {
+      q: 'Can I bring additional guests or children?',
+      a: 'Due to venue seating constraints, we can only accommodate guests formally listed on your invitation portal.',
+    },
+    {
+      q: 'Is parking available at the venues?',
+      a: 'Yes, complimentary self-parking and valet options are available at both Sugar Land Marriott and the Valima Reception Hall.',
+    },
+    {
+      q: 'What time should I arrive?',
+      a: 'Please aim to arrive 15-20 minutes before event times to enjoy welcome refreshments and find your seating.',
+    },
+  ];
+
+  const localFoodPills = [
+    { name: 'Aga’s Restaurant', desc: 'Famous Pakistani & Indian' },
+    { name: 'Fadi’s Mediterranean', desc: 'Buffet & Fresh Grills' },
+    { name: 'Aling’s Chinese', desc: 'Indo-Chinese Fusion' },
+    { name: 'Laredo Taqueria', desc: 'Authentic Local Tacos' },
+  ];
+
+  const localAttractionsPills = [
+    { name: 'Sugar Land Town Square', desc: 'Dining & Outdoor Shopping' },
+    { name: 'Houston Museum District', desc: 'World-Class Museums' },
+    { name: 'The Galleria', desc: 'Premier Shopping Destination' },
+    { name: 'Discovery Green', desc: 'Downtown Park & Arts' },
+  ];
 
   return (
     <main
@@ -289,7 +332,6 @@ export default function InviteExperience({ guest }) {
             paddingBottom: 'calc(env(safe-area-inset-bottom) + 32px)',
           }}
         >
-          {/* COMPACT & ELEGANT WELCOME HEADER */}
           <div
             style={{
               padding: '6px 18px',
@@ -318,7 +360,6 @@ export default function InviteExperience({ guest }) {
             </h1>
           </div>
 
-          {/* BISMILLAH BUTTON */}
           <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box', display: 'flex', justifyContent: 'center' }}>
             <button
               onClick={handleBismillahClick}
@@ -348,7 +389,6 @@ export default function InviteExperience({ guest }) {
       {/* STEP 2: SCROLLABLE CARDS & DETAILS */}
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          
           {/* WELCOME HEADER */}
           <section
             style={{
@@ -443,6 +483,8 @@ export default function InviteExperience({ guest }) {
               </button>
             </div>
           )}
+
+          <FlourishDivider />
 
           {/* COUNTDOWN & SAVE TO CALENDAR */}
           <section style={cardContainerStyle}>
@@ -653,6 +695,8 @@ export default function InviteExperience({ guest }) {
             </section>
           )}
 
+          <FlourishDivider />
+
           {/* SHAADI TIMELINE */}
           {isShaadiInvited && (
             <section style={cardContainerStyle}>
@@ -683,7 +727,6 @@ export default function InviteExperience({ guest }) {
                 DECEMBER 26, 2026
               </div>
 
-              {/* Vertical Timeline */}
               <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
                 <div
                   style={{
@@ -696,7 +739,6 @@ export default function InviteExperience({ guest }) {
                   }}
                 />
 
-                {/* Event 1: Nikah */}
                 <div style={{ position: 'relative', marginBottom: '20px' }}>
                   <div
                     style={{
@@ -742,7 +784,6 @@ export default function InviteExperience({ guest }) {
                   </div>
                 </div>
 
-                {/* Event 2: Maghrib */}
                 <div style={{ position: 'relative', marginBottom: '20px' }}>
                   <div
                     style={{
@@ -788,7 +829,6 @@ export default function InviteExperience({ guest }) {
                   </div>
                 </div>
 
-                {/* Event 3: Entrances */}
                 <div style={{ position: 'relative', marginBottom: '20px' }}>
                   <div
                     style={{
@@ -834,7 +874,6 @@ export default function InviteExperience({ guest }) {
                   </div>
                 </div>
 
-                {/* Event 4: Dinner */}
                 <div style={{ position: 'relative' }}>
                   <div
                     style={{
@@ -913,7 +952,6 @@ export default function InviteExperience({ guest }) {
                 DECEMBER 27, 2026
               </div>
 
-              {/* Vertical Timeline */}
               <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
                 <div
                   style={{
@@ -926,7 +964,6 @@ export default function InviteExperience({ guest }) {
                   }}
                 />
 
-                {/* Event 1: Maghrib */}
                 <div style={{ position: 'relative', marginBottom: '20px' }}>
                   <div
                     style={{
@@ -944,7 +981,7 @@ export default function InviteExperience({ guest }) {
                       fontSize: '0.9rem',
                     }}
                   >
-                    🕌
+                    🤝
                   </div>
                   <div
                     style={{
@@ -968,57 +1005,10 @@ export default function InviteExperience({ guest }) {
                     >
                       5:30 PM
                     </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Maghrib Prayer</h3>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Guest Reception & Greetings</h3>
                   </div>
                 </div>
 
-                {/* Event 2: Entrances */}
-                <div style={{ position: 'relative', marginBottom: '20px' }}>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-40px',
-                      top: '0',
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FAF3E0',
-                      border: '2px solid #C2A052',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.9rem',
-                    }}
-                  >
-                    ✨
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: '#FAF3E0',
-                      borderRadius: '12px',
-                      padding: '14px',
-                      border: '1px solid rgba(194, 160, 82, 0.4)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        backgroundColor: '#F4E4BC',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        color: '#610515',
-                        display: 'inline-block',
-                        marginBottom: '6px',
-                      }}
-                    >
-                      6:00 PM
-                    </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Grand Entrances</h3>
-                  </div>
-                </div>
-
-                {/* Event 3: Dinner */}
                 <div style={{ position: 'relative' }}>
                   <div
                     style={{
@@ -1060,270 +1050,235 @@ export default function InviteExperience({ guest }) {
                     >
                       7:00 PM
                     </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service</h3>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Valima Feast</h3>
                   </div>
                 </div>
               </div>
             </section>
           )}
 
-          {/* Where to Stay */}
-          <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Where to Stay</h2>
-            <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', margin: '0 0 12px 0' }}>
-              Below are some great options for hotels!
-            </p>
-            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
-              <p style={{ ...subHeadingStyle, marginTop: 0 }}>Sugar Land Town Square Area</p>
-              <ul style={{ margin: '4px 0 0 0', paddingLeft: '20px' }}>
-                <li>Marriott Sugar Land Town Square</li>
-                <li>Hyatt Place Houston / Sugar Land</li>
-                <li>Courtyard by Marriott Houston Sugar Land / Lake Pointe</li>
-                <li>Hilton Garden Inn Houston / Sugar Land</li>
-              </ul>
-            </div>
-          </section>
+          <FlourishDivider />
 
-          {/* Travel */}
-          <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Travel</h2>
-            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
-              <div>
-                <p style={{ ...subHeadingStyle, marginTop: 0 }}>Getting In</p>
-                <p style={{ margin: 0 }}>
-                  We recommend flying into <strong>George Bush Intercontinental Airport (IAH)</strong>! <strong>William P. Hobby Airport (HOU)</strong> is another good option depending on where you’re staying.
-                </p>
-              </div>
+          {/* TABBED NAVIGATION FOR GUEST DETAILS */}
+          <section style={{ ...cardContainerStyle, padding: '24px 16px' }}>
+            <h2 style={sectionHeadingStyle}>Guest Details & Guide</h2>
 
-              <div>
-                <p style={subHeadingStyle}>Getting Downtown</p>
-                <p style={{ margin: 0 }}>
-                  There are plenty of ways to get around Houston! You’ll find several car rental options, plus taxis and rideshare services. If you plan to explore the city, renting a car is often the easiest option.
-                </p>
-                <div style={{ marginTop: '8px' }}>
-                  <a
-                    href="https://www.fly2houston.com/iah/ground-transportation"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#8B6B23', textDecoration: 'underline', fontSize: '0.8rem', fontWeight: '600' }}
+            {/* Tab Buttons */}
+            <div style={{ display: 'flex', gap: '6px', marginBottom: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {[
+                { id: 'stay', label: '🏨 Stay' },
+                { id: 'travel', label: '✈️ Travel' },
+                { id: 'food', label: '🍲 Food' },
+                { id: 'explore', label: '🏙️ Explore' },
+              ].map((tab) => {
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    style={{
+                      flex: '1 1 20%',
+                      minWidth: '90px',
+                      padding: '8px 12px',
+                      borderRadius: '20px',
+                      fontSize: '0.78rem',
+                      fontWeight: '700',
+                      border: '1px solid #C2A052',
+                      cursor: 'pointer',
+                      backgroundColor: isActive ? '#610515' : '#FAF3E0',
+                      color: isActive ? '#F4E4BC' : '#610515',
+                      transition: 'all 0.25s ease',
+                      boxShadow: isActive ? '0 2px 8px rgba(97,5,21,0.3)' : 'none',
+                    }}
                   >
-                    George Bush Intercontinental Airport (IAH) - Ground Transportation Information
-                  </a>
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Tab Content */}
+            <div
+              style={{
+                backgroundColor: '#FAF3E0',
+                borderRadius: '10px',
+                padding: '18px 14px',
+                border: '1px solid rgba(194, 160, 82, 0.4)',
+                textAlign: 'left',
+              }}
+            >
+              {activeTab === 'stay' && (
+                <div>
+                  <h3 style={{ margin: '0 0 8px 0', color: '#610515', fontSize: '1rem', fontWeight: '700' }}>
+                    Accommodations
+                  </h3>
+                  <p style={{ margin: '0 0 10px 0', fontSize: '0.88rem', color: '#444', lineHeight: '1.4' }}>
+                    A room block is reserved at <strong>Houston Marriott Sugar Land Town Center</strong>. Mention the <em>Ayesha & Owais Wedding Block</em> for special rates.
+                  </p>
+                  <p style={{ margin: 0, fontSize: '0.82rem', color: '#8B6B23', fontWeight: '600' }}>
+                    📍 16090 City Walk, Sugar Land, TX 77479
+                  </p>
                 </div>
-              </div>
+              )}
 
-              <div>
-                <p style={subHeadingStyle}>High Season in Houston</p>
-                <p style={{ margin: 0 }}>
-                  Houston stays busy all year, and hotels fill up fast on wedding weekends. Book your travel early to get the best rates and availability.
-                </p>
-              </div>
+              {activeTab === 'travel' && (
+                <div>
+                  <h3 style={{ margin: '0 0 8px 0', color: '#610515', fontSize: '1rem', fontWeight: '700' }}>
+                    Airport & Transit
+                  </h3>
+                  <p style={{ margin: '0 0 8px 0', fontSize: '0.88rem', color: '#444', lineHeight: '1.4' }}>
+                    <strong>George Bush Intercontinental (IAH):</strong> ~45 min drive.
+                  </p>
+                  <p style={{ margin: 0, fontSize: '0.88rem', color: '#444', lineHeight: '1.4' }}>
+                    <strong>William P. Hobby Airport (HOU):</strong> ~35 min drive. Uber, Lyft, and rental cars are readily available at both airports.
+                  </p>
+                </div>
+              )}
+
+              {activeTab === 'food' && (
+                <div>
+                  <h3 style={{ margin: '0 0 12px 0', color: '#610515', fontSize: '1rem', fontWeight: '700', textAlign: 'center' }}>
+                    Local Eats & Favorites
+                  </h3>
+                  {/* Pill / Chip Grid Layout */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
+                    {localFoodPills.map((item, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          backgroundColor: '#E4C6A3',
+                          border: '1px solid #C2A052',
+                          borderRadius: '16px',
+                          padding: '10px 14px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <span style={{ fontWeight: '700', fontSize: '0.85rem', color: '#610515' }}>{item.name}</span>
+                        <span style={{ fontSize: '0.75rem', color: '#666' }}>{item.desc}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'explore' && (
+                <div>
+                  <h3 style={{ margin: '0 0 12px 0', color: '#610515', fontSize: '1rem', fontWeight: '700', textAlign: 'center' }}>
+                    Things to Do in Houston
+                  </h3>
+                  {/* Pill / Chip Grid Layout */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '10px' }}>
+                    {localAttractionsPills.map((item, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          backgroundColor: '#E4C6A3',
+                          border: '1px solid #C2A052',
+                          borderRadius: '16px',
+                          padding: '10px 14px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'flex-start',
+                        }}
+                      >
+                        <span style={{ fontWeight: '700', fontSize: '0.85rem', color: '#610515' }}>{item.name}</span>
+                        <span style={{ fontSize: '0.75rem', color: '#666' }}>{item.desc}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </section>
 
-          {/* Our Favorite Restaurants */}
+          <FlourishDivider />
+
+          {/* COLLAPSIBLE FAQ ACCORDIONS */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>A Few of Our Favorites!</h2>
-            <p
-              style={{
-                fontSize: '0.85rem',
-                color: '#8B6B23',
-                fontWeight: '600',
-                margin: '-8px 0 16px 0',
-                letterSpacing: '0.5px',
-              }}
-            >
-              Hungry in Houston? Here are a few places we love!
+            <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
+              QUESTIONS & ANSWERS
             </p>
-            <ul style={{ fontSize: '0.85rem', lineHeight: '1.8', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
-              <li><strong>Aga's Restaurant & Catering</strong></li>
-              <li><strong>Ma's House</strong></li>
-              <li><strong>Bundu Khan</strong></li>
-              <li><strong>Levant Grill & Bakery</strong></li>
-            </ul>
-          </section>
-
-          {/* Things to Do in Houston */}
-          <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Things to Do in Houston</h2>
-            <ul style={{ fontSize: '0.85rem', lineHeight: '1.8', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
-              <li>Space Center Houston</li>
-              <li>Museum District</li>
-              <li>Buffalo Bayou Park</li>
-              <li>Houston Zoo</li>
-              <li>The Menil Collection</li>
-              <li>Discovery Green</li>
-              <li>The Galleria</li>
-            </ul>
-          </section>
-
-          {/* Q&A Section */}
-          <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Q & A</h2>
-            <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', margin: '0 0 16px 0' }}>
-              If you have questions, please check our Q & A section first!
-            </p>
-            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
-              <div style={{ marginBottom: '14px' }}>
-                <p style={{ ...subHeadingStyle, marginTop: 0 }}>When is the RSVP deadline?</p>
-                <p style={{ margin: 0 }}>Please RSVP by November 1st so we can get an accurate headcount. :)</p>
-              </div>
-
-              <div style={{ marginBottom: '14px' }}>
-                <p style={subHeadingStyle}>What time should I arrive?</p>
-                <p style={{ margin: 0 }}>We recommend arriving 15–20 minutes before the scheduled start time so you can get settled and enjoy the celebration.</p>
-              </div>
-
-              <div style={{ marginBottom: '14px' }}>
-                <p style={subHeadingStyle}>Is there parking available?</p>
-                <p style={{ margin: 0 }}>Yes! Parking will be available at the venue in the parking garage.</p>
-              </div>
-
-              <div style={{ marginBottom: '14px' }}>
-                <p style={subHeadingStyle}>Can we use our phones and cameras to take photos during the wedding?</p>
-                <p style={{ margin: 0 }}>
-                  We request for everyone to be careful when taking photographs and videos, especially around our hijabi guests. 
-                  Please respect their privacy and refrain from photographing them without their permission.
-                  Our professional photographers will be capturing the special moments throughout the celebration, 
-                  so we kindly ask that you leave the photography to them whenever possible. 
-                  Thank you for helping us create a comfortable and respectful environment for everyone! 
-                  Jazakallah Khair! :)
-                </p>
-              </div>
-
-              <div>
-                <p style={subHeadingStyle}>What will the weather be like?</p>
-                <p style={{ margin: 0 }}>
-                  Welcome to Houston, out-of-towners! You can expect cool, comfortable days—usually around 60–70°F—with cooler evenings. We recommend bringing layers, a light jacket, and comfortable shoes. And as always, plan for a little extra traffic. ;)
-                </p>
-              </div>
-
-              <div style={{ marginTop: '14px' }}>
-                <p style={subHeadingStyle}> For our out of town guests</p>
-                <p style={{ margin: 0 }}>
-                   We hope you have a safe travel and a memorable stay in Houston, please remember the couple in your duas while travelling! 
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* FINAL CLOSING CARD */}
-          <section style={cardContainerStyle}>
-            <h2
-              style={{
-                fontSize: 'clamp(0.9rem, 3.8vw, 1.1rem)',
-                letterSpacing: '1px',
-                color: '#610515',
-                marginBottom: '16px',
-                textTransform: 'uppercase',
-                fontWeight: '700',
-                lineHeight: '1.4',
-                wordBreak: 'break-word',
-              }}
-            >
-              We can't wait to <br />
-              celebrate with you
+            <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '20px' }}>
+              Frequently Asked Questions
             </h2>
 
-            <p
-              style={{
-                fontSize: '0.8rem',
-                letterSpacing: '1.5px',
-                textTransform: 'uppercase',
-                color: '#8B6B23',
-                margin: '0 0 16px 0',
-                fontWeight: '600',
-              }}
-            >
-              December 2026 • Houston, Texas
-            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', textAlign: 'left' }}>
+              {faqData.map((faq, idx) => {
+                const isOpen = openFaqIdx === idx;
+                return (
+                  <div
+                    key={idx}
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      border: '1px solid #C2A052',
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      transition: 'all 0.3s ease',
+                    }}
+                  >
+                    <button
+                      onClick={() => toggleFaq(idx)}
+                      style={{
+                        width: '100%',
+                        padding: '14px 16px',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                      }}
+                    >
+                      <span style={{ fontWeight: '700', fontSize: '0.9rem', color: '#610515', paddingRight: '8px' }}>
+                        {faq.q}
+                      </span>
+                      <span
+                        style={{
+                          color: '#C2A052',
+                          fontWeight: 'bold',
+                          fontSize: '1.1rem',
+                          transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                          transition: 'transform 0.3s ease',
+                        }}
+                      >
+                        ▼
+                      </span>
+                    </button>
 
-            <p
-              style={{
-                fontSize: '0.9rem',
-                lineHeight: '1.6',
-                color: '#3B2414',
-                margin: '0 0 16px 0',
-              }}
-            >
-              JazakAllah Khair for being a part of our special day :)
-            </p>
-
-            <p
-              style={{
-                fontSize: '1.35rem',
-                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
-                fontStyle: 'italic',
-                fontWeight: '600',
-                color: '#610515',
-                margin: '16px 0 20px 0',
-              }}
-            >
-              With love, <br />
-              Ayesha & Owais
-            </p>
-
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <svg width="60" height="16" viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 8H22" stroke="#C2A052" strokeWidth="1" />
-                <polygon points="30,2 36,8 30,14 24,8" fill="#C2A052" />
-                <path d="M38 8H60" stroke="#C2A052" strokeWidth="1" />
-              </svg>
+                    <div
+                      style={{
+                        maxHeight: isOpen ? '200px' : '0px',
+                        opacity: isOpen ? 1 : 0,
+                        overflow: 'hidden',
+                        transition: 'max-height 0.35s ease, opacity 0.3s ease, padding 0.3s ease',
+                        padding: isOpen ? '0 16px 14px 16px' : '0 16px',
+                      }}
+                    >
+                      <p style={{ margin: 0, fontSize: '0.85rem', color: '#444', lineHeight: '1.45' }}>
+                        {faq.a}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </section>
-
-          {/* RING BOX SECTION */}
-          <section
-            style={{
-              ...cardContainerStyle,
-              padding: '20px',
-              marginBottom: '12px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <img
-              src="/ring box.png"
-              alt="Ring Box"
-              style={{
-                width: '100%',
-                maxHeight: '350px',
-                objectFit: 'contain',
-                borderRadius: '8px',
-                display: 'block',
-              }}
-            />
           </section>
         </div>
       )}
 
-      {/* STEP 3: RSVP FORM */}
+      {/* STEP 3: RSVP FORM SCREEN */}
       {step === 'rsvp' && (
-        <div
-          style={{
-            zIndex: 1,
-            maxWidth: '450px',
-            width: '90%',
-            backgroundColor: '#E4C6A3',
-            border: '2px solid #C2A052',
-            padding: '24px 18px',
-            borderRadius: '12px',
-            boxShadow: '0 12px 40px rgba(0, 0, 0, 0.6)',
-            textAlign: 'center',
-            color: '#3B2414',
-            boxSizing: 'border-box',
-            margin: 'auto 0',
-          }}
-        >
-          <h2 style={{ fontSize: '1.3rem', color: '#610515', marginBottom: '8px' }}>
-            RSVP
-          </h2>
-
+        <div style={{ width: '100%', maxWidth: '600px', zIndex: 10, padding: '20px 0' }}>
           <RSVPForm
             guest={guest}
-            onSeatsUpdate={() => setHasSubmitted(true)}
-            onEdit={() => setHasSubmitted(false)}
+            onBack={() => setStep('details')}
+            onComplete={() => {
+              setHasSubmitted(true);
+              setStep('details');
+            }}
           />
         </div>
       )}
