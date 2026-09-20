@@ -148,7 +148,7 @@ export default function InviteExperience({ guest }) {
   };
 
   const goldButtonStyle = {
-    marginTop: '16px',
+    marginTop: '24px',
     backgroundImage: "url('/gold-card-bg.jpg')",
     backgroundSize: 'cover',
     backgroundPosition: 'center',
