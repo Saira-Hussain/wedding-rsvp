@@ -404,6 +404,8 @@ export default function InviteExperience({ guest }) {
                   borderRadius: '12px',
                   boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
                   display: 'block',
+                  transform: 'scale(1.08)',
+                  transformOrigin: 'center center',
                 }}
               />
               <button onClick={() => setStep('rsvp')} style={goldButtonStyle}>
@@ -434,6 +436,8 @@ export default function InviteExperience({ guest }) {
                   borderRadius: '12px',
                   boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
                   display: 'block',
+                  transform: 'scale(1.08)',
+                  transformOrigin: 'center center',
                 }}
               />
               <button onClick={() => setStep('rsvp')} style={goldButtonStyle}>
