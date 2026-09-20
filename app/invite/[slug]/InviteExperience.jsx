@@ -11,15 +11,6 @@ export default function InviteExperience({ guest }) {
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Tab state for Guest Info (Stay / Travel / Food / Explore)
-  const [activeTab, setActiveTab] = useState('stay');
-  // Accordion state for Q&A
-  const [openFaq, setOpenFaq] = useState(null);
-
-  const toggleFaq = (index) => {
-    setOpenFaq(openFaq === index ? null : index);
-  };
-
   const videoRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
@@ -126,17 +117,16 @@ export default function InviteExperience({ guest }) {
   const shaadiMapsUrl = "https://www.google.com/maps/search/?api=1&query=16090+City+Walk,+Sugar+Land,+TX+77479";
   const valimaMapsUrl = "https://www.google.com/maps/search/?api=1&query=10505+Cash+Rd,+Stafford,+TX+77477";
 
-  // Common card style matching theme
   const cardContainerStyle = {
     zIndex: 1,
     maxWidth: '560px',
     width: '92%',
-    backgroundColor: '#FAF3E0',
-    border: '1px solid #C2A052',
+    backgroundColor: '#E4C6A3',
+    border: '2px solid #C2A052',
     borderRadius: '12px',
     boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
     boxSizing: 'border-box',
-    padding: '24px 20px',
+    padding: '28px 24px',
     textAlign: 'center',
     color: '#3B2414',
     marginBottom: '28px',
@@ -144,12 +134,11 @@ export default function InviteExperience({ guest }) {
 
   const sectionHeadingStyle = {
     fontSize: '1.1rem',
-    fontWeight: '700',
+    letterSpacing: '2px',
     color: '#610515',
-    textAlign: 'center',
     marginBottom: '16px',
-    letterSpacing: '1px',
     textTransform: 'uppercase',
+    fontWeight: '700',
   };
 
   const goldButtonStyle = {
@@ -171,33 +160,6 @@ export default function InviteExperience({ guest }) {
     maxWidth: '300px',
   };
 
-  const faqs = [
-    {
-      q: 'When is the RSVP deadline?',
-      a: 'Please RSVP by November 1st so we can get an accurate headcount. :)',
-    },
-    {
-      q: 'What time should I arrive?',
-      a: 'We recommend arriving 15–20 minutes before the scheduled start time so you can get settled and enjoy the celebration.',
-    },
-    {
-      q: 'Is there parking available?',
-      a: 'Yes! Parking will be available at the venue in the parking garage.',
-    },
-    {
-      q: 'Can we use our phones and cameras to take photos?',
-      a: 'We request for everyone to be careful when taking photographs and videos, especially around our hijabi guests. Please respect their privacy and refrain from photographing them without permission. Our professional photographers will be capturing the special moments throughout the celebration! JazakAllah Khair!',
-    },
-    {
-      q: 'What will the weather be like?',
-      a: 'Welcome to Houston, out-of-towners! You can expect cool, comfortable days—usually around 60–70°F—with cooler evenings. We recommend bringing layers, a light jacket, and comfortable shoes.',
-    },
-    {
-      q: 'For our out-of-town guests',
-      a: 'We hope you have a safe travel and a memorable stay in Houston. Please remember the couple in your duas while traveling!',
-    },
-  ];
-
   return (
     <main
       style={{
@@ -210,7 +172,7 @@ export default function InviteExperience({ guest }) {
         justifyContent: step === 'welcome' ? 'space-between' : 'flex-start',
         fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
         backgroundColor: '#000000',
-        padding: step === 'details' ? '32px 16px 60px 16px' : '0px',
+        padding: step === 'details' || step === 'rsvp' ? '32px 16px 60px 16px' : '0px',
         boxSizing: 'border-box',
         overflowX: 'hidden',
         overflowY: step === 'welcome' ? 'hidden' : 'auto',
@@ -378,8 +340,6 @@ export default function InviteExperience({ guest }) {
       {/* STEP 2: SCROLLABLE CARDS & DETAILS */}
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          
-          {/* WELCOME HEADER */}
           <section
             style={{
               ...cardContainerStyle,
@@ -683,221 +643,381 @@ export default function InviteExperience({ guest }) {
             </section>
           )}
 
-          {/* TABBED GUEST GUIDE */}
-          <section style={cardContainerStyle}>
-            <div style={sectionHeadingStyle}>GUEST GUIDE</div>
+          {/* SHAADI TIMELINE */}
+          {isShaadiInvited && (
+            <section style={cardContainerStyle}>
+              <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
+                ITINERARY OF EVENTS
+              </p>
+              <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '16px' }}>
+                Shaadi Timeline
+              </h2>
 
-            {/* Tab Buttons */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px', marginBottom: '20px' }}>
-              {[
-                { id: 'stay', label: '🏨 Stay' },
-                { id: 'travel', label: '✈️ Travel' },
-                { id: 'food', label: '🍽️ Food' },
-                { id: 'explore', label: '📍 Explore' },
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+              <div
+                style={{
+                  backgroundImage: "url('/gold-card-bg.jpg')",
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  border: '1px solid #C2A052',
+                  borderRadius: '20px',
+                  padding: '6px 20px',
+                  display: 'inline-block',
+                  fontWeight: '700',
+                  fontSize: '0.85rem',
+                  color: '#610515',
+                  letterSpacing: '1px',
+                  marginBottom: '28px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                }}
+              >
+                DECEMBER 26, 2026
+              </div>
+
+              <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
+                <div
                   style={{
-                    padding: '8px 4px',
-                    borderRadius: '6px',
-                    border: '1px solid #C2A052',
-                    backgroundColor: activeTab === tab.id ? '#610515' : '#FAF3E0',
-                    color: activeTab === tab.id ? '#F4E4BC' : '#3B2414',
-                    fontSize: '0.75rem',
-                    fontWeight: '700',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s ease',
+                    position: 'absolute',
+                    left: '17px',
+                    top: '10px',
+                    bottom: '10px',
+                    width: '2px',
+                    backgroundColor: '#C2A052',
                   }}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
+                />
 
-            {/* Tab Content Panels */}
-            <div style={{ color: '#3B2414', fontSize: '0.85rem', lineHeight: '1.5', textAlign: 'left' }}>
-              {activeTab === 'stay' && (
-                <div>
-                  <p style={{ fontWeight: '700', color: '#610515', marginBottom: '8px', textAlign: 'center' }}>
-                    Sugar Land Town Square Area:
-                  </p>
-                  <ul style={{ paddingLeft: '18px', margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <li>Marriott Sugar Land Town Square</li>
-                    <li>Hyatt Place Houston / Sugar Land</li>
-                    <li>Courtyard by Marriott Houston Sugar Land / Lake Pointe</li>
-                    <li>Hilton Garden Inn Houston / Sugar Land</li>
-                  </ul>
-                </div>
-              )}
-
-              {activeTab === 'travel' && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  <div>
-                    <strong style={{ color: '#610515' }}>Getting In:</strong>
-                    <p style={{ margin: '4px 0 0 0' }}>
-                      We recommend flying into <strong>George Bush Intercontinental Airport (IAH)</strong>. <strong>William P. Hobby Airport (HOU)</strong> is another good option depending on where you're staying.
-                    </p>
-                  </div>
-                  <div>
-                    <strong style={{ color: '#610515' }}>Getting Downtown & Around:</strong>
-                    <p style={{ margin: '4px 0 0 0' }}>
-                      There are plenty of ways to get around Houston! You'll find several car rental options, plus taxis and rideshare services like Uber and Lyft.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'food' && (
-                <div>
-                  <p style={{ textAlign: 'center', fontWeight: '700', color: '#610515', marginBottom: '12px' }}>
-                    Hungry in Houston? Here are a few places we love!
-                  </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
-                    {["Aga's Restaurant & Catering", "Ma's House", 'Bundu Khan', 'Levant Grill & Bakery'].map((place) => (
-                      <span
-                        key={place}
-                        style={{
-                          padding: '6px 12px',
-                          backgroundColor: '#610515',
-                          color: '#F4E4BC',
-                          borderRadius: '20px',
-                          fontSize: '0.8rem',
-                          fontWeight: '600',
-                          border: '1px solid #C2A052',
-                        }}
-                      >
-                        {place}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {activeTab === 'explore' && (
-                <div>
-                  <p style={{ textAlign: 'center', fontWeight: '700', color: '#610515', marginBottom: '12px' }}>
-                    Things to Do in Houston:
-                  </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
-                    {[
-                      'Space Center Houston',
-                      'Museum District',
-                      'Buffalo Bayou Park',
-                      'Houston Zoo',
-                      'The Menil Collection',
-                      'Discovery Green',
-                      'The Galleria',
-                    ].map((spot) => (
-                      <span
-                        key={spot}
-                        style={{
-                          padding: '6px 12px',
-                          backgroundColor: '#FAF3E0',
-                          color: '#610515',
-                          borderRadius: '20px',
-                          fontSize: '0.8rem',
-                          fontWeight: '600',
-                          border: '1px solid #C2A052',
-                        }}
-                      >
-                        {spot}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </section>
-
-          {/* COLLAPSIBLE Q & A CARD */}
-          <section style={cardContainerStyle}>
-            <div style={sectionHeadingStyle}>FREQUENTLY ASKED QUESTIONS</div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {faqs.map((faq, index) => {
-                const isOpen = openFaq === index;
-                return (
+                {/* Event 1: Nikah */}
+                <div style={{ position: 'relative', marginBottom: '20px' }}>
                   <div
-                    key={index}
                     style={{
-                      border: '1px solid #C2A052',
-                      borderRadius: '8px',
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
                       backgroundColor: '#FAF3E0',
-                      overflow: 'hidden',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
                     }}
                   >
-                    <button
-                      type="button"
-                      onClick={() => toggleFaq(index)}
+                    📖
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
                       style={{
-                        width: '100%',
-                        padding: '12px 14px',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        textAlign: 'left',
-                        color: '#610515',
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
                         fontWeight: '700',
-                        fontSize: '0.85rem',
-                        cursor: 'pointer',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
                       }}
                     >
-                      <span>{faq.q}</span>
-                      <span style={{ fontSize: '1rem', marginLeft: '8px', color: '#AE7A44' }}>
-                        {isOpen ? '−' : '+'}
-                      </span>
-                    </button>
-
-                    {isOpen && (
-                      <div
-                        style={{
-                          padding: '0 14px 12px 14px',
-                          fontSize: '0.825rem',
-                          color: '#3B2414',
-                          lineHeight: '1.5',
-                          borderTop: '1px dashed #C2A052',
-                          paddingTop: '10px',
-                          textAlign: 'left',
-                        }}
-                      >
-                        {faq.a}
-                      </div>
-                    )}
+                      3:00 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Nikah Ceremony</h3>
                   </div>
-                );
-              })}
-            </div>
-          </section>
+                </div>
 
-          {/* CLOSING CARD */}
-          <section style={{ ...cardContainerStyle, textAlign: 'center' }}>
-            <h3 style={{ margin: '0 0 8px 0', color: '#610515', fontSize: '1rem', letterSpacing: '1px' }}>
-              WE CAN'T WAIT TO CELEBRATE WITH YOU
-            </h3>
-            <p style={{ margin: '0 0 12px 0', fontSize: '0.75rem', color: '#AE7A44', fontWeight: '700' }}>
-              DECEMBER 2026 • HOUSTON, TEXAS
-            </p>
-            <p style={{ margin: '0 0 16px 0', fontSize: '0.85rem', color: '#3B2414', fontStyle: 'italic' }}>
-              JazakAllah Khair for being a part of our special day :)
-            </p>
-            <div style={{ color: '#610515', fontFamily: 'serif', fontSize: '1.2rem', fontWeight: 'bold' }}>
-              With love,<br />Ayesha & Owais
-            </div>
-          </section>
+                {/* Event 2: Maghrib */}
+                <div style={{ position: 'relative', marginBottom: '20px' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    🕌
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      5:30 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Maghrib Prayer</h3>
+                  </div>
+                </div>
 
+                {/* Event 3: Entrances */}
+                <div style={{ position: 'relative', marginBottom: '20px' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    ✨
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      6:00 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Grand Entrances</h3>
+                  </div>
+                </div>
+
+                {/* Event 4: Dinner */}
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    🍽️
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      7:00 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service</h3>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+
+          {/* VALIMA TIMELINE */}
+          {isValimaInvited && (
+            <section style={cardContainerStyle}>
+              <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
+                ITINERARY OF EVENTS
+              </p>
+              <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '16px' }}>
+                Valima Timeline
+              </h2>
+
+              <div
+                style={{
+                  backgroundImage: "url('/gold-card-bg.jpg')",
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  border: '1px solid #C2A052',
+                  borderRadius: '20px',
+                  padding: '6px 20px',
+                  display: 'inline-block',
+                  fontWeight: '700',
+                  fontSize: '0.85rem',
+                  color: '#610515',
+                  letterSpacing: '1px',
+                  marginBottom: '28px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                }}
+              >
+                DECEMBER 27, 2026
+              </div>
+
+              <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '17px',
+                    top: '10px',
+                    bottom: '10px',
+                    width: '2px',
+                    backgroundColor: '#C2A052',
+                  }}
+                />
+
+                {/* Event 1: Reception */}
+                <div style={{ position: 'relative', marginBottom: '20px' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    ✨
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      5:30 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Reception Begins</h3>
+                  </div>
+                </div>
+
+                {/* Event 2: Dinner */}
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    🍽️
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      7:00 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service</h3>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
         </div>
       )}
 
       {/* STEP 3: RSVP FORM */}
       {step === 'rsvp' && (
-        <div style={{ width: '100%', maxWidth: '600px', zIndex: 20, padding: '20px 0' }}>
+        <div style={{ width: '100%', maxWidth: '560px', zIndex: 1, marginBottom: '28px' }}>
           <RSVPForm
             guest={guest}
             onBack={() => setStep('details')}
-            onComplete={() => {
+            onSubmitSuccess={() => {
               setHasSubmitted(true);
               setStep('details');
             }}
