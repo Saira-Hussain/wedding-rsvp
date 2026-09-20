@@ -422,7 +422,6 @@ export default function InviteExperience({ guest }) {
                   height: 'auto',
                   borderRadius: '12px',
                   boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
-                  border: '2px solid #C2A052',
                   display: 'block',
                 }}
               />
@@ -453,7 +452,6 @@ export default function InviteExperience({ guest }) {
                   height: 'auto',
                   borderRadius: '12px',
                   boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
-                  border: '2px solid #C2A052',
                   display: 'block',
                 }}
               />
