@@ -10,11 +10,11 @@ export default function InviteExperience({ guest }) {
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [openQaIndex, setOpenQaIndex] = useState(null); // Added state for collapsible Q&A
-  const [isPlaying, setIsPlaying] = useState(false); // Added audio play state
+  const [openQaIndex, setOpenQaIndex] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const videoRef = useRef(null);
-  const audioRef = useRef(null); // Added audio reference
+  const audioRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
@@ -53,6 +53,13 @@ export default function InviteExperience({ guest }) {
   const handleStartVideo = () => {
     setVideoStarted(true);
 
+    // 🎵 Start background music simultaneously with the video
+    if (audioRef.current) {
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.warn('Audio playback prevented:', err));
+    }
+
     if (videoRef.current) {
       videoRef.current.muted = true;
       videoRef.current.defaultMuted = true;
@@ -75,14 +82,6 @@ export default function InviteExperience({ guest }) {
     if (!videoStarted) {
       handleStartVideo();
     }
-    
-    // Trigger background music playback on click
-    if (audioRef.current) {
-      audioRef.current.play()
-        .then(() => setIsPlaying(true))
-        .catch((err) => console.warn("Audio playback prevented:", err));
-    }
-
     setStep('details');
   };
 
@@ -422,6 +421,7 @@ export default function InviteExperience({ guest }) {
                   height: 'auto',
                   borderRadius: '12px',
                   boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+                  border: '2px solid #C2A052',
                   display: 'block',
                 }}
               />
@@ -452,6 +452,7 @@ export default function InviteExperience({ guest }) {
                   height: 'auto',
                   borderRadius: '12px',
                   boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+                  border: '2px solid #C2A052',
                   display: 'block',
                 }}
               />
