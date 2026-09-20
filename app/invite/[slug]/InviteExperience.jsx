@@ -11,8 +11,10 @@ export default function InviteExperience({ guest }) {
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [openQaIndex, setOpenQaIndex] = useState(null); // Added state for collapsible Q&A
+  const [isPlaying, setIsPlaying] = useState(false); // Added audio play state
 
   const videoRef = useRef(null);
+  const audioRef = useRef(null); // Added audio reference
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
@@ -73,6 +75,14 @@ export default function InviteExperience({ guest }) {
     if (!videoStarted) {
       handleStartVideo();
     }
+    
+    // Trigger background music playback on click
+    if (audioRef.current) {
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.warn("Audio playback prevented:", err));
+    }
+
     setStep('details');
   };
 
@@ -220,6 +230,14 @@ export default function InviteExperience({ guest }) {
           />
         </div>
       )}
+
+      {/* 🎵 BACKGROUND AUDIO ELEMENT */}
+      <audio 
+        ref={audioRef} 
+        src="/your-wedding-audio-file.mp3" 
+        loop 
+        preload="auto" 
+      />
 
       {/* 2. INVISIBLE FULL-SCREEN TAP TRIGGER */}
       {!videoStarted && step === 'welcome' && (
@@ -404,6 +422,7 @@ export default function InviteExperience({ guest }) {
                   height: 'auto',
                   borderRadius: '12px',
                   boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+                  border: '2px solid #C2A052',
                   display: 'block',
                 }}
               />
@@ -434,6 +453,7 @@ export default function InviteExperience({ guest }) {
                   height: 'auto',
                   borderRadius: '12px',
                   boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
+                  border: '2px solid #C2A052',
                   display: 'block',
                 }}
               />
@@ -1369,6 +1389,42 @@ export default function InviteExperience({ guest }) {
             onEdit={() => setHasSubmitted(false)}
           />
         </div>
+      )}
+
+      {/* 🎵 FLOATING MUSIC TOGGLE BUTTON */}
+      {step === 'details' && (
+        <button
+          onClick={() => {
+            if (audioRef.current) {
+              if (isPlaying) {
+                audioRef.current.pause();
+                setIsPlaying(false);
+              } else {
+                audioRef.current.play();
+                setIsPlaying(true);
+              }
+            }
+          }}
+          style={{
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            zIndex: 99,
+            backgroundColor: '#FAF3E0',
+            border: '1px solid #C2A052',
+            borderRadius: '50%',
+            width: '45px',
+            height: '45px',
+            cursor: 'pointer',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.3)',
+            fontSize: '1.2rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          {isPlaying ? '🔊' : '🔇'}
+        </button>
       )}
     </main>
   );
