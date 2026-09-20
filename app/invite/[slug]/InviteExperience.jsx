@@ -328,7 +328,7 @@ export default function InviteExperience({ guest }) {
 
           {/* Countdown */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Counting Down</h2>
+            <h2 style={sectionHeadingStyle}>A Date To Remember</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
               {[
                 { label: 'Days', val: isMounted ? timeLeft.days : 0 },
@@ -460,7 +460,12 @@ export default function InviteExperience({ guest }) {
               <div style={{ marginBottom: '14px' }}>
                 <p style={subHeadingStyle}>Can we use our phones and cameras to take photos during the wedding?</p>
                 <p style={{ margin: 0 }}>
-                  Absolutely! Capture all the memories you’d like — just please don’t block our photographer’s shots. They’re talented, we promise :)
+                  We request for everyone to be careful when taking photographs and videos, especially around our hijabi guests. 
+                  Please respect their privacy and refrain from photographing them without their permission.
+                  Our professional photographers will be capturing the special moments throughout the celebration, 
+                  so we kindly ask that you leave the photography to them whenever possible. 
+                  Thank you for helping us create a comfortable and respectful environment for everyone! 
+                  Jazakallah Khair!🤍
                 </p>
               </div>
 
@@ -468,6 +473,13 @@ export default function InviteExperience({ guest }) {
                 <p style={subHeadingStyle}>What will the weather be like?</p>
                 <p style={{ margin: 0 }}>
                   Welcome to Houston, out-of-towners! You can expect cool, comfortable days—usually around 60–70°F—with cooler evenings. We recommend bringing layers, a light jacket, and comfortable shoes. And as always, plan for a little extra traffic. ;)
+                </p>
+              </div>
+
+               <div>
+                <p style={subHeadingStyle}> For our out of town guests</p>
+                <p style={{ margin: 0 }}>
+                   We hope you have a safe travel and a memorable stay in Houston, please remember the couple in your duas while travelling! 
                 </p>
               </div>
             </div>
