@@ -51,7 +51,6 @@ export default function InviteExperience({ guest }) {
     setVideoStarted(true);
 
     if (videoRef.current) {
-      // Force muted properties directly on DOM element for iOS Safari compliance
       videoRef.current.muted = true;
       videoRef.current.defaultMuted = true;
 
@@ -60,13 +59,37 @@ export default function InviteExperience({ guest }) {
       if (playPromise !== undefined) {
         playPromise.catch((err) => {
           console.warn('Mobile video playback prevented:', err);
-          // Fallback for Mobile Low Power Mode or unsupported video codecs
           setVideoEnded(true);
         });
       }
     } else {
       setVideoEnded(true);
     }
+  };
+
+  const handleDownloadCalendar = () => {
+    const icsContent = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Wedding Invitation//EN',
+      'BEGIN:VEVENT',
+      'SUMMARY:Ayesha & Owais Wedding',
+      'DESCRIPTION:Nikah at 3:00 PM followed by Shaadi Reception at 6:00 PM.',
+      'LOCATION:Houston Marriott Sugar Land Town Center\\, 16090 City Walk\\, Sugar Land\\, TX 77479',
+      'DTSTART:20261226T150000',
+      'DTEND:20261226T230000',
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\n');
+
+    const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'ayesha-owais-wedding.ics');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
@@ -76,6 +99,7 @@ export default function InviteExperience({ guest }) {
   const valimaImgSrc = guest?.groom_side ? '/valima-groom.png' : '/valima-bride.png';
 
   const welcomeBgImage = isMobile ? "url('/welcome-mobile-bg.jpg')" : "url('/welcome-bg.jpg')";
+  const mapsUrl = "https://www.google.com/maps/search/?api=1&query=16090+City+Walk,+Sugar+Land,+TX+77479";
 
   const cardContainerStyle = {
     zIndex: 1,
@@ -230,7 +254,7 @@ export default function InviteExperience({ guest }) {
         />
       )}
 
-      {/* STEP 1: WELCOME + BISMILLAH BUTTON */}
+      {/* STEP 1: WELCOME BUTTON */}
       {videoEnded && step === 'welcome' && (
         <div
           style={{
@@ -241,41 +265,13 @@ export default function InviteExperience({ guest }) {
             height: '100dvh',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
             alignItems: 'center',
             textAlign: 'center',
             boxSizing: 'border-box',
-            paddingTop: 'calc(env(safe-area-inset-top) + 24px)',
             paddingBottom: 'calc(env(safe-area-inset-bottom) + 32px)',
           }}
         >
-          {/* Top Badge */}
-          <div>
-            <div
-              style={{
-                border: '1px solid #C2A052',
-                borderRadius: '50px',
-                padding: '8px 24px',
-                backgroundColor: 'rgba(10, 2, 3, 0.75)',
-                backdropFilter: 'blur(4px)',
-                display: 'inline-block',
-              }}
-            >
-              <h1
-                style={{
-                  fontSize: 'clamp(0.9rem, 1.5vw, 1.25rem)',
-                  color: '#F4E4BC',
-                  margin: 0,
-                  fontWeight: '400',
-                  letterSpacing: '0.5px',
-                }}
-              >
-                Welcome, {guest?.family_name || 'Guest'}
-              </h1>
-            </div>
-          </div>
-
-          {/* Bottom Button */}
           <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box' }}>
             <button
               onClick={() => setStep('details')}
@@ -365,10 +361,10 @@ export default function InviteExperience({ guest }) {
             </div>
           )}
 
-          {/* Countdown */}
+          {/* COUNTDOWN & SAVE TO CALENDAR */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}> Counting Down To Forever</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+            <h2 style={sectionHeadingStyle}>Counting Down To Forever</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '20px' }}>
               {[
                 { label: 'Days', val: isMounted ? timeLeft.days : 0 },
                 { label: 'Hours', val: isMounted ? timeLeft.hours : 0 },
@@ -392,6 +388,275 @@ export default function InviteExperience({ guest }) {
                   </span>
                 </div>
               ))}
+            </div>
+
+            {/* REQUEST 3: ADD TO CALENDAR BUTTON */}
+            <button
+              onClick={handleDownloadCalendar}
+              style={{
+                backgroundColor: 'rgba(97, 5, 21, 0.95)',
+                color: '#F4E4BC',
+                border: '1px solid #C2A052',
+                borderRadius: '25px',
+                padding: '10px 20px',
+                fontSize: '0.8rem',
+                fontWeight: '700',
+                letterSpacing: '1px',
+                cursor: 'pointer',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
+              }}
+            >
+              📅 ADD TO CALENDAR (.ICS)
+            </button>
+          </section>
+
+          {/* REQUEST 1: MAPS & VENUE LOCATION */}
+          <section style={cardContainerStyle}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '16px' }}>
+              <div
+                style={{
+                  width: '44px',
+                  height: '44px',
+                  borderRadius: '50%',
+                  backgroundColor: '#FAF3E0',
+                  border: '1px solid #C2A052',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '10px',
+                }}
+              >
+                📍
+              </div>
+              <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#610515', margin: '0 0 4px 0' }}>
+                Houston Marriott Sugar Land Town Center
+              </h2>
+              <p style={{ margin: 0, fontSize: '0.85rem', color: '#666' }}>
+                16090 City Walk, Sugar Land, TX 77479
+              </p>
+            </div>
+
+            <div
+              style={{
+                position: 'relative',
+                borderRadius: '12px',
+                overflow: 'hidden',
+                border: '1px solid #C2A052',
+                marginBottom: '16px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+              }}
+            >
+              <iframe
+                title="Venue Location Map"
+                src="https://maps.google.com/maps?q=16090%20City%20Walk,%20Sugar%20Land,%20TX%2077479&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="220"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+              />
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+              <a
+                href={mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  flex: 1,
+                  backgroundColor: '#8B3A0F',
+                  color: '#FFF',
+                  padding: '12px',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  fontSize: '0.8rem',
+                  fontWeight: '700',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                }}
+              >
+                🗺️ OPEN IN MAPS
+              </a>
+              <a
+                href="tel:12811234567"
+                style={{
+                  width: '46px',
+                  border: '1px solid #C2A052',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#FAF3E0',
+                  textDecoration: 'none',
+                  fontSize: '1.1rem',
+                }}
+              >
+                📞
+              </a>
+            </div>
+          </section>
+
+          {/* REQUEST 2: WEDDING TIMELINE */}
+          <section style={cardContainerStyle}>
+            <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
+              ITINERARY OF EVENTS
+            </p>
+            <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '16px' }}>
+              Wedding Timeline
+            </h2>
+
+            <div
+              style={{
+                backgroundColor: '#FAF3E0',
+                border: '1px solid #C2A052',
+                borderRadius: '20px',
+                padding: '6px 20px',
+                display: 'inline-block',
+                fontWeight: '700',
+                fontSize: '0.85rem',
+                color: '#610515',
+                letterSpacing: '1px',
+                marginBottom: '28px',
+              }}
+            >
+              DECEMBER 26, 2026
+            </div>
+
+            {/* Vertical Timeline */}
+            <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
+              {/* Vertical Connecting Line */}
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '17px',
+                  top: '10px',
+                  bottom: '10px',
+                  width: '2px',
+                  backgroundColor: '#C2A052',
+                }}
+              />
+
+              {/* Event 1: Nikah */}
+              <div style={{ position: 'relative', marginBottom: '24px' }}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '-40px',
+                    top: '0',
+                    width: '34px',
+                    height: '34px',
+                    borderRadius: '50%',
+                    backgroundColor: '#FAF3E0',
+                    border: '2px solid #C2A052',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  📖
+                </div>
+                <div
+                  style={{
+                    backgroundColor: '#FAF3E0',
+                    borderRadius: '12px',
+                    padding: '16px',
+                    border: '1px solid rgba(194, 160, 82, 0.4)',
+                  }}
+                >
+                  <span
+                    style={{
+                      backgroundColor: '#F4E4BC',
+                      padding: '4px 10px',
+                      borderRadius: '12px',
+                      fontSize: '0.75rem',
+                      fontWeight: '700',
+                      color: '#610515',
+                      display: 'inline-block',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    3:00 PM
+                  </span>
+                  <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#610515' }}>Nikah Ceremony</h3>
+                  <p style={{ margin: 0, fontSize: '0.8rem', lineHeight: '1.5', color: '#555' }}>
+                    Solemnization of marriage following the Sunnah, Quran recitation, and heartfelt Duas for the newlyweds.
+                  </p>
+                </div>
+              </div>
+
+              {/* Followed By Pill */}
+              <div style={{ textAlign: 'center', margin: '-10px 0 14px -40px' }}>
+                <span
+                  style={{
+                    border: '1px solid #C2A052',
+                    borderRadius: '15px',
+                    padding: '2px 14px',
+                    fontSize: '0.7rem',
+                    fontStyle: 'italic',
+                    backgroundColor: '#FAF3E0',
+                    color: '#8B6B23',
+                  }}
+                >
+                  followed by
+                </span>
+              </div>
+
+              {/* Event 2: Shaadi Reception */}
+              <div style={{ position: 'relative' }}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '-40px',
+                    top: '0',
+                    width: '34px',
+                    height: '34px',
+                    borderRadius: '50%',
+                    backgroundColor: '#FAF3E0',
+                    border: '2px solid #C2A052',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '0.9rem',
+                  }}
+                >
+                  🎂
+                </div>
+                <div
+                  style={{
+                    backgroundColor: '#FAF3E0',
+                    borderRadius: '12px',
+                    padding: '16px',
+                    border: '1px solid rgba(194, 160, 82, 0.4)',
+                  }}
+                >
+                  <span
+                    style={{
+                      backgroundColor: '#F4E4BC',
+                      padding: '4px 10px',
+                      borderRadius: '12px',
+                      fontSize: '0.75rem',
+                      fontWeight: '700',
+                      color: '#610515',
+                      display: 'inline-block',
+                      marginBottom: '8px',
+                    }}
+                  >
+                    6:00 PM
+                  </span>
+                  <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#610515' }}>Shaadi Reception</h3>
+                  <p style={{ margin: 0, fontSize: '0.8rem', lineHeight: '1.5', color: '#555' }}>
+                    Grand banquet dinner, family congratulations, photo sessions, and joyful celebration.
+                  </p>
+                </div>
+              </div>
             </div>
           </section>
 
@@ -589,7 +854,6 @@ export default function InviteExperience({ guest }) {
               JazakAllah Khair for being part of our special day.
             </p>
 
-            {/* Gold SVG Ornament */}
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <svg width="60" height="16" viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 8H22" stroke="#C2A052" strokeWidth="1" />
@@ -599,7 +863,7 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* DEDICATED RING BOX SECTION AT THE VERY BOTTOM */}
+          {/* DEDICATED RING BOX SECTION */}
           <section
             style={{
               ...cardContainerStyle,
