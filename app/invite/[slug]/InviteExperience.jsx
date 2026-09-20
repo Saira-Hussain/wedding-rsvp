@@ -75,6 +75,21 @@ export default function InviteExperience({ guest }) {
     marginBottom: '28px',
   };
 
+  const sectionHeadingStyle = {
+    fontSize: '1.1rem',
+    letterSpacing: '2px',
+    color: '#610515',
+    marginBottom: '16px',
+    textTransform: 'uppercase',
+    fontWeight: '700',
+  };
+
+  const subHeadingStyle = {
+    fontWeight: '700',
+    margin: '12px 0 2px 0',
+    color: '#610515',
+  };
+
   const goldButtonStyle = {
     marginTop: '16px',
     backgroundImage: "url('/gold-card-bg.jpg')",
@@ -142,7 +157,7 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 2. INLINE DYNAMIC BACKGROUND */}
+      {/* 2. RESPONSIVE DYNAMIC BACKGROUND */}
       <div
         style={{
           position: 'fixed',
@@ -153,7 +168,7 @@ export default function InviteExperience({ guest }) {
           zIndex: 0,
           backgroundImage: step === 'welcome' ? welcomeBgImage : 'none',
           backgroundColor: step === 'welcome' ? 'transparent' : '#000000',
-          backgroundSize: 'cover',
+          backgroundSize: 'contain',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
           transition: 'background-image 0.8s ease-in-out',
@@ -170,7 +185,8 @@ export default function InviteExperience({ guest }) {
             height: '100%',
             zIndex: 0,
             pointerEvents: 'none',
-            background: 'linear-gradient(to right, rgba(0,0,0,0.85) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.85) 100%)',
+            background:
+              'linear-gradient(to right, rgba(0,0,0,0.85) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.85) 100%)',
           }}
         />
       )}
@@ -182,30 +198,33 @@ export default function InviteExperience({ guest }) {
             position: 'relative',
             zIndex: 1,
             width: '100%',
-            maxWidth: '500px',
-            minHeight: 'calc(100dvh - 48px)',
+            maxWidth: '1200px',
+            height: '100vh',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
             alignItems: 'center',
             textAlign: 'center',
             boxSizing: 'border-box',
+            paddingTop: '3vh',
+            paddingBottom: '5vh',
           }}
         >
-          <div style={{ paddingTop: '2vh' }}>
+          {/* Top Badge */}
+          <div>
             <div
               style={{
                 border: '1px solid #C2A052',
                 borderRadius: '50px',
                 padding: '8px 24px',
-                backgroundColor: 'rgba(10, 2, 3, 0.6)',
+                backgroundColor: 'rgba(10, 2, 3, 0.75)',
                 backdropFilter: 'blur(4px)',
                 display: 'inline-block',
               }}
             >
               <h1
                 style={{
-                  fontSize: 'clamp(1rem, 3.5vw, 1.25rem)',
+                  fontSize: 'clamp(0.9rem, 1.5vw, 1.25rem)',
                   color: '#F4E4BC',
                   margin: 0,
                   fontWeight: '400',
@@ -217,14 +236,15 @@ export default function InviteExperience({ guest }) {
             </div>
           </div>
 
-          <div style={{ paddingBottom: '2vh', width: '100%' }}>
+          {/* Bottom Button */}
+          <div style={{ width: '100%' }}>
             <button
               onClick={() => setStep('details')}
               style={{
                 backgroundColor: 'rgba(20, 20, 20, 0.9)',
                 color: '#FFFFFF',
                 padding: '12px 24px',
-                fontSize: 'clamp(0.9rem, 3.8vw, 1.1rem)',
+                fontSize: 'clamp(0.85rem, 1.2vw, 1.05rem)',
                 border: '1px solid #C2A052',
                 borderRadius: '8px',
                 cursor: 'pointer',
@@ -234,7 +254,7 @@ export default function InviteExperience({ guest }) {
                 fontFamily: 'serif',
                 backdropFilter: 'blur(6px)',
                 width: '100%',
-                maxWidth: '280px',
+                maxWidth: '240px',
               }}
             >
               Bismillah
@@ -308,9 +328,7 @@ export default function InviteExperience({ guest }) {
 
           {/* Countdown */}
           <section style={cardContainerStyle}>
-            <h2 style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
-              Counting Down
-            </h2>
+            <h2 style={sectionHeadingStyle}>Counting Down</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
               {[
                 { label: 'Days', val: isMounted ? timeLeft.days : 0 },
@@ -338,27 +356,119 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* Travel Card */}
+          {/* Where to Stay */}
           <section style={cardContainerStyle}>
-            <h2 style={{ fontSize: '1.1rem', letterSpacing: '2px', color: '#610515', marginBottom: '16px', textTransform: 'uppercase', fontWeight: '700' }}>
-              Travel
-            </h2>
+            <h2 style={sectionHeadingStyle}>Where to Stay</h2>
+            <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', margin: '0 0 12px 0' }}>
+              Below are some great options for hotels!
+            </p>
             <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
-              <div style={{ marginBottom: '14px' }}>
-                <p style={{ fontWeight: '700', margin: '0 0 2px 0', color: '#610515' }}>Getting In</p>
+              <p style={{ ...subHeadingStyle, marginTop: 0 }}>Sugar Land Town Square Area</p>
+              <ul style={{ margin: '4px 0 0 0', paddingLeft: '20px' }}>
+                <li>Marriott Sugar Land Town Square</li>
+                <li>Hyatt Place Houston / Sugar Land</li>
+                <li>Courtyard by Marriott Houston Sugar Land / Lake Pointe</li>
+                <li>Hilton Garden Inn Houston / Sugar Land</li>
+              </ul>
+            </div>
+          </section>
+
+          {/* Travel */}
+          <section style={cardContainerStyle}>
+            <h2 style={sectionHeadingStyle}>Travel</h2>
+            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
+              <div>
+                <p style={{ ...subHeadingStyle, marginTop: 0 }}>Getting In</p>
                 <p style={{ margin: 0 }}>
                   We recommend flying into <strong>George Bush Intercontinental Airport (IAH)</strong>! <strong>William P. Hobby Airport (HOU)</strong> is another good option depending on where you’re staying.
                 </p>
               </div>
+
               <div>
-                <a
-                  href="https://www.fly2houston.com/iah/ground-transportation"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: '#8B6B23', textDecoration: 'underline', fontSize: '0.8rem', fontWeight: '600' }}
-                >
-                  IAH Ground Transportation Information
-                </a>
+                <p style={subHeadingStyle}>Getting Downtown</p>
+                <p style={{ margin: 0 }}>
+                  There are plenty of ways to get around Houston! You’ll find several car rental options, plus taxis and rideshare services. If you plan to explore the city, renting a car is often the easiest option.
+                </p>
+                <div style={{ marginTop: '8px' }}>
+                  <a
+                    href="https://www.fly2houston.com/iah/ground-transportation"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#8B6B23', textDecoration: 'underline', fontSize: '0.8rem', fontWeight: '600' }}
+                  >
+                    George Bush Intercontinental Airport (IAH) - Ground Transportation Information
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                <p style={subHeadingStyle}>High Season in Houston</p>
+                <p style={{ margin: 0 }}>
+                  Houston stays busy all year, and hotels fill up fast on wedding weekends. Book your travel early to get the best rates and availability.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Our Favorite Restaurants */}
+          <section style={cardContainerStyle}>
+            <h2 style={sectionHeadingStyle}>Our Favorite Restaurants</h2>
+            <ul style={{ fontSize: '0.85rem', lineHeight: '1.8', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
+              <li><strong>Aga's Restaurant & Catering</strong></li>
+              <li><strong>Ma's House</strong></li>
+              <li><strong>Bundu Khan</strong></li>
+              <li><strong>Levant Grill & Bakery</strong></li>
+            </ul>
+          </section>
+
+          {/* Things to Do in Houston */}
+          <section style={cardContainerStyle}>
+            <h2 style={sectionHeadingStyle}>Things to Do in Houston</h2>
+            <ul style={{ fontSize: '0.85rem', lineHeight: '1.8', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
+              <li>Space Center Houston</li>
+              <li>Museum District</li>
+              <li>Buffalo Bayou Park</li>
+              <li>Houston Zoo</li>
+              <li>The Menil Collection</li>
+              <li>Discovery Green</li>
+              <li>The Galleria</li>
+            </ul>
+          </section>
+
+          {/* Q&A Section */}
+          <section style={cardContainerStyle}>
+            <h2 style={sectionHeadingStyle}>Q & A</h2>
+            <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', margin: '0 0 16px 0' }}>
+              If you have questions, please check our Q & A section first!
+            </p>
+            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
+              <div style={{ marginBottom: '14px' }}>
+                <p style={{ ...subHeadingStyle, marginTop: 0 }}>When is the RSVP deadline?</p>
+                <p style={{ margin: 0 }}>Please RSVP by November 1st so we can get an accurate headcount. :)</p>
+              </div>
+
+              <div style={{ marginBottom: '14px' }}>
+                <p style={subHeadingStyle}>What time should I arrive?</p>
+                <p style={{ margin: 0 }}>We recommend arriving 15–20 minutes before the scheduled start time so you can get settled and enjoy the celebration.</p>
+              </div>
+
+              <div style={{ marginBottom: '14px' }}>
+                <p style={subHeadingStyle}>Is there parking available?</p>
+                <p style={{ margin: 0 }}>Yes! Parking will be available at the venue in the parking garage.</p>
+              </div>
+
+              <div style={{ marginBottom: '14px' }}>
+                <p style={subHeadingStyle}>Can we use our phones and cameras to take photos during the wedding?</p>
+                <p style={{ margin: 0 }}>
+                  Absolutely! Capture all the memories you’d like — just please don’t block our photographer’s shots. They’re talented, we promise :)
+                </p>
+              </div>
+
+              <div>
+                <p style={subHeadingStyle}>What will the weather be like?</p>
+                <p style={{ margin: 0 }}>
+                  Welcome to Houston, out-of-towners! You can expect cool, comfortable days—usually around 60–70°F—with cooler evenings. We recommend bringing layers, a light jacket, and comfortable shoes. And as always, plan for a little extra traffic. ;)
+                </p>
               </div>
             </div>
           </section>
