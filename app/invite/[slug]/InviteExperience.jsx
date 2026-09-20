@@ -11,9 +11,14 @@ export default function InviteExperience({ guest }) {
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Accordion & Tabbed Details State
-  const [openFaqIdx, setOpenFaqIdx] = useState(null);
+  // Tab state for Guest Info (Stay / Travel / Food / Explore)
   const [activeTab, setActiveTab] = useState('stay');
+  // Accordion state for Q&A
+  const [openFaq, setOpenFaq] = useState(null);
+
+  const toggleFaq = (index) => {
+    setOpenFaq(openFaq === index ? null : index);
+  };
 
   const videoRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -121,16 +126,17 @@ export default function InviteExperience({ guest }) {
   const shaadiMapsUrl = "https://www.google.com/maps/search/?api=1&query=16090+City+Walk,+Sugar+Land,+TX+77479";
   const valimaMapsUrl = "https://www.google.com/maps/search/?api=1&query=10505+Cash+Rd,+Stafford,+TX+77477";
 
+  // Common card style matching theme
   const cardContainerStyle = {
     zIndex: 1,
     maxWidth: '560px',
     width: '92%',
-    backgroundColor: '#E4C6A3',
-    border: '2px solid #C2A052',
+    backgroundColor: '#FAF3E0',
+    border: '1px solid #C2A052',
     borderRadius: '12px',
     boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
     boxSizing: 'border-box',
-    padding: '28px 24px',
+    padding: '24px 20px',
     textAlign: 'center',
     color: '#3B2414',
     marginBottom: '28px',
@@ -138,11 +144,12 @@ export default function InviteExperience({ guest }) {
 
   const sectionHeadingStyle = {
     fontSize: '1.1rem',
-    letterSpacing: '2px',
-    color: '#610515',
-    marginBottom: '16px',
-    textTransform: 'uppercase',
     fontWeight: '700',
+    color: '#610515',
+    textAlign: 'center',
+    marginBottom: '16px',
+    letterSpacing: '1px',
+    textTransform: 'uppercase',
   };
 
   const goldButtonStyle = {
@@ -165,23 +172,31 @@ export default function InviteExperience({ guest }) {
   };
 
   const faqs = [
-    { q: 'When is the RSVP deadline?', a: 'Please RSVP by November 15th so we can finalize table settings and arrangements with our venue.' },
-    { q: 'What time should I arrive?', a: 'We recommend arriving 20-30 minutes before the scheduled start time to park and find your seats comfortably.' },
-    { q: 'Is there parking available on-site?', a: 'Yes! Both venues feature complimentary guest parking lots adjacent to the main halls.' },
-    { q: 'What is the dress code?', a: 'Formal / Traditional South Asian attire or Black Tie Optional.' },
+    {
+      q: 'When is the RSVP deadline?',
+      a: 'Please RSVP by November 1st so we can get an accurate headcount. :)',
+    },
+    {
+      q: 'What time should I arrive?',
+      a: 'We recommend arriving 15–20 minutes before the scheduled start time so you can get settled and enjoy the celebration.',
+    },
+    {
+      q: 'Is there parking available?',
+      a: 'Yes! Parking will be available at the venue in the parking garage.',
+    },
+    {
+      q: 'Can we use our phones and cameras to take photos?',
+      a: 'We request for everyone to be careful when taking photographs and videos, especially around our hijabi guests. Please respect their privacy and refrain from photographing them without permission. Our professional photographers will be capturing the special moments throughout the celebration! JazakAllah Khair!',
+    },
+    {
+      q: 'What will the weather be like?',
+      a: 'Welcome to Houston, out-of-towners! You can expect cool, comfortable days—usually around 60–70°F—with cooler evenings. We recommend bringing layers, a light jacket, and comfortable shoes.',
+    },
+    {
+      q: 'For our out-of-town guests',
+      a: 'We hope you have a safe travel and a memorable stay in Houston. Please remember the couple in your duas while traveling!',
+    },
   ];
-
-  const localRecsFood = ["Aga's Restaurant", "Ma's House", "Bundu Khan", "Levant Grill", "Fadi's Eatery", "Alings Chinese"];
-  const localRecsExplore = ["Sugar Land Town Square", "Houston Museum District", "The Galleria", "Space Center Houston", "Discovery Green"];
-
-  // Helper Flourish Divider Component
-  const FlourishDivider = () => (
-    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', margin: '20px 0', color: '#8B6B23' }}>
-      <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(194, 160, 82, 0.4)' }} />
-      <span style={{ fontSize: '1rem' }}>❦</span>
-      <div style={{ flex: 1, height: '1px', backgroundColor: 'rgba(194, 160, 82, 0.4)' }} />
-    </div>
-  );
 
   return (
     <main
@@ -668,13 +683,12 @@ export default function InviteExperience({ guest }) {
             </section>
           )}
 
-          {/* TABBED NAVIGATION: GUEST DETAILS */}
+          {/* TABBED GUEST GUIDE */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Guest Details</h2>
-            <FlourishDivider />
+            <div style={sectionHeadingStyle}>GUEST GUIDE</div>
 
-            {/* Top Navigation Tabs */}
-            <div style={{ display: 'flex', gap: '6px', justifyContent: 'center', marginBottom: '20px', flexWrap: 'wrap' }}>
+            {/* Tab Buttons */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '6px', marginBottom: '20px' }}>
               {[
                 { id: 'stay', label: '🏨 Stay' },
                 { id: 'travel', label: '✈️ Travel' },
@@ -685,12 +699,12 @@ export default function InviteExperience({ guest }) {
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   style={{
-                    padding: '8px 12px',
-                    borderRadius: '20px',
+                    padding: '8px 4px',
+                    borderRadius: '6px',
                     border: '1px solid #C2A052',
                     backgroundColor: activeTab === tab.id ? '#610515' : '#FAF3E0',
-                    color: activeTab === tab.id ? '#F4E4BC' : '#610515',
-                    fontSize: '0.8rem',
+                    color: activeTab === tab.id ? '#F4E4BC' : '#3B2414',
+                    fontSize: '0.75rem',
                     fontWeight: '700',
                     cursor: 'pointer',
                     transition: 'all 0.2s ease',
@@ -701,105 +715,176 @@ export default function InviteExperience({ guest }) {
               ))}
             </div>
 
-            {/* Tab Contents */}
-            {activeTab === 'stay' && (
-              <div style={{ fontSize: '0.9rem', lineHeight: '1.5', color: '#3B2414' }}>
-                <p style={{ fontWeight: '700', color: '#610515', marginBottom: '6px' }}>Hotel Accommodations</p>
-                <p style={{ margin: 0 }}>
-                  A room block has been reserved at the <strong>Houston Marriott Sugar Land Town Center</strong>. Please mention the Ayesha & Owais wedding when reserving for special guest rates.
-                </p>
-              </div>
-            )}
-
-            {activeTab === 'travel' && (
-              <div style={{ fontSize: '0.9rem', lineHeight: '1.5', color: '#3B2414' }}>
-                <p style={{ fontWeight: '700', color: '#610515', marginBottom: '6px' }}>Airport & Local Transit</p>
-                <p style={{ margin: 0 }}>
-                  We recommend flying into <strong>William P. Hobby Airport (HOU)</strong> or <strong>George Bush Intercontinental Airport (IAH)</strong>. Rideshare options (Uber/Lyft) are readily available throughout the Houston metro area.
-                </p>
-              </div>
-            )}
-
-            {activeTab === 'food' && (
-              <div>
-                <p style={{ fontWeight: '700', color: '#610515', marginBottom: '12px', fontSize: '0.9rem' }}>A Few of Our Favorites!</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
-                  {localRecsFood.map((place) => (
-                    <span
-                      key={place}
-                      style={{
-                        padding: '6px 14px',
-                        background: '#610515',
-                        color: '#F4E4BC',
-                        borderRadius: '20px',
-                        fontSize: '0.8rem',
-                        fontWeight: '600',
-                        boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-                      }}
-                    >
-                      {place}
-                    </span>
-                  ))}
+            {/* Tab Content Panels */}
+            <div style={{ color: '#3B2414', fontSize: '0.85rem', lineHeight: '1.5', textAlign: 'left' }}>
+              {activeTab === 'stay' && (
+                <div>
+                  <p style={{ fontWeight: '700', color: '#610515', marginBottom: '8px', textAlign: 'center' }}>
+                    Sugar Land Town Square Area:
+                  </p>
+                  <ul style={{ paddingLeft: '18px', margin: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <li>Marriott Sugar Land Town Square</li>
+                    <li>Hyatt Place Houston / Sugar Land</li>
+                    <li>Courtyard by Marriott Houston Sugar Land / Lake Pointe</li>
+                    <li>Hilton Garden Inn Houston / Sugar Land</li>
+                  </ul>
                 </div>
-              </div>
-            )}
+              )}
 
-            {activeTab === 'explore' && (
-              <div>
-                <p style={{ fontWeight: '700', color: '#610515', marginBottom: '12px', fontSize: '0.9rem' }}>Things to Do in Houston</p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
-                  {localRecsExplore.map((spot) => (
-                    <span
-                      key={spot}
-                      style={{
-                        padding: '6px 14px',
-                        background: '#8B3A0F',
-                        color: '#FFF',
-                        borderRadius: '20px',
-                        fontSize: '0.8rem',
-                        fontWeight: '600',
-                        boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-                      }}
-                    >
-                      {spot}
-                    </span>
-                  ))}
+              {activeTab === 'travel' && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                  <div>
+                    <strong style={{ color: '#610515' }}>Getting In:</strong>
+                    <p style={{ margin: '4px 0 0 0' }}>
+                      We recommend flying into <strong>George Bush Intercontinental Airport (IAH)</strong>. <strong>William P. Hobby Airport (HOU)</strong> is another good option depending on where you're staying.
+                    </p>
+                  </div>
+                  <div>
+                    <strong style={{ color: '#610515' }}>Getting Downtown & Around:</strong>
+                    <p style={{ margin: '4px 0 0 0' }}>
+                      There are plenty of ways to get around Houston! You'll find several car rental options, plus taxis and rideshare services like Uber and Lyft.
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+
+              {activeTab === 'food' && (
+                <div>
+                  <p style={{ textAlign: 'center', fontWeight: '700', color: '#610515', marginBottom: '12px' }}>
+                    Hungry in Houston? Here are a few places we love!
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
+                    {["Aga's Restaurant & Catering", "Ma's House", 'Bundu Khan', 'Levant Grill & Bakery'].map((place) => (
+                      <span
+                        key={place}
+                        style={{
+                          padding: '6px 12px',
+                          backgroundColor: '#610515',
+                          color: '#F4E4BC',
+                          borderRadius: '20px',
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          border: '1px solid #C2A052',
+                        }}
+                      >
+                        {place}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {activeTab === 'explore' && (
+                <div>
+                  <p style={{ textAlign: 'center', fontWeight: '700', color: '#610515', marginBottom: '12px' }}>
+                    Things to Do in Houston:
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', justifyContent: 'center' }}>
+                    {[
+                      'Space Center Houston',
+                      'Museum District',
+                      'Buffalo Bayou Park',
+                      'Houston Zoo',
+                      'The Menil Collection',
+                      'Discovery Green',
+                      'The Galleria',
+                    ].map((spot) => (
+                      <span
+                        key={spot}
+                        style={{
+                          padding: '6px 12px',
+                          backgroundColor: '#FAF3E0',
+                          color: '#610515',
+                          borderRadius: '20px',
+                          fontSize: '0.8rem',
+                          fontWeight: '600',
+                          border: '1px solid #C2A052',
+                        }}
+                      >
+                        {spot}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </section>
 
-          {/* ACCORDION FAQ SECTION */}
+          {/* COLLAPSIBLE Q & A CARD */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Frequently Asked Questions</h2>
-            <FlourishDivider />
+            <div style={sectionHeadingStyle}>FREQUENTLY ASKED QUESTIONS</div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {faqs.map((faq, i) => (
-                <div
-                  key={i}
-                  style={{
-                    border: '1px solid #C2A052',
-                    borderRadius: '8px',
-                    padding: '12px 16px',
-                    background: '#FAF3E0',
-                    cursor: 'pointer',
-                    textAlign: 'left',
-                    transition: 'background 0.2s ease',
-                  }}
-                  onClick={() => setOpenFaqIdx(openFaqIdx === i ? null : i)}
-                >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontWeight: 'bold', color: '#610515' }}>
-                    <span style={{ fontSize: '0.9rem' }}>{faq.q}</span>
-                    <span style={{ fontSize: '1.1rem', marginLeft: '8px' }}>{openFaqIdx === i ? '−' : '+'}</span>
+              {faqs.map((faq, index) => {
+                const isOpen = openFaq === index;
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      border: '1px solid #C2A052',
+                      borderRadius: '8px',
+                      backgroundColor: '#FAF3E0',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleFaq(index)}
+                      style={{
+                        width: '100%',
+                        padding: '12px 14px',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        textAlign: 'left',
+                        color: '#610515',
+                        fontWeight: '700',
+                        fontSize: '0.85rem',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <span>{faq.q}</span>
+                      <span style={{ fontSize: '1rem', marginLeft: '8px', color: '#AE7A44' }}>
+                        {isOpen ? '−' : '+'}
+                      </span>
+                    </button>
+
+                    {isOpen && (
+                      <div
+                        style={{
+                          padding: '0 14px 12px 14px',
+                          fontSize: '0.825rem',
+                          color: '#3B2414',
+                          lineHeight: '1.5',
+                          borderTop: '1px dashed #C2A052',
+                          paddingTop: '10px',
+                          textAlign: 'left',
+                        }}
+                      >
+                        {faq.a}
+                      </div>
+                    )}
                   </div>
-                  {openFaqIdx === i && (
-                    <p style={{ marginTop: '8px', fontSize: '0.85rem', color: '#3B2414', lineHeight: '1.4', marginBottom: 0 }}>
-                      {faq.a}
-                    </p>
-                  )}
-                </div>
-              ))}
+                );
+              })}
+            </div>
+          </section>
+
+          {/* CLOSING CARD */}
+          <section style={{ ...cardContainerStyle, textAlign: 'center' }}>
+            <h3 style={{ margin: '0 0 8px 0', color: '#610515', fontSize: '1rem', letterSpacing: '1px' }}>
+              WE CAN'T WAIT TO CELEBRATE WITH YOU
+            </h3>
+            <p style={{ margin: '0 0 12px 0', fontSize: '0.75rem', color: '#AE7A44', fontWeight: '700' }}>
+              DECEMBER 2026 • HOUSTON, TEXAS
+            </p>
+            <p style={{ margin: '0 0 16px 0', fontSize: '0.85rem', color: '#3B2414', fontStyle: 'italic' }}>
+              JazakAllah Khair for being a part of our special day :)
+            </p>
+            <div style={{ color: '#610515', fontFamily: 'serif', fontSize: '1.2rem', fontWeight: 'bold' }}>
+              With love,<br />Ayesha & Owais
             </div>
           </section>
 
