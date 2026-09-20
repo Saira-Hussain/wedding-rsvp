@@ -212,7 +212,7 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 2. INVISIBLE FULL-SCREEN TAP TRIGGER (Only active before video starts and if step is welcome) */}
+      {/* 2. INVISIBLE FULL-SCREEN TAP TRIGGER */}
       {!videoStarted && step === 'welcome' && (
         <div
           onClick={handleStartVideo}
@@ -226,7 +226,7 @@ export default function InviteExperience({ guest }) {
         />
       )}
 
-      {/* 3. RESPONSIVE DYNAMIC BACKGROUND (AFTER VIDEO ENDS) */}
+      {/* 3. RESPONSIVE DYNAMIC BACKGROUND */}
       {videoEnded && (
         <div
           style={{
@@ -281,35 +281,33 @@ export default function InviteExperience({ guest }) {
             paddingBottom: 'calc(env(safe-area-inset-bottom) + 32px)',
           }}
         >
-          {/* REQUEST 1: WELCOME X FAMILY AT THE TOP IN CURSIVE WITH GOLD BORDER */}
+          {/* TOTAL BLACK BACKGROUND & PLAIN FONT */}
           <div
             style={{
               padding: '12px 28px',
               border: '1px solid #C2A052',
               borderRadius: '30px',
-              backgroundColor: 'rgba(20, 20, 20, 0.75)',
-              backdropFilter: 'blur(8px)',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+              backgroundColor: '#000000',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.8)',
               margin: '0 16px',
             }}
           >
             <h1
               style={{
                 color: '#FAF3E0',
-                fontSize: 'clamp(1.5rem, 4.5vw, 2.4rem)',
-                fontFamily: "'Great Vibes', 'Dancing Script', 'Alex Brush', cursive",
-                fontStyle: 'italic',
-                fontWeight: '400',
-                letterSpacing: '1px',
+                fontSize: 'clamp(1.2rem, 3.8vw, 1.9rem)',
+                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
+                fontWeight: '600',
+                letterSpacing: '2px',
                 margin: 0,
-                textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+                textTransform: 'uppercase',
               }}
             >
               Welcome {guest?.family_name || 'Family'}
             </h1>
           </div>
 
-          {/* BISMILLAH BUTTON AT THE BOTTOM */}
+          {/* BISMILLAH BUTTON */}
           <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box', display: 'flex', justifyContent: 'center' }}>
             <button
               onClick={handleBismillahClick}
@@ -340,18 +338,17 @@ export default function InviteExperience({ guest }) {
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           
-          {/* REQUEST 3: WELCOME HEADER BEFORE CARDS */}
+          {/* WELCOME HEADER WITH MATCHING BACKGROUND */}
           <section
             style={{
               ...cardContainerStyle,
               marginBottom: '20px',
               padding: '20px 16px',
-              backgroundColor: '#FAF3E0',
             }}
           >
             <h2
               style={{
-                fontSize: '1.3rem',
+                fontSize: '1.4rem',
                 fontFamily: "'Great Vibes', 'Dancing Script', cursive",
                 color: '#610515',
                 margin: '0 0 4px 0',
@@ -584,9 +581,12 @@ export default function InviteExperience({ guest }) {
               Wedding Timeline
             </h2>
 
+            {/* GOLD CARD STYLING FOR DATE PILL */}
             <div
               style={{
-                backgroundColor: '#FAF3E0',
+                backgroundImage: "url('/gold-card-bg.jpg')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 border: '1px solid #C2A052',
                 borderRadius: '20px',
                 padding: '6px 20px',
@@ -596,6 +596,7 @@ export default function InviteExperience({ guest }) {
                 color: '#610515',
                 letterSpacing: '1px',
                 marginBottom: '28px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
               }}
             >
               DECEMBER 26, 2026
@@ -663,17 +664,21 @@ export default function InviteExperience({ guest }) {
                 </div>
               </div>
 
-              {/* Followed By Pill */}
+              {/* GOLD CARD STYLING FOR "FOLLOWED BY" PILL */}
               <div style={{ textAlign: 'center', margin: '-10px 0 14px -40px' }}>
                 <span
                   style={{
+                    backgroundImage: "url('/gold-card-bg.jpg')",
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
                     border: '1px solid #C2A052',
                     borderRadius: '15px',
-                    padding: '2px 14px',
-                    fontSize: '0.7rem',
+                    padding: '3px 16px',
+                    fontSize: '0.75rem',
                     fontStyle: 'italic',
-                    backgroundColor: '#FAF3E0',
-                    color: '#8B6B23',
+                    fontWeight: '700',
+                    color: '#610515',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
                   }}
                 >
                   followed by
@@ -851,7 +856,7 @@ export default function InviteExperience({ guest }) {
                   Our professional photographers will be capturing the special moments throughout the celebration, 
                   so we kindly ask that you leave the photography to them whenever possible. 
                   Thank you for helping us create a comfortable and respectful environment for everyone! 
-                  Jazakallah Khair!🤍
+                  Jazakallah Khair! :)
                 </p>
               </div>
 
@@ -875,31 +880,17 @@ export default function InviteExperience({ guest }) {
           <section style={cardContainerStyle}>
             <h2
               style={{
-                fontSize: '1.15rem',
-                letterSpacing: '2px',
+                fontSize: '0.95rem',
+                letterSpacing: '1px',
                 color: '#610515',
                 marginBottom: '16px',
                 textTransform: 'uppercase',
                 fontWeight: '700',
-                lineHeight: '1.5',
+                whiteSpace: 'nowrap',
               }}
             >
-              We Can’t Wait <br />
-              To Celebrate With You 🤍
+              We can't wait to celebrate with you
             </h2>
-
-            <p
-              style={{
-                fontSize: '1.45rem',
-                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
-                fontStyle: 'italic',
-                fontWeight: '600',
-                color: '#610515',
-                margin: '20px 0 4px 0',
-              }}
-            >
-              With love, Ayesha & Owais
-            </p>
 
             <p
               style={{
@@ -907,7 +898,7 @@ export default function InviteExperience({ guest }) {
                 letterSpacing: '1.5px',
                 textTransform: 'uppercase',
                 color: '#8B6B23',
-                margin: '0 0 20px 0',
+                margin: '0 0 16px 0',
                 fontWeight: '600',
               }}
             >
@@ -919,10 +910,24 @@ export default function InviteExperience({ guest }) {
                 fontSize: '0.9rem',
                 lineHeight: '1.6',
                 color: '#3B2414',
-                margin: '0 0 24px 0',
+                margin: '0 0 16px 0',
               }}
             >
-              JazakAllah Khair for being part of our special day.
+              JazakAllah Khair for being a part of our special day :)
+            </p>
+
+            <p
+              style={{
+                fontSize: '1.35rem',
+                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
+                fontStyle: 'italic',
+                fontWeight: '600',
+                color: '#610515',
+                margin: '16px 0 20px 0',
+              }}
+            >
+              With love, <br />
+              Ayesha & Owais
             </p>
 
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
