@@ -1158,123 +1158,99 @@ export default function InviteExperience({ guest }) {
           </section>
 
           {/* Q&A Section */}
-          import { useState } from 'react';
+         {/* Q&A Section */}
+          <section style={cardContainerStyle}>
+            <h2 style={sectionHeadingStyle}>Q & A</h2>
+            <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', margin: '0 0 16px 0' }}>
+              If you have questions, please check our Q & A section first!
+            </p>
+            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
+              {[
+                {
+                  q: 'When is the RSVP deadline?',
+                  a: 'Please RSVP by November 1st so we can get an accurate headcount. :)'
+                },
+                {
+                  q: 'What time should I arrive?',
+                  a: 'We recommend arriving 15–20 minutes before the scheduled start time so you can get settled and enjoy the celebration.'
+                },
+                {
+                  q: 'Is there parking available?',
+                  a: 'Yes! Parking will be available at the venue in the parking garage.'
+                },
+                {
+                  q: 'Can we use our phones and cameras to take photos during the wedding?',
+                  a: 'We request for everyone to be careful when taking photographs and videos, especially around our hijabi guests. Please respect their privacy and refrain from photographing them without their permission. Our professional photographers will be capturing the special moments throughout the celebration, so we kindly ask that you leave the photography to them whenever possible. Thank you for helping us create a comfortable and respectful environment for everyone! Jazakallah Khair! :)'
+                },
+                {
+                  q: 'What will the weather be like?',
+                  a: 'Welcome to Houston, out-of-towners! You can expect cool, comfortable days—usually around 60–70°F—with cooler evenings. We recommend bringing layers, a light jacket, and comfortable shoes. And as always, plan for a little extra traffic. ;)'
+                },
+                {
+                  q: 'For our out of town guests',
+                  a: 'We hope you have a safe travel and a memorable stay in Houston, please remember the couple in your duas while travelling!'
+                }
+              ].map((item, index, arr) => {
+                const isOpen = openQaIndex === index;
+                const subHeadingStyle = {
+                  fontWeight: '700',
+                  color: '#610515',
+                  margin: 0,
+                  fontSize: '0.95rem',
+                };
 
-export default function QASection({ cardContainerStyle, sectionHeadingStyle }) {
-  const [openIndex, setOpenIndex] = useState(null);
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      borderBottom: index !== arr.length - 1 ? '1px solid rgba(194, 160, 82, 0.4)' : 'none',
+                      paddingBottom: '12px',
+                      marginBottom: '12px',
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setOpenQaIndex(isOpen ? null : index)}
+                      style={{
+                        width: '100%',
+                        background: 'none',
+                        border: 'none',
+                        padding: '4px 0',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        fontFamily: 'inherit',
+                      }}
+                    >
+                      <p style={subHeadingStyle}>{item.q}</p>
+                      <span
+                        style={{
+                          fontSize: '1.1rem',
+                          fontWeight: 'bold',
+                          color: '#610515',
+                          marginLeft: '12px',
+                          transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                          transition: 'transform 0.2s ease',
+                          display: 'inline-block',
+                          lineHeight: '1',
+                        }}
+                      >
+                        +
+                      </span>
+                    </button>
 
-  const toggleQA = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
-  const subHeadingStyle = {
-    fontWeight: '700',
-    color: '#610515',
-    margin: 0,
-    fontSize: '0.95rem',
-  };
-
-  const qaData = [
-    {
-      question: 'When is the RSVP deadline?',
-      answer: 'Please RSVP by November 1st so we can get an accurate headcount. :)',
-    },
-    {
-      question: 'What time should I arrive?',
-      answer:
-        'We recommend arriving 15–20 minutes before the scheduled start time so you can get settled and enjoy the celebration.',
-    },
-    {
-      question: 'Is there parking available?',
-      answer: 'Yes! Parking will be available at the venue in the parking garage.',
-    },
-    {
-      question: 'Can we use our phones and cameras to take photos during the wedding?',
-      answer:
-        'We request for everyone to be careful when taking photographs and videos, especially around our hijabi guests. Please respect their privacy and refrain from photographing them without their permission. Our professional photographers will be capturing the special moments throughout the celebration, so we kindly ask that you leave the photography to them whenever possible. Thank you for helping us create a comfortable and respectful environment for everyone! Jazakallah Khair! :)',
-    },
-    {
-      question: 'What will the weather be like?',
-      answer:
-        'Welcome to Houston, out-of-towners! You can expect cool, comfortable days—usually around 60–70°F—with cooler evenings. We recommend bringing layers, a light jacket, and comfortable shoes. And as always, plan for a little extra traffic. ;)',
-    },
-    {
-      question: 'For our out of town guests',
-      answer:
-        'We hope you have a safe travel and a memorable stay in Houston, please remember the couple in your duas while travelling!',
-    },
-  ];
-
-  return (
-    <section style={cardContainerStyle}>
-      <h2 style={sectionHeadingStyle}>Q & A</h2>
-      <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', margin: '0 0 16px 0' }}>
-        If you have questions, please check our Q & A section first!
-      </p>
-
-      <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
-        {qaData.map((item, index) => {
-          const isOpen = openIndex === index;
-          return (
-            <div
-              key={index}
-              style={{
-                borderBottom: index !== qaData.length - 1 ? '1px solid rgba(194, 160, 82, 0.4)' : 'none',
-                paddingBottom: '12px',
-                marginBottom: '12px',
-              }}
-            >
-              <button
-                type="button"
-                onClick={() => toggleQA(index)}
-                style={{
-                  width: '100%',
-                  background: 'none',
-                  border: 'none',
-                  padding: '4px 0',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  fontFamily: 'inherit',
-                }}
-              >
-                <p style={subHeadingStyle}>{item.question}</p>
-                <span
-                  style={{
-                    fontSize: '1.1rem',
-                    fontWeight: 'bold',
-                    color: '#610515',
-                    marginLeft: '12px',
-                    transition: 'transform 0.2s ease',
-                    transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
-                    display: 'inline-block',
-                    lineHeight: '1',
-                  }}
-                >
-                  +
-                </span>
-              </button>
-
-              {isOpen && (
-                <div
-                  style={{
-                    marginTop: '8px',
-                    paddingLeft: '4px',
-                    animation: 'fadeIn 0.2s ease-in-out',
-                  }}
-                >
-                  <p style={{ margin: 0, color: '#3B2414' }}>{item.answer}</p>
-                </div>
-              )}
+                    {isOpen && (
+                      <div style={{ marginTop: '8px', paddingLeft: '4px' }}>
+                        <p style={{ margin: 0 }}>{item.a}</p>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
-          );
-        })}
-      </div>
-    </section>
-  );
-}
+          </section>
           {/* FINAL CLOSING CARD */}
           <section style={cardContainerStyle}>
             <h2
