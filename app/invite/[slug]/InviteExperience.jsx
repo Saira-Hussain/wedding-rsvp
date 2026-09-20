@@ -24,7 +24,7 @@ export default function InviteExperience({ guest }) {
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
-    const targetDate = new Date('2026-12-26T16:00:00');
+    const targetDate = new Date('2026-12-26T15:00:00');
     const updateCountdown = () => {
       const now = new Date();
       const difference = targetDate.getTime() - now.getTime();
@@ -81,11 +81,18 @@ export default function InviteExperience({ guest }) {
       'VERSION:2.0',
       'PRODID:-//Wedding Invitation//EN',
       'BEGIN:VEVENT',
-      'SUMMARY:Ayesha & Owais Wedding',
-      'DESCRIPTION:Nikah at 3:30 PM followed by Shaadi Reception at 6:00 PM.',
+      'SUMMARY:Ayesha & Owais Shaadi',
+      'DESCRIPTION:Nikah at 3:00 PM followed by Reception.',
       'LOCATION:Houston Marriott Sugar Land Town Center\\, 16090 City Walk\\, Sugar Land\\, TX 77479',
-      'DTSTART:20261226T153000',
+      'DTSTART:20261226T150000',
       'DTEND:20261226T230000',
+      'END:VEVENT',
+      'BEGIN:VEVENT',
+      'SUMMARY:Ayesha & Owais Valima',
+      'DESCRIPTION:Valima Reception starting at 5:30 PM.',
+      'LOCATION:10505 Cash Rd\\, Stafford\\, TX 77477',
+      'DTSTART:20261227T173000',
+      'DTEND:20261227T220000',
       'END:VEVENT',
       'END:VCALENDAR',
     ].join('\n');
@@ -107,7 +114,8 @@ export default function InviteExperience({ guest }) {
   const valimaImgSrc = guest?.groom_side ? '/valima-groom.png' : '/valima-bride.png';
 
   const welcomeBgImage = isMobile ? "url('/welcome-mobile-bg.jpg')" : "url('/welcome-bg.jpg')";
-  const mapsUrl = "https://www.google.com/maps/search/?api=1&query=16090+City+Walk,+Sugar+Land,+TX+77479";
+  const shaadiMapsUrl = "https://www.google.com/maps/search/?api=1&query=16090+City+Walk,+Sugar+Land,+TX+77479";
+  const valimaMapsUrl = "https://www.google.com/maps/search/?api=1&query=10505+Cash+Rd,+Stafford,+TX+77477";
 
   const cardContainerStyle = {
     zIndex: 1,
@@ -341,7 +349,7 @@ export default function InviteExperience({ guest }) {
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           
-          {/* LARGER WELCOME HEADER */}
+          {/* WELCOME HEADER */}
           <section
             style={{
               ...cardContainerStyle,
@@ -374,6 +382,7 @@ export default function InviteExperience({ guest }) {
             </p>
           </section>
 
+          {/* SHAADI CARD */}
           {isShaadiInvited && (
             <div
               style={{
@@ -404,6 +413,7 @@ export default function InviteExperience({ guest }) {
             </div>
           )}
 
+          {/* VALIMA CARD */}
           {isValimaInvited && (
             <div
               style={{
@@ -485,259 +495,577 @@ export default function InviteExperience({ guest }) {
             </button>
           </section>
 
-          {/* MAPS & VENUE LOCATION */}
-          <section style={cardContainerStyle}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '16px' }}>
-              <div
-                style={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '50%',
-                  backgroundColor: '#FAF3E0',
-                  border: '1px solid #C2A052',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '10px',
-                }}
-              >
-                📍
-              </div>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#610515', margin: '0 0 4px 0' }}>
-                Houston Marriott Sugar Land Town Center
-              </h2>
-              <p style={{ margin: 0, fontSize: '0.85rem', color: '#666' }}>
-                16090 City Walk, Sugar Land, TX 77479
+          {/* SHAADI VENUE MAP */}
+          {isShaadiInvited && (
+            <section style={cardContainerStyle}>
+              <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
+                SHAADI VENUE
               </p>
-            </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '16px' }}>
+                <div
+                  style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '50%',
+                    backgroundColor: '#FAF3E0',
+                    border: '1px solid #C2A052',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '10px',
+                  }}
+                >
+                  📍
+                </div>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#610515', margin: '0 0 4px 0' }}>
+                  Houston Marriott Sugar Land Town Center
+                </h2>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: '#666' }}>
+                  16090 City Walk, Sugar Land, TX 77479
+                </p>
+              </div>
 
-            <div
-              style={{
-                position: 'relative',
-                borderRadius: '12px',
-                overflow: 'hidden',
-                border: '1px solid #C2A052',
-                marginBottom: '16px',
-                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-              }}
-            >
-              <iframe
-                title="Venue Location Map"
-                src="https://maps.google.com/maps?q=16090%20City%20Walk,%20Sugar%20Land,%20TX%2077479&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                width="100%"
-                height="220"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-              />
-            </div>
-
-            <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-              <a
-                href={mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  flex: 1,
-                  backgroundColor: '#8B3A0F',
-                  color: '#FFF',
-                  padding: '12px',
-                  borderRadius: '8px',
-                  textDecoration: 'none',
-                  fontSize: '0.8rem',
-                  fontWeight: '700',
-                  letterSpacing: '1px',
-                  textTransform: 'uppercase',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                }}
-              >
-                🗺️ OPEN IN MAPS
-              </a>
-              <a
-                href="tel:12811234567"
-                style={{
-                  width: '46px',
-                  border: '1px solid #C2A052',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: '#FAF3E0',
-                  textDecoration: 'none',
-                  fontSize: '1.1rem',
-                }}
-              >
-                📞
-              </a>
-            </div>
-          </section>
-
-          {/* WEDDING TIMELINE */}
-          <section style={cardContainerStyle}>
-            <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
-              ITINERARY OF EVENTS
-            </p>
-            <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '16px' }}>
-              Wedding Timeline
-            </h2>
-
-            <div
-              style={{
-                backgroundImage: "url('/gold-card-bg.jpg')",
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                border: '1px solid #C2A052',
-                borderRadius: '20px',
-                padding: '6px 20px',
-                display: 'inline-block',
-                fontWeight: '700',
-                fontSize: '0.85rem',
-                color: '#610515',
-                letterSpacing: '1px',
-                marginBottom: '28px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-              }}
-            >
-              DECEMBER 26, 2026
-            </div>
-
-            {/* Vertical Timeline */}
-            <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
               <div
                 style={{
-                  position: 'absolute',
-                  left: '17px',
-                  top: '10px',
-                  bottom: '10px',
-                  width: '2px',
-                  backgroundColor: '#C2A052',
+                  position: 'relative',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  border: '1px solid #C2A052',
+                  marginBottom: '16px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                 }}
-              />
-
-              {/* Event 1: Nikah */}
-              <div style={{ position: 'relative', marginBottom: '24px' }}>
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: '-40px',
-                    top: '0',
-                    width: '34px',
-                    height: '34px',
-                    borderRadius: '50%',
-                    backgroundColor: '#FAF3E0',
-                    border: '2px solid #C2A052',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontSize: '0.9rem',
-                  }}
-                >
-                  📖
-                </div>
-                <div
-                  style={{
-                    backgroundColor: '#FAF3E0',
-                    borderRadius: '12px',
-                    padding: '16px',
-                    border: '1px solid rgba(194, 160, 82, 0.4)',
-                  }}
-                >
-                  {/* UPDATED TIME TO 3:30 PM */}
-                  <span
-                    style={{
-                      backgroundColor: '#F4E4BC',
-                      padding: '4px 10px',
-                      borderRadius: '12px',
-                      fontSize: '0.75rem',
-                      fontWeight: '700',
-                      color: '#610515',
-                      display: 'inline-block',
-                      marginBottom: '8px',
-                    }}
-                  >
-                    3:30 PM
-                  </span>
-                  <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#610515' }}>Nikah Ceremony</h3>
-                  <p style={{ margin: 0, fontSize: '0.85rem', lineHeight: '1.5', color: '#555', fontStyle: 'italic' }}>
-                    "And We Created You in Pairs" (Surah An-Naba, 78:8)
-                  </p>
-                </div>
+              >
+                <iframe
+                  title="Shaadi Venue Location Map"
+                  src="https://maps.google.com/maps?q=16090%20City%20Walk,%20Sugar%20Land,%20TX%2077479&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="220"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                />
               </div>
 
-              {/* Followed By Pill */}
-              <div style={{ textAlign: 'center', margin: '-10px 0 14px -40px' }}>
-                <span
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                <a
+                  href={shaadiMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   style={{
-                    backgroundImage: "url('/gold-card-bg.jpg')",
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    border: '1px solid #C2A052',
-                    borderRadius: '15px',
-                    padding: '3px 16px',
-                    fontSize: '0.75rem',
-                    fontStyle: 'italic',
+                    flex: 1,
+                    backgroundColor: '#8B3A0F',
+                    color: '#FFF',
+                    padding: '12px',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                    fontSize: '0.8rem',
                     fontWeight: '700',
-                    color: '#610515',
-                    boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
-                  }}
-                >
-                  followed by
-                </span>
-              </div>
-
-              {/* Event 2: Shaadi Reception */}
-              <div style={{ position: 'relative' }}>
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: '-40px',
-                    top: '0',
-                    width: '34px',
-                    height: '34px',
-                    borderRadius: '50%',
-                    backgroundColor: '#FAF3E0',
-                    border: '2px solid #C2A052',
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '0.9rem',
+                    gap: '6px',
                   }}
                 >
-                  🎂
-                </div>
+                  🗺️ OPEN SHAADI MAPS
+                </a>
+              </div>
+            </section>
+          )}
+
+          {/* VALIMA VENUE MAP */}
+          {isValimaInvited && (
+            <section style={cardContainerStyle}>
+              <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
+                VALIMA VENUE
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '16px' }}>
                 <div
                   style={{
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '50%',
                     backgroundColor: '#FAF3E0',
-                    borderRadius: '12px',
-                    padding: '16px',
-                    border: '1px solid rgba(194, 160, 82, 0.4)',
+                    border: '1px solid #C2A052',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '10px',
                   }}
                 >
-                  <span
+                  📍
+                </div>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#610515', margin: '0 0 4px 0' }}>
+                  Valima Reception Hall
+                </h2>
+                <p style={{ margin: 0, fontSize: '0.85rem', color: '#666' }}>
+                  10505 Cash Rd, Stafford, TX 77477
+                </p>
+              </div>
+
+              <div
+                style={{
+                  position: 'relative',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  border: '1px solid #C2A052',
+                  marginBottom: '16px',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                }}
+              >
+                <iframe
+                  title="Valima Venue Location Map"
+                  src="https://maps.google.com/maps?q=10505%20Cash%20Rd,%20Stafford,%20TX%2077477&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                  width="100%"
+                  height="220"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                />
+              </div>
+
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                <a
+                  href={valimaMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    flex: 1,
+                    backgroundColor: '#8B3A0F',
+                    color: '#FFF',
+                    padding: '12px',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                    fontSize: '0.8rem',
+                    fontWeight: '700',
+                    letterSpacing: '1px',
+                    textTransform: 'uppercase',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  🗺️ OPEN VALIMA MAPS
+                </a>
+              </div>
+            </section>
+          )}
+
+          {/* SHAADI TIMELINE */}
+          {isShaadiInvited && (
+            <section style={cardContainerStyle}>
+              <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
+                ITINERARY OF EVENTS
+              </p>
+              <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '16px' }}>
+                Shaadi Timeline
+              </h2>
+
+              <div
+                style={{
+                  backgroundImage: "url('/gold-card-bg.jpg')",
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  border: '1px solid #C2A052',
+                  borderRadius: '20px',
+                  padding: '6px 20px',
+                  display: 'inline-block',
+                  fontWeight: '700',
+                  fontSize: '0.85rem',
+                  color: '#610515',
+                  letterSpacing: '1px',
+                  marginBottom: '28px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                }}
+              >
+                DECEMBER 26, 2026
+              </div>
+
+              {/* Vertical Timeline */}
+              <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '17px',
+                    top: '10px',
+                    bottom: '10px',
+                    width: '2px',
+                    backgroundColor: '#C2A052',
+                  }}
+                />
+
+                {/* Event 1: Nikah */}
+                <div style={{ position: 'relative', marginBottom: '20px' }}>
+                  <div
                     style={{
-                      backgroundColor: '#F4E4BC',
-                      padding: '4px 10px',
-                      borderRadius: '12px',
-                      fontSize: '0.75rem',
-                      fontWeight: '700',
-                      color: '#610515',
-                      display: 'inline-block',
-                      marginBottom: '8px',
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
                     }}
                   >
-                    6:00 PM
-                  </span>
-                  <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#610515' }}>Shaadi Reception</h3>
-                  <p style={{ margin: 0, fontSize: '0.85rem', lineHeight: '1.5', color: '#555', fontStyle: 'italic' }}>
-                    An Evening to Remember
-                  </p>
+                    📖
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      3:00 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Nikah Ceremony</h3>
+                  </div>
+                </div>
+
+                {/* Event 2: Maghrib */}
+                <div style={{ position: 'relative', marginBottom: '20px' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    🕌
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      5:30 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Maghrib Prayer</h3>
+                  </div>
+                </div>
+
+                {/* Event 3: Entrances */}
+                <div style={{ position: 'relative', marginBottom: '20px' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    ✨
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      6:00 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Grand Entrances</h3>
+                  </div>
+                </div>
+
+                {/* Event 4: Dinner */}
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    🍽️
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      7:00 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service</h3>
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
+
+          {/* VALIMA TIMELINE */}
+          {isValimaInvited && (
+            <section style={cardContainerStyle}>
+              <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
+                ITINERARY OF EVENTS
+              </p>
+              <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '16px' }}>
+                Valima Timeline
+              </h2>
+
+              <div
+                style={{
+                  backgroundImage: "url('/gold-card-bg.jpg')",
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  border: '1px solid #C2A052',
+                  borderRadius: '20px',
+                  padding: '6px 20px',
+                  display: 'inline-block',
+                  fontWeight: '700',
+                  fontSize: '0.85rem',
+                  color: '#610515',
+                  letterSpacing: '1px',
+                  marginBottom: '28px',
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                }}
+              >
+                DECEMBER 27, 2026
+              </div>
+
+              {/* Vertical Timeline */}
+              <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
+                <div
+                  style={{
+                    position: 'absolute',
+                    left: '17px',
+                    top: '10px',
+                    bottom: '10px',
+                    width: '2px',
+                    backgroundColor: '#C2A052',
+                  }}
+                />
+
+                {/* Event 1: Maghrib */}
+                <div style={{ position: 'relative', marginBottom: '20px' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    🕌
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      5:30 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Maghrib Prayer</h3>
+                  </div>
+                </div>
+
+                {/* Event 2: Entrances */}
+                <div style={{ position: 'relative', marginBottom: '20px' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    ✨
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      6:00 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Grand Entrances</h3>
+                  </div>
+                </div>
+
+                {/* Event 3: Dinner */}
+                <div style={{ position: 'relative' }}>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      left: '-40px',
+                      top: '0',
+                      width: '34px',
+                      height: '34px',
+                      borderRadius: '50%',
+                      backgroundColor: '#FAF3E0',
+                      border: '2px solid #C2A052',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '0.9rem',
+                    }}
+                  >
+                    🍽️
+                  </div>
+                  <div
+                    style={{
+                      backgroundColor: '#FAF3E0',
+                      borderRadius: '12px',
+                      padding: '14px',
+                      border: '1px solid rgba(194, 160, 82, 0.4)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        backgroundColor: '#F4E4BC',
+                        padding: '4px 10px',
+                        borderRadius: '12px',
+                        fontSize: '0.75rem',
+                        fontWeight: '700',
+                        color: '#610515',
+                        display: 'inline-block',
+                        marginBottom: '6px',
+                      }}
+                    >
+                      7:00 PM
+                    </span>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service</h3>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
 
           {/* Where to Stay */}
           <section style={cardContainerStyle}>
