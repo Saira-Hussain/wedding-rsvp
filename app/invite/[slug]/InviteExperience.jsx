@@ -67,6 +67,14 @@ export default function InviteExperience({ guest }) {
     }
   };
 
+  const handleBismillahClick = (e) => {
+    e.stopPropagation();
+    if (!videoStarted) {
+      handleStartVideo();
+    }
+    setStep('details');
+  };
+
   const handleDownloadCalendar = () => {
     const icsContent = [
       'BEGIN:VCALENDAR',
@@ -204,8 +212,8 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 2. INVISIBLE FULL-SCREEN TAP TRIGGER */}
-      {!videoStarted && (
+      {/* 2. INVISIBLE FULL-SCREEN TAP TRIGGER (Only active before video starts and if step is welcome) */}
+      {!videoStarted && step === 'welcome' && (
         <div
           onClick={handleStartVideo}
           style={{
@@ -254,43 +262,57 @@ export default function InviteExperience({ guest }) {
         />
       )}
 
-      {/* STEP 1: WELCOME SCREEN WITH FAMILY NAME & BUTTON */}
+      {/* STEP 1: WELCOME SCREEN */}
       {videoEnded && step === 'welcome' && (
         <div
           style={{
             position: 'relative',
-            zIndex: 1,
+            zIndex: 20,
             width: '100%',
             maxWidth: '1200px',
             height: '100dvh',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'flex-end',
+            justifyContent: 'space-between',
             alignItems: 'center',
             textAlign: 'center',
             boxSizing: 'border-box',
+            paddingTop: 'calc(env(safe-area-inset-top) + 40px)',
             paddingBottom: 'calc(env(safe-area-inset-bottom) + 32px)',
           }}
         >
-          <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            {/* WELCOME FAMILY HEADING */}
+          {/* REQUEST 1: WELCOME X FAMILY AT THE TOP IN CURSIVE WITH GOLD BORDER */}
+          <div
+            style={{
+              padding: '12px 28px',
+              border: '1px solid #C2A052',
+              borderRadius: '30px',
+              backgroundColor: 'rgba(20, 20, 20, 0.75)',
+              backdropFilter: 'blur(8px)',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+              margin: '0 16px',
+            }}
+          >
             <h1
               style={{
                 color: '#FAF3E0',
-                fontSize: 'clamp(1.5rem, 4vw, 2.2rem)',
-                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
-                fontWeight: '600',
-                letterSpacing: '2px',
-                textShadow: '0 2px 10px rgba(0,0,0,0.9)',
-                margin: '0 0 16px 0',
-                textTransform: 'uppercase',
+                fontSize: 'clamp(1.5rem, 4.5vw, 2.4rem)',
+                fontFamily: "'Great Vibes', 'Dancing Script', 'Alex Brush', cursive",
+                fontStyle: 'italic',
+                fontWeight: '400',
+                letterSpacing: '1px',
+                margin: 0,
+                textShadow: '0 2px 8px rgba(0,0,0,0.8)',
               }}
             >
               Welcome {guest?.family_name || 'Family'}
             </h1>
+          </div>
 
+          {/* BISMILLAH BUTTON AT THE BOTTOM */}
+          <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box', display: 'flex', justifyContent: 'center' }}>
             <button
-              onClick={() => setStep('details')}
+              onClick={handleBismillahClick}
               style={{
                 backgroundColor: 'rgba(20, 20, 20, 0.9)',
                 color: '#FFFFFF',
@@ -317,6 +339,41 @@ export default function InviteExperience({ guest }) {
       {/* STEP 2: SCROLLABLE CARDS & DETAILS */}
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          
+          {/* REQUEST 3: WELCOME HEADER BEFORE CARDS */}
+          <section
+            style={{
+              ...cardContainerStyle,
+              marginBottom: '20px',
+              padding: '20px 16px',
+              backgroundColor: '#FAF3E0',
+            }}
+          >
+            <h2
+              style={{
+                fontSize: '1.3rem',
+                fontFamily: "'Great Vibes', 'Dancing Script', cursive",
+                color: '#610515',
+                margin: '0 0 4px 0',
+                fontWeight: '400',
+              }}
+            >
+              Welcome {guest?.family_name || 'Family'}
+            </h2>
+            <p
+              style={{
+                fontSize: '0.85rem',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                color: '#8B6B23',
+                margin: 0,
+                fontWeight: '700',
+              }}
+            >
+              To Our Beginning
+            </p>
+          </section>
+
           {isShaadiInvited && (
             <div
               style={{
@@ -546,7 +603,6 @@ export default function InviteExperience({ guest }) {
 
             {/* Vertical Timeline */}
             <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
-              {/* Vertical Connecting Line */}
               <div
                 style={{
                   position: 'absolute',
