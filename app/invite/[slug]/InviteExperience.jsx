@@ -513,18 +513,6 @@ export default function InviteExperience({ guest }) {
               To Celebrate With You 🤍
             </h2>
 
-            <p
-              style={{
-                fontSize: '1.45rem',
-                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
-                fontStyle: 'italic',
-                fontWeight: '600',
-                color: '#610515',
-                margin: '20px 0 4px 0',
-              }}
-            >
-              With love, Ayesha & Owais
-            </p>
 
             <p
               style={{
@@ -548,6 +536,19 @@ export default function InviteExperience({ guest }) {
               }}
             >
               JazakAllah Khair for being part of our special day.
+            </p>
+
+             <p
+              style={{
+                fontSize: '1.45rem',
+                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
+                fontStyle: 'italic',
+                fontWeight: '600',
+                color: '#610515',
+                margin: '20px 0 4px 0',
+              }}
+            >
+              With love, Ayesha & Owais
             </p>
 
             {/* Gold SVG Ornament */}
