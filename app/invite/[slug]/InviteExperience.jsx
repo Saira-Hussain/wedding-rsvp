@@ -5,6 +5,7 @@ import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
+  const [videoStarted, setVideoStarted] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
   const [isMounted, setIsMounted] = useState(false);
@@ -22,12 +23,6 @@ export default function InviteExperience({ guest }) {
 
     checkMobile();
     window.addEventListener('resize', checkMobile);
-
-    if (videoRef.current) {
-      videoRef.current.play().catch((err) => {
-        console.log('Autoplay blocked or waiting for user interaction:', err);
-      });
-    }
 
     const targetDate = new Date('2026-12-26T16:00:00');
     const updateCountdown = () => {
@@ -51,6 +46,15 @@ export default function InviteExperience({ guest }) {
       window.removeEventListener('resize', checkMobile);
     };
   }, []);
+
+  const handleStartVideo = () => {
+    setVideoStarted(true);
+    if (videoRef.current) {
+      videoRef.current.play().catch((err) => {
+        console.log('Video play error:', err);
+      });
+    }
+  };
 
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
   const isValimaInvited = guest?.invited_to_valima ?? true;
@@ -127,8 +131,57 @@ export default function InviteExperience({ guest }) {
         overflowY: step === 'welcome' ? 'hidden' : 'auto',
       }}
     >
-      {/* 1. INTRO VIDEO OVERLAY */}
-      {!videoEnded && (
+      {/* 1. INITIAL TRIGGER: PRESS SEAL TO OPEN INVITATION */}
+      {!videoStarted && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 110,
+            backgroundColor: '#000000',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '24px',
+            textAlign: 'center',
+          }}
+        >
+          <p
+            style={{
+              color: '#F4E4BC',
+              fontSize: '1.2rem',
+              letterSpacing: '1px',
+              marginBottom: '20px',
+              fontStyle: 'italic',
+            }}
+          >
+            Welcome, {guest?.family_name || 'Guest'}
+          </p>
+          <button
+            onClick={handleStartVideo}
+            style={{
+              backgroundColor: 'rgba(20, 20, 20, 0.95)',
+              color: '#F4E4BC',
+              padding: '16px 32px',
+              fontSize: '1rem',
+              border: '2px solid #C2A052',
+              borderRadius: '50px',
+              cursor: 'pointer',
+              fontWeight: '600',
+              letterSpacing: '1.5px',
+              textTransform: 'uppercase',
+              boxShadow: '0 6px 20px rgba(194, 160, 82, 0.3)',
+              fontFamily: 'serif',
+            }}
+          >
+            Press the Seal to Open Invitation
+          </button>
+        </div>
+      )}
+
+      {/* 2. INTRO VIDEO OVERLAY */}
+      {videoStarted && !videoEnded && (
         <div
           style={{
             position: 'fixed',
@@ -157,7 +210,7 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 2. RESPONSIVE DYNAMIC BACKGROUND */}
+      {/* 3. RESPONSIVE DYNAMIC BACKGROUND */}
       <div
         style={{
           position: 'fixed',
@@ -497,7 +550,7 @@ export default function InviteExperience({ guest }) {
           </section>
 
           {/* FINAL CLOSING CARD */}
-          <section style={{ ...cardContainerStyle, padding: '36px 24px', marginBottom: '12px' }}>
+          <section style={cardContainerStyle}>
             <h2
               style={{
                 fontSize: '1.15rem',
@@ -551,28 +604,37 @@ export default function InviteExperience({ guest }) {
             </p>
 
             {/* Gold SVG Ornament */}
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <svg width="60" height="16" viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M0 8H22" stroke="#C2A052" strokeWidth="1" />
                 <polygon points="30,2 36,8 30,14 24,8" fill="#C2A052" />
                 <path d="M38 8H60" stroke="#C2A052" strokeWidth="1" />
               </svg>
             </div>
+          </section>
 
-            {/* Ring Box Picture */}
-            <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-              <img
-                src="/ring box.png"
-                alt="Ring Box"
-                style={{
-                  maxWidth: '120px',
-                  width: '100%',
-                  height: 'auto',
-                  display: 'block',
-                  margin: '0 auto',
-                }}
-              />
-            </div>
+          {/* DEDICATED RING BOX SECTION AT THE VERY BOTTOM */}
+          <section
+            style={{
+              ...cardContainerStyle,
+              padding: '20px',
+              marginBottom: '12px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <img
+              src="/ring box.png"
+              alt="Ring Box"
+              style={{
+                width: '100%',
+                maxHeight: '350px',
+                objectFit: 'contain',
+                borderRadius: '8px',
+                display: 'block',
+              }}
+            />
           </section>
         </div>
       )}
