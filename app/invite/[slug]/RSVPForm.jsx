@@ -7,23 +7,23 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
 
   const [attending, setAttending] = useState(true);
   const [guestCount, setGuestCount] = useState(1);
-  const [womenCount, setWomenCount] = useState(1);
-  const [menCount, setMenCount] = useState(0);
+  const [menCount, setMenCount] = useState(1);
+  const [womenCount, setWomenCount] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleTotalGuestsChange = (e) => {
     const val = parseInt(e.target.value, 10);
     setGuestCount(val);
-    setWomenCount(val);
-    setMenCount(0);
+    setMenCount(val);
+    setWomenCount(0);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (attending && womenCount + menCount !== guestCount) {
-      alert(`The sum of Women (${womenCount}) and Men (${menCount}) must equal total attending guests (${guestCount}).`);
+    if (attending && menCount + womenCount !== guestCount) {
+      alert(`The sum of Men (${menCount}) and Women (${womenCount}) must equal total attending guests (${guestCount}).`);
       return;
     }
 
@@ -129,24 +129,6 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: '#610515', marginBottom: '4px' }}>
-                Women:
-              </label>
-              <input
-                type="number"
-                min="0"
-                max={guestCount}
-                value={womenCount}
-                onChange={(e) => {
-                  const val = Math.max(0, parseInt(e.target.value, 10) || 0);
-                  setWomenCount(val);
-                  setMenCount(Math.max(0, guestCount - val));
-                }}
-                style={inputStyle}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: '#610515', marginBottom: '4px' }}>
                 Men:
               </label>
               <input
@@ -158,6 +140,24 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
                   const val = Math.max(0, parseInt(e.target.value, 10) || 0);
                   setMenCount(val);
                   setWomenCount(Math.max(0, guestCount - val));
+                }}
+                style={inputStyle}
+              />
+            </div>
+
+            <div>
+              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: '#610515', marginBottom: '4px' }}>
+                Women:
+              </label>
+              <input
+                type="number"
+                min="0"
+                max={guestCount}
+                value={womenCount}
+                onChange={(e) => {
+                  const val = Math.max(0, parseInt(e.target.value, 10) || 0);
+                  setWomenCount(val);
+                  setMenCount(Math.max(0, guestCount - val));
                 }}
                 style={inputStyle}
               />
