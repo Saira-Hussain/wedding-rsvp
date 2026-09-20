@@ -328,7 +328,7 @@ export default function InviteExperience({ guest }) {
 
           {/* Countdown */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>A Date To Remember</h2>
+            <h2 style={sectionHeadingStyle}> Counting Down To Forever</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
               {[
                 { label: 'Days', val: isMounted ? timeLeft.days : 0 },
@@ -412,7 +412,8 @@ export default function InviteExperience({ guest }) {
 
           {/* Our Favorite Restaurants */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Our Favorite Restaurants</h2>
+            <h2 style={sectionHeadingStyle}>A FEW OF OUR FAVORITES! </h2>
+            <h3 style={sectionHeadingStyle}> Hungry in houston? Here are a few places we love! </h3>
             <ul style={{ fontSize: '0.85rem', lineHeight: '1.8', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
               <li><strong>Aga's Restaurant & Catering</strong></li>
               <li><strong>Ma's House</strong></li>
@@ -476,12 +477,86 @@ export default function InviteExperience({ guest }) {
                 </p>
               </div>
 
-               <div>
+              <div style={{ marginTop: '14px' }}>
                 <p style={subHeadingStyle}> For our out of town guests</p>
                 <p style={{ margin: 0 }}>
                    We hope you have a safe travel and a memorable stay in Houston, please remember the couple in your duas while travelling! 
                 </p>
               </div>
+            </div>
+          </section>
+
+          {/* FINAL CLOSING CARD */}
+          <section style={{ ...cardContainerStyle, padding: '36px 24px', marginBottom: '12px' }}>
+            <h2
+              style={{
+                fontSize: '1.05rem',
+                letterSpacing: '2px',
+                color: '#610515',
+                marginBottom: '8px',
+                textTransform: 'uppercase',
+                fontWeight: '700',
+              }}
+            >
+              We Can’t Wait
+            </h2>
+            <h3
+              style={{
+                fontSize: '1.25rem',
+                letterSpacing: '2.5px',
+                color: '#610515',
+                margin: '0 0 16px 0',
+                textTransform: 'uppercase',
+                fontWeight: '700',
+              }}
+            >
+              To Celebrate With You 🤍
+            </h3>
+
+            <p
+              style={{
+                fontSize: '1.6rem',
+                fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
+                fontStyle: 'italic',
+                fontWeight: '600',
+                color: '#610515',
+                margin: '16px 0 4px 0',
+              }}
+            >
+              Ayesha & Owais
+            </p>
+
+            <p
+              style={{
+                fontSize: '0.85rem',
+                letterSpacing: '1.5px',
+                textTransform: 'uppercase',
+                color: '#8B6B23',
+                margin: '0 0 20px 0',
+                fontWeight: '600',
+              }}
+            >
+              December 2026 • Houston, Texas
+            </p>
+
+            <p
+              style={{
+                fontSize: '0.9rem',
+                lineHeight: '1.6',
+                color: '#3B2414',
+                margin: '0 0 20px 0',
+              }}
+            >
+              JazakAllah Khair for being part of our special day.
+            </p>
+
+            {/* Gold SVG Ornament */}
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <svg width="60" height="16" viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0 8H22" stroke="#C2A052" strokeWidth="1" />
+                <polygon points="30,2 36,8 30,14 24,8" fill="#C2A052" />
+                <path d="M38 8H60" stroke="#C2A052" strokeWidth="1" />
+              </svg>
             </div>
           </section>
         </div>
