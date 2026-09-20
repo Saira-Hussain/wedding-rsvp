@@ -49,10 +49,24 @@ export default function InviteExperience({ guest }) {
 
   const handleStartVideo = () => {
     setVideoStarted(true);
+
     if (videoRef.current) {
-      videoRef.current.play().catch((err) => {
-        console.log('Video play error:', err);
-      });
+      // Force muted properties directly on DOM element for iOS Safari compliance
+      videoRef.current.muted = true;
+      videoRef.current.defaultMuted = true;
+
+      const playPromise = videoRef.current.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn('Mobile video playback prevented:', err);
+          // Fallback for Mobile Low Power Mode or unsupported video codecs:
+          // Immediately skip video step so user isn't stuck on black screen
+          setVideoEnded(true);
+        });
+      }
+    } else {
+      setVideoEnded(true);
     }
   };
 
@@ -142,14 +156,21 @@ export default function InviteExperience({ guest }) {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
+            width: '100vw',
+            height: '100dvh',
+            overflow: 'hidden',
           }}
         >
           <video
             ref={videoRef}
             src="/envelope.mp4"
+            autoPlay
             muted
             playsInline
+            webkit-playsinline="true"
+            preload="auto"
             onEnded={() => setVideoEnded(true)}
+            onError={() => setVideoEnded(true)}
             style={{
               width: '100%',
               height: '100%',
