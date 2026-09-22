@@ -7,25 +7,16 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
 
   const [attending, setAttending] = useState(true);
   const [guestCount, setGuestCount] = useState(1);
-  const [menCount, setMenCount] = useState(1);
-  const [womenCount, setWomenCount] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
   const handleTotalGuestsChange = (e) => {
     const val = parseInt(e.target.value, 10);
     setGuestCount(val);
-    setMenCount(val);
-    setWomenCount(0);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (attending && menCount + womenCount !== guestCount) {
-      alert(`The sum of Men (${menCount}) and Women (${womenCount}) must equal total attending guests (${guestCount}).`);
-      return;
-    }
 
     setIsSubmitting(true);
 
@@ -112,58 +103,18 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
       </div>
 
       {attending && (
-        <>
-          <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '6px' }}>
-              Guests attending Shaadi:
-            </label>
-            <select value={guestCount} onChange={handleTotalGuestsChange} style={inputStyle}>
-              {Array.from({ length: reservedSeats }, (_, i) => i + 1).map((num) => (
-                <option key={num} value={num}>
-                  {num} {num === 1 ? 'Guest' : 'Guests'}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-            <div>
-              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: '#610515', marginBottom: '4px' }}>
-                Men:
-              </label>
-              <input
-                type="number"
-                min="0"
-                max={guestCount}
-                value={menCount}
-                onChange={(e) => {
-                  const val = Math.max(0, parseInt(e.target.value, 10) || 0);
-                  setMenCount(val);
-                  setWomenCount(Math.max(0, guestCount - val));
-                }}
-                style={inputStyle}
-              />
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: '700', color: '#610515', marginBottom: '4px' }}>
-                Women:
-              </label>
-              <input
-                type="number"
-                min="0"
-                max={guestCount}
-                value={womenCount}
-                onChange={(e) => {
-                  const val = Math.max(0, parseInt(e.target.value, 10) || 0);
-                  setWomenCount(val);
-                  setMenCount(Math.max(0, guestCount - val));
-                }}
-                style={inputStyle}
-              />
-            </div>
-          </div>
-        </>
+        <div>
+          <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '6px' }}>
+            Guests attending Shaadi:
+          </label>
+          <select value={guestCount} onChange={handleTotalGuestsChange} style={inputStyle}>
+            {Array.from({ length: reservedSeats }, (_, i) => i + 1).map((num) => (
+              <option key={num} value={num}>
+                {num} {num === 1 ? 'Guest' : 'Guests'}
+              </option>
+            ))}
+          </select>
+        </div>
       )}
 
       <button
