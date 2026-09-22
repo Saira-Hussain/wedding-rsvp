@@ -7,6 +7,7 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
 
   const [attending, setAttending] = useState(true);
   const [guestCount, setGuestCount] = useState(1);
+  const [duaNote, setDuaNote] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -21,8 +22,10 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
     setIsSubmitting(true);
 
     try {
-      // Add your Supabase or backend save call here
+      // TODO: Update this payload to save your RSVP status, guestCount, and duaNote to your Supabase table (mapping `duaNote` to your `notes` column)
+      // Example: await supabase.from('rsvps').update({ attending, guest_count: guestCount, notes: duaNote }).eq('id', guest.id);
       await new Promise((res) => setTimeout(res, 800));
+      
       setSubmitted(true);
       if (onSeatsUpdate) onSeatsUpdate();
     } catch (err) {
@@ -48,7 +51,7 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
       <div style={{ color: '#610515', padding: '20px 0' }}>
         <h3 style={{ margin: '0 0 10px 0' }}>JazakAllah Khair!</h3>
         <p style={{ margin: 0, fontSize: '0.9rem' }}>
-          Your RSVP response has been received.
+          Your RSVP response and heartfelt dua have been received.
         </p>
       </div>
     );
@@ -64,7 +67,7 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
 
       <div>
         <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '8px' }}>
-          Will you be attending the Shaadi? (3 PM)
+          Will you be attending the Shaadi? (4 PM)
         </label>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
           <button
@@ -117,11 +120,29 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
         </div>
       )}
 
+      {/* Leave a Dua Section */}
+      <div>
+        <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '6px' }}>
+          Leave a Dua for the Couple!:
+        </label>
+        <textarea
+          rows="3"
+          value={duaNote}
+          onChange={(e) => setDuaNote(e.target.value)}
+          placeholder="Share your warm wishes or a sweet dua..."
+          style={{
+            ...inputStyle,
+            resize: 'vertical',
+            fontFamily: 'inherit',
+          }}
+        />
+      </div>
+
       <button
         type="submit"
         disabled={isSubmitting}
         style={{
-          marginTop: '8px',
+          marginTop: '4px',
           backgroundImage: "url('/gold-card-bg.jpg')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
