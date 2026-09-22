@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 export default function RSVPForm({ guest, onSeatsUpdate }) {
-  const reservedSeats = guest?.reserved_seats || 4;
+  const reservedSeats = guest?.max_guests_shaadi || 4;
 
   const [attending, setAttending] = useState(true);
   const [guestCount, setGuestCount] = useState(1);
@@ -22,8 +22,8 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
     setIsSubmitting(true);
 
     try {
-      // TODO: Update this payload to save your RSVP status, guestCount, and duaNote to your Supabase table (mapping `duaNote` to your `notes` column)
-      // Example: await supabase.from('rsvps').update({ attending, guest_count: guestCount, notes: duaNote }).eq('id', guest.id);
+      // Example Supabase update call:
+      // await supabase.from('your_table_name').update({ attending, guest_count: guestCount, notes: duaNote }).eq('id', guest.id);
       await new Promise((res) => setTimeout(res, 800));
       
       setSubmitted(true);
@@ -123,7 +123,7 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
       {/* Leave a Dua Section */}
       <div>
         <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '6px' }}>
-          Leave a Dua for the Couple!
+          Leave a Dua for the Couple:
         </label>
         <textarea
           rows="3"
