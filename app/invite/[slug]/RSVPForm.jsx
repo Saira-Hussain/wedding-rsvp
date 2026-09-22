@@ -123,7 +123,7 @@ export default function RSVPForm({ guest, onSeatsUpdate }) {
       {/* Leave a Dua Section */}
       <div>
         <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '6px' }}>
-          Leave a Dua for the Couple!:
+          Leave a Dua for the Couple!
         </label>
         <textarea
           rows="3"
