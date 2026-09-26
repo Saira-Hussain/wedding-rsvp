@@ -1380,10 +1380,11 @@ export default function InviteExperience({ guest }) {
             RSVP
           </h2>
 
-          <RSVPForm
-            guest={guest}
+          <RSVPForm 
+            guest={guestData} 
             onSeatsUpdate={() => setHasSubmitted(true)}
             onEdit={() => setHasSubmitted(false)}
+            onBack={() => setCurrentView('main')} 
           />
         </div>
       )}
