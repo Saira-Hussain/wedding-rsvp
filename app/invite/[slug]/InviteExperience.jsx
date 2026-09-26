@@ -1384,7 +1384,7 @@ export default function InviteExperience({ guest }) {
             guest={guest} 
             onSeatsUpdate={() => setHasSubmitted(true)}
             onEdit={() => setHasSubmitted(false)}
-            onBack={() => setStep('main')} 
+            onBack={() => setStep('welcome')} 
           />
         </div>
       )}
