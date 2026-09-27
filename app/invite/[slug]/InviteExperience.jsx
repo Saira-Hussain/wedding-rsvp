@@ -1222,14 +1222,38 @@ export default function InviteExperience({ guest }) {
               <li><strong>Ma's House</strong></li>
               <li><strong>Bundu Khan</strong></li>
               <li><strong>Levant Grill & Bakery</strong></li>
-              <li><strong>Midnight Cravings - for a late night sweet treat</strong></li>
-              <li><strong>Filli - for our desi chai lovers</strong></li>
-              <li><strong>HEB - our favorite local grocery store</strong></li>
-              <li><strong>85 degrees - best boba in town</strong></li>
-              <li><strong>Bakersland - cutest halal cafe!</strong></li>
+              <li><strong>Midnight Cravings - For a late night sweet treat</strong></li>
+              <li><strong>Filli - For our desi chai lovers</strong></li>
+              <li><strong>HEB - Our favorite local grocery store</strong></li>
+              <li><strong>85 degrees - Best boba in town</strong></li>
+              <li><strong>Bakersland - Cutest halal cafe!</strong></li>
+              <li><strong>Sleek Creperie & Cafe - For a sugar overdose!</strong></li>
             </ul>
           </section>
 
+           {/* Shopping */}
+          <section style={cardContainerStyle}>
+            <h2 style={sectionHeadingStyle}>Shop Around!</h2>
+              <p
+                style={{
+                fontSize: '0.85rem',
+                color: '#8B6B23',
+                fontWeight: '600',
+                margin: '-8px 0 16px 0',
+                letterSpacing: '0.5px',
+                }}
+                >
+              You know you have to while on vacation!
+            </p>
+            <ul style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
+              <li><strong>First colony mall</strong></li>
+              <li><strong>For the last minute desi outfit shopping:</strong></li>
+              <li><strong>Farah Taalib </strong></li>
+              <li><strong>Junaid Jamshed</strong></li>
+              <li><strong>Poshak</strong></li>
+            </ul>
+          </section>
+          
           {/* Things to Do in Houston */}
           <section style={cardContainerStyle}>
             <h2 style={sectionHeadingStyle}>Things to Do in Houston</h2>
