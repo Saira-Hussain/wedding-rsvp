@@ -50,8 +50,9 @@ export default function InviteExperience({ guest }) {
   }, []);
 
   // Handles the tap on the envelope/screen to start video & audio
+  // Handles the tap on the envelope/screen to start video & audio
   const handleStartVideo = () => {
-    if (videoStarted) return; // Prevent double-triggering
+    if (videoStarted) return; 
     setVideoStarted(true);
 
     // 🎵 Play background audio
@@ -62,7 +63,7 @@ export default function InviteExperience({ guest }) {
         .catch((err) => console.warn('Audio playback prevented:', err));
     }
 
-    // ▶️ Play envelope opening video
+    // ▶️ Unmute video and play it
     if (videoRef.current) {
       videoRef.current.muted = false;
       videoRef.current.play().catch((err) => {
@@ -214,7 +215,7 @@ export default function InviteExperience({ guest }) {
             playsInline
             webkit-playsinline="true"
             preload="auto"
-            muted={false}
+            muted={true}
             onEnded={() => setVideoEnded(true)}
             onError={() => setVideoEnded(true)}
             style={{
