@@ -216,8 +216,8 @@ export default function InviteExperience({ guest }) {
             webkit-playsinline="true"
             preload="auto"
             muted={true}
-            //onEnded={() => setVideoEnded(true)}
-            //onError={() => setVideoEnded(true)}
+            onEnded={() => setVideoEnded(true)}
+            onError={() => setVideoEnded(true)}
             style={{
               width: '100%',
               height: '100%',
