@@ -4,19 +4,23 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase.js';
 
 export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
-  // Reads max seats reserved for them from the database
-  const reservedSeats = guest?.max_guests_shaadi || 4;
+  // Check invitation flags and maximum seats from the database schema
+  const isInvitedShaadi = guest?.invited_to_shaadi ?? true;
+  const isInvitedValima = guest?.invited_to_valima ?? false;
 
-  const [attending, setAttending] = useState(true);
-  const [guestCount, setGuestCount] = useState(1);
+  const reservedShaadi = guest?.max_guests_shaadi || 4;
+  const reservedValima = guest?.max_guests_valima || 4;
+
+  // Form States
+  const [attendingShaadi, setAttendingShaadi] = useState(isInvitedShaadi);
+  const [shaadiCount, setShaadiCount] = useState(1);
+
+  const [attendingValima, setAttendingValima] = useState(isInvitedValima);
+  const [valimaCount, setValimaCount] = useState(1);
+
   const [duaNote, setDuaNote] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
-  const handleTotalGuestsChange = (e) => {
-    const val = parseInt(e.target.value, 10);
-    setGuestCount(val);
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,13 +33,24 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
     setIsSubmitting(true);
 
     try {
+      const updateData = {
+        has_rsvped: true,
+        notes: duaNote,
+      };
+
+      // Only update Shaadi fields if they were invited to it
+      if (isInvitedShaadi) {
+        updateData.rsvp_count_shaadi = attendingShaadi ? shaadiCount : 0;
+      }
+
+      // Only update Valima fields if they were invited to it
+      if (isInvitedValima) {
+        updateData.rsvp_count_valima = attendingValima ? valimaCount : 0;
+      }
+
       const { error } = await supabase
         .from('guests')
-        .update({
-          has_rsvped: true,
-          rsvp_count_shaadi: attending ? guestCount : 0, // Updates with chosen count, or 0 if declined
-          notes: duaNote,
-        })
+        .update(updateData)
         .eq('id', guest.id);
 
       if (error) throw error;
@@ -95,64 +110,144 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
         </div>
       ) : (
         <form onSubmit={handleSubmit} style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-          <div style={{ textAlign: 'center', borderBottom: '1px solid #C2A052', paddingBottom: '12px' }}>
-            <p style={{ fontSize: '0.9rem', color: '#610515', fontWeight: '700', margin: 0 }}>
-              We have reserved {reservedSeats} {reservedSeats === 1 ? 'seat' : 'seats'} in your honor
-            </p>
-          </div>
+          
+          {/* SHAADI SECTION */}
+          {isInvitedShaadi && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', borderBottom: '1px solid #C2A052', paddingBottom: '16px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ fontSize: '0.9rem', color: '#610515', fontWeight: '700', margin: 0 }}>
+                  Shaadi: We have reserved {reservedShaadi} {reservedShaadi === 1 ? 'seat' : 'seats'} in your honor
+                </p>
+              </div>
 
-          <div>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '8px' }}>
-              Will you be attending the Shaadi? (4 PM)
-            </label>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-              <button
-                type="button"
-                onClick={() => setAttending(true)}
-                style={{
-                  padding: '10px',
-                  borderRadius: '6px',
-                  border: '1px solid #C2A052',
-                  backgroundColor: attending ? '#610515' : '#FAF3E0',
-                  color: attending ? '#F4E4BC' : '#3B2414',
-                  fontWeight: '700',
-                  fontSize: '0.8rem',
-                  cursor: 'pointer',
-                }}
-              >
-                Joyfully Accept
-              </button>
-              <button
-                type="button"
-                onClick={() => setAttending(false)}
-                style={{
-                  padding: '10px',
-                  borderRadius: '6px',
-                  border: '1px solid #C2A052',
-                  backgroundColor: !attending ? '#610515' : '#FAF3E0',
-                  color: !attending ? '#F4E4BC' : '#3B2414',
-                  fontWeight: '700',
-                  fontSize: '0.8rem',
-                  cursor: 'pointer',
-                }}
-              >
-                Regretfully Decline
-              </button>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '8px' }}>
+                  Will you be attending the Shaadi? (4 PM)
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setAttendingShaadi(true)}
+                    style={{
+                      padding: '10px',
+                      borderRadius: '6px',
+                      border: '1px solid #C2A052',
+                      backgroundColor: attendingShaadi ? '#610515' : '#FAF3E0',
+                      color: attendingShaadi ? '#F4E4BC' : '#3B2414',
+                      fontWeight: '700',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Joyfully Accept
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAttendingShaadi(false)}
+                    style={{
+                      padding: '10px',
+                      borderRadius: '6px',
+                      border: '1px solid #C2A052',
+                      backgroundColor: !attendingShaadi ? '#610515' : '#FAF3E0',
+                      color: !attendingShaadi ? '#F4E4BC' : '#3B2414',
+                      fontWeight: '700',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Regretfully Decline
+                  </button>
+                </div>
+              </div>
+
+              {attendingShaadi && (
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '6px' }}>
+                    Guests attending Shaadi:
+                  </label>
+                  <select 
+                    value={shaadiCount} 
+                    onChange={(e) => setShaadiCount(parseInt(e.target.value, 10))} 
+                    style={inputStyle}
+                  >
+                    {Array.from({ length: reservedShaadi }, (_, i) => i + 1).map((num) => (
+                      <option key={num} value={num}>
+                        {num} {num === 1 ? 'Guest' : 'Guests'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
-          </div>
+          )}
 
-          {attending && (
-            <div>
-              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '6px' }}>
-                Guests attending Shaadi:
-              </label>
-              <select value={guestCount} onChange={handleTotalGuestsChange} style={inputStyle}>
-                {Array.from({ length: reservedSeats }, (_, i) => i + 1).map((num) => (
-                  <option key={num} value={num}>
-                    {num} {num === 1 ? 'Guest' : 'Guests'}
-                  </option>
-                ))}
-              </select>
+          {/* VALIMA SECTION */}
+          {isInvitedValima && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', borderBottom: '1px solid #C2A052', paddingBottom: '16px' }}>
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ fontSize: '0.9rem', color: '#610515', fontWeight: '700', margin: 0 }}>
+                  Valima: We have reserved {reservedValima} {reservedValima === 1 ? 'seat' : 'seats'} in your honor
+                </p>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '8px' }}>
+                  Will you be attending the Valima?
+                </label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setAttendingValima(true)}
+                    style={{
+                      padding: '10px',
+                      borderRadius: '6px',
+                      border: '1px solid #C2A052',
+                      backgroundColor: attendingValima ? '#610515' : '#FAF3E0',
+                      color: attendingValima ? '#F4E4BC' : '#3B2414',
+                      fontWeight: '700',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Joyfully Accept
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setAttendingValima(false)}
+                    style={{
+                      padding: '10px',
+                      borderRadius: '6px',
+                      border: '1px solid #C2A052',
+                      backgroundColor: !attendingValima ? '#610515' : '#FAF3E0',
+                      color: !attendingValima ? '#F4E4BC' : '#3B2414',
+                      fontWeight: '700',
+                      fontSize: '0.8rem',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Regretfully Decline
+                  </button>
+                </div>
+              </div>
+
+              {attendingValima && (
+                <div>
+                  <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '6px' }}>
+                    Guests attending Valima:
+                  </label>
+                  <select 
+                    value={valimaCount} 
+                    onChange={(e) => setValimaCount(parseInt(e.target.value, 10))} 
+                    style={inputStyle}
+                  >
+                    {Array.from({ length: reservedValima }, (_, i) => i + 1).map((num) => (
+                      <option key={num} value={num}>
+                        {num} {num === 1 ? 'Guest' : 'Guests'}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
           )}
 
