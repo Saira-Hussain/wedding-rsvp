@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabaseClient'; // 1. Import your supabase client (adjust path as needed)
+import { supabase } from '@/lib/supabase.js'; // 1. Import your supabase client (adjust path as needed)
 
 export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
   const reservedSeats = guest?.max_guests_shaadi || 4;
