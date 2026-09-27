@@ -1139,18 +1139,18 @@ export default function InviteExperience({ guest }) {
           {/* Our Favorite Restaurants */}
           <section style={cardContainerStyle}>
             <h2 style={sectionHeadingStyle}>A Few of Our Favorites!</h2>
-            <p
-              style={{
+              <p
+                style={{
                 fontSize: '0.85rem',
                 color: '#8B6B23',
                 fontWeight: '600',
                 margin: '-8px 0 16px 0',
                 letterSpacing: '0.5px',
-              }}
-            >
+                }}
+                >
               Hungry in Houston? Here are a few places we love!
             </p>
-            <ul style={{ fontSize: '0.85rem', lineHeight: '1.8', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
+            <ul style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
               <li><strong>Aga's Restaurant & Catering</strong></li>
               <li><strong>Ma's House</strong></li>
               <li><strong>Bundu Khan</strong></li>
