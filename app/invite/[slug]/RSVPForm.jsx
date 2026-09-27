@@ -11,14 +11,24 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
   const reservedShaadi = guest?.max_guests_shaadi || 4;
   const reservedValima = guest?.max_guests_valima || 4;
 
-  // Form States
-  const [attendingShaadi, setAttendingShaadi] = useState(isInvitedShaadi);
-  const [shaadiCount, setShaadiCount] = useState(1);
+  // Determine if they already have an existing RSVP in the database
+  const alreadyRsvpd = guest?.has_rsvped ?? false;
 
-  const [attendingValima, setAttendingValima] = useState(isInvitedValima);
-  const [valimaCount, setValimaCount] = useState(1);
+  // Track whether they are currently editing their response
+  const [isEditing, setIsEditing] = useState(false);
 
-  const [duaNote, setDuaNote] = useState('');
+  // Form States (pre-fill with existing database data if they already RSVP'd)
+  const [attendingShaadi, setAttendingShaadi] = useState(
+    alreadyRsvpd ? (guest?.rsvp_count_shaadi > 0) : isInvitedShaadi
+  );
+  const [shaadiCount, setShaadiCount] = useState(guest?.rsvp_count_shaadi || 1);
+
+  const [attendingValima, setAttendingValima] = useState(
+    alreadyRsvpd ? (guest?.rsvp_count_valima > 0) : isInvitedValima
+  );
+  const [valimaCount, setValimaCount] = useState(guest?.rsvp_count_valima || 1);
+
+  const [duaNote, setDuaNote] = useState(guest?.notes || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
@@ -38,12 +48,10 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
         notes: duaNote,
       };
 
-      // Only update Shaadi fields if they were invited to it
       if (isInvitedShaadi) {
         updateData.rsvp_count_shaadi = attendingShaadi ? shaadiCount : 0;
       }
 
-      // Only update Valima fields if they were invited to it
       if (isInvitedValima) {
         updateData.rsvp_count_valima = attendingValima ? valimaCount : 0;
       }
@@ -56,6 +64,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
       if (error) throw error;
       
       setSubmitted(true);
+      setIsEditing(false);
       if (onSeatsUpdate) onSeatsUpdate();
     } catch (err) {
       console.error('Error updating RSVP:', err.message);
@@ -101,16 +110,69 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
         </button>
       )}
 
-      {submitted ? (
-        <div style={{ color: '#610515', padding: '20px 0', textAlign: 'center' }}>
-          <h3 style={{ margin: '0 0 10px 0' }}>JazakAllah Khair!</h3>
-          <p style={{ margin: 0, fontSize: '0.9rem' }}>
-            Your RSVP response and heartfelt dua have been received.
-          </p>
+      {/* Show completion message if submitted in this session or already RSVP'd and not editing */}
+      {(submitted || (alreadyRsvpd && !isEditing)) ? (
+        <div style={{ color: '#610515', padding: '20px 0', textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div>
+            <h3 style={{ margin: '0 0 10px 0' }}>JazakAllah Khair!</h3>
+            <p style={{ margin: 0, fontSize: '0.9rem' }}>
+              Your RSVP response has already been completed. We have received your details and duas.
+            </p>
+          </div>
+
+          <div style={{ backgroundColor: '#FAF3E0', border: '1px solid #C2A052', padding: '12px', borderRadius: '6px', textAlign: 'left', fontSize: '0.85rem' }}>
+            <p style={{ margin: '0 0 6px 0', fontWeight: '700' }}>Your Response Summary:</p>
+            {isInvitedShaadi && (
+              <p style={{ margin: '0 0 4px 0' }}>
+                • Shaadi: {guest?.rsvp_count_shaadi > 0 ? `${guest.rsvp_count_shaadi} Attending` : 'Declined'}
+              </p>
+            )}
+            {isInvitedValima && (
+              <p style={{ margin: '0 0 4px 0' }}>
+                • Valima: {guest?.rsvp_count_valima > 0 ? `${guest.rsvp_count_valima} Attending` : 'Declined'}
+              </p>
+            )}
+            {guest?.notes && (
+              <p style={{ margin: '4px 0 0 0', fontStyle: 'italic' }}>
+                &quot;{guest.notes}&quot;
+              </p>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsEditing(true)}
+            style={{
+              background: 'none',
+              border: '1px solid #610515',
+              color: '#610515',
+              padding: '10px',
+              borderRadius: '6px',
+              fontSize: '0.85rem',
+              fontWeight: '700',
+              cursor: 'pointer',
+              width: '100%',
+            }}
+          >
+            Edit Your Response
+          </button>
         </div>
       ) : (
         <form onSubmit={handleSubmit} style={{ textAlign: 'left', display: 'flex', flexDirection: 'column', gap: '16px' }}>
           
+          {isEditing && (
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #C2A052', paddingBottom: '8px' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: '700', color: '#610515' }}>Editing RSVP</span>
+              <button
+                type="button"
+                onClick={() => setIsEditing(false)}
+                style={{ background: 'none', border: 'none', color: '#610515', fontSize: '0.8rem', cursor: 'pointer', textDecoration: 'underline' }}
+              >
+                Cancel
+              </button>
+            </div>
+          )}
+
           {/* SHAADI SECTION */}
           {isInvitedShaadi && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', borderBottom: '1px solid #C2A052', paddingBottom: '16px' }}>
@@ -289,7 +351,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
               width: '100%',
             }}
           >
-            {isSubmitting ? 'Submitting...' : 'Submit RSVP'}
+            {isSubmitting ? 'Submitting...' : 'Update RSVP'}
           </button>
         </form>
       )}
