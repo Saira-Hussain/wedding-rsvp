@@ -205,39 +205,47 @@
         `}</style>
   
         {/* 1. BACKGROUND VIDEO LAYER */}
-        {!videoEnded && (
-          <div
-            style={{
-              position: 'fixed',
-              inset: 0,
-              zIndex: 0,
-              backgroundColor: '#000000',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              width: '100vw',
-              height: '100dvh',
-              overflow: 'hidden',
+      {!videoEnded && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 0,
+            backgroundColor: '#000000',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100vw',
+            height: '100dvh',
+            overflow: 'hidden',
+          }}
+        >
+          <video
+            ref={videoRef}
+            src="/envelope.mp4"
+            autoPlay
+            muted
+            playsInline
+            webkit-playsinline="true"
+            preload="auto"
+            onLoadedData={() => {
+              // Forces mobile browsers to render the first frame once loaded
+              if (videoRef.current) {
+                videoRef.current.pause();
+                videoRef.current.play().catch(() => {});
+              }
             }}
-          >
-            <video
-              ref={videoRef}
-              src="/envelope.mp4"
-              autoPlay
-              playsInline
-              webkit-playsinline="true"
-              preload="auto"
-              onEnded={() => setVideoEnded(true)}
-              onError={() => setVideoEnded(true)}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                maxWidth: '500px',
-              }}
-            />
-          </div>
-        )}
+            onEnded={() => setVideoEnded(true)}
+            onError={() => setVideoEnded(true)}
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              maxWidth: '500px',
+            }}
+          />
+        </div>
+      )}
   
         {/* 🎵 BACKGROUND AUDIO ELEMENT */}
         <audio 
