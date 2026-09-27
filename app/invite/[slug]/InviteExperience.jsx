@@ -397,11 +397,11 @@
           }}
         >
           
-          {/* LEFT SCROLL INDICATOR (Pinned alongside the content area) */}
+          {/* LEFT SCROLL INDICATOR */}
           <div
             style={{
               position: 'absolute',
-              left: 'calc(50% - 300px)',
+              left: isMobile ? '8px' : 'calc(50% - 300px)',
               top: '40px',
               height: '80%',
               display: 'flex',
@@ -429,11 +429,11 @@
             </div>
           </div>
 
-          {/* RIGHT SCROLL INDICATOR (Pinned alongside the content area) */}
+          {/* RIGHT SCROLL INDICATOR */}
           <div
             style={{
               position: 'absolute',
-              right: 'calc(50% - 300px)',
+              right: isMobile ? '8px' : 'calc(50% - 300px)',
               top: '40px',
               height: '80%',
               display: 'flex',
