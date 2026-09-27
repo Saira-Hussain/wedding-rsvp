@@ -391,7 +391,7 @@ export default function InviteExperience({ guest }) {
                 fontWeight: '400',
               }}
             >
-              Welcome {guest?.family_name || 'Family'}[cite: 1]
+              Welcome {guest?.family_name || 'Family'}
             </h2>
           </section>
 
