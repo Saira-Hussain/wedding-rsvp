@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { supabase } from '@/lib/supabaseClient'; // 1. Import your supabase client (adjust path as needed)
 
 export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
   const reservedSeats = guest?.max_guests_shaadi || 4;
@@ -19,19 +20,33 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Basic check to ensure we have a guest ID to update
+    if (!guest?.id) {
+      alert('Guest information is missing. Please refresh and try again.');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
-      // Replace with your actual Supabase update call:
-      // const { error } = await supabase.from('your_table_name').update({ has_rsvpd: true, attending, guest_count: attending ? guestCount : 0, notes: duaNote }).eq('id', guest.id);
-      // if (error) throw error;
+      // 2. Connect to Supabase and update the record
+      const { error } = await supabase
+        .from('guests') // Replace 'guests' with your actual table name
+        .update({
+          has_rsvpd: true,
+          attending: attending,
+          guest_count: attending ? guestCount : 0,
+          notes: duaNote,
+        })
+        .eq('id', guest.id); // Matches the current guest's unique ID
 
-      await new Promise((res) => setTimeout(res, 800));
+      if (error) throw error;
       
       setSubmitted(true);
       if (onSeatsUpdate) onSeatsUpdate();
     } catch (err) {
-      console.error(err);
+      console.error('Error updating RSVP:', err.message);
+      alert('Failed to submit RSVP. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
