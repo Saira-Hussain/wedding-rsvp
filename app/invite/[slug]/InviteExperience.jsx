@@ -1,106 +1,54 @@
 'use client';
 
-
-
 import { useState, useEffect, useRef } from 'react';
-
 import RSVPForm from './RSVPForm';
 
-
-
 export default function InviteExperience({ guest }) {
-
   const [step, setStep] = useState('welcome');
-
   const [videoStarted, setVideoStarted] = useState(false);
-
   const [videoEnded, setVideoEnded] = useState(false);
-
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
-
   const [isMounted, setIsMounted] = useState(false);
-
   const [isMobile, setIsMobile] = useState(false);
-
   const [openQaIndex, setOpenQaIndex] = useState(null);
-
   const [isPlaying, setIsPlaying] = useState(false);
 
-
-
   const videoRef = useRef(null);
-
   const audioRef = useRef(null);
-
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-
-
   useEffect(() => {
-
     setIsMounted(true);
 
-
-
     const checkMobile = () => {
-
       setIsMobile(window.innerWidth <= 768);
-
     };
-
-
 
     checkMobile();
-
     window.addEventListener('resize', checkMobile);
 
-
-
     const targetDate = new Date('2026-12-26T15:00:00');
-
     const updateCountdown = () => {
-
       const now = new Date();
-
       const difference = targetDate.getTime() - now.getTime();
 
-
-
       if (difference > 0) {
-
         setTimeLeft({
-
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-
           hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-
           minutes: Math.floor((difference / 1000 / 60) % 60),
-
           seconds: Math.floor((difference / 1000) % 60),
-
         });
-
       }
-
     };
-
-
 
     updateCountdown();
-
     const timer = setInterval(updateCountdown, 1000);
-
     return () => {
-
       clearInterval(timer);
-
       window.removeEventListener('resize', checkMobile);
-
     };
-
   }, []);
-
-
 
   const handleStartVideo = () => {
     setVideoStarted(true);
@@ -131,8 +79,6 @@ export default function InviteExperience({ guest }) {
     }
   };
 
-
-
   const handleBismillahClick = (e) => {
     e.stopPropagation();
     if (!videoStarted) {
@@ -141,507 +87,263 @@ export default function InviteExperience({ guest }) {
     setStep('details');
   };
 
-
-
   const handleDownloadCalendar = () => {
-
     const icsContent = [
-
       'BEGIN:VCALENDAR',
-
       'VERSION:2.0',
-
       'PRODID:-//Wedding Invitation//EN',
-
       'BEGIN:VEVENT',
-
       'SUMMARY:Ayesha & Owais Shaadi',
-
       'DESCRIPTION:Nikah at 3:00 PM followed by Reception.',
-
       'LOCATION:Houston Marriott Sugar Land Town Center\\, 16090 City Walk\\, Sugar Land\\, TX 77479',
-
       'DTSTART:20261226T150000',
-
       'DTEND:20261226T230000',
-
       'END:VEVENT',
-
       'BEGIN:VEVENT',
-
       'SUMMARY:Ayesha & Owais Valima',
-
       'DESCRIPTION:Valima Reception starting at 5:30 PM.',
-
       'LOCATION:10505 Cash Rd\\, Stafford\\, TX 77477',
-
       'DTSTART:20261227T173000',
-
       'DTEND:20261227T220000',
-
       'END:VEVENT',
-
       'END:VCALENDAR',
-
     ].join('\n');
 
-
-
     const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8;' });
-
     const url = window.URL.createObjectURL(blob);
-
     const link = document.createElement('a');
-
     link.href = url;
-
     link.setAttribute('download', 'ayesha-owais-wedding.ics');
-
     document.body.appendChild(link);
-
     link.click();
-
     document.body.removeChild(link);
-
   };
-
-
 
   const isShaadiInvited = guest?.invited_to_shaadi ?? true;
-
   const isValimaInvited = guest?.invited_to_valima ?? true;
 
-
-
   const shaadiImgSrc = guest?.groom_side ? '/shaadi-groom.png' : '/shaadi-bride.png';
-
   const valimaImgSrc = guest?.groom_side ? '/valima-groom.png' : '/valima-bride.png';
 
-
-
   const welcomeBgImage = isMobile ? "url('/welcome-mobile-bg.jpg')" : "url('/welcome-bg.jpg')";
-
   const shaadiMapsUrl = "https://www.google.com/maps/search/?api=1&query=16090+City+Walk,+Sugar+Land,+TX+77479";
-
   const valimaMapsUrl = "https://www.google.com/maps/search/?api=1&query=10505+Cash+Rd,+Stafford,+TX+77477";
 
-
-
   const cardContainerStyle = {
-
     zIndex: 1,
-
     maxWidth: '560px',
-
     width: '92%',
-
     backgroundColor: '#E4C6A3',
-
     border: '2px solid #C2A052',
-
     borderRadius: '12px',
-
     boxShadow: '0 15px 35px rgba(0, 0, 0, 0.65)',
-
     boxSizing: 'border-box',
-
     padding: '28px 24px',
-
     textAlign: 'center',
-
     color: '#3B2414',
-
     marginBottom: '28px',
-
   };
-
-
 
   const sectionHeadingStyle = {
-
     fontSize: '1.1rem',
-
     letterSpacing: '2px',
-
     color: '#610515',
-
     marginBottom: '16px',
-
     textTransform: 'uppercase',
-
     fontWeight: '700',
-
   };
-
-
 
   const subHeadingStyle = {
-
     fontWeight: '700',
-
     margin: '12px 0 2px 0',
-
     color: '#610515',
-
   };
-
-
 
   const goldButtonStyle = {
-
     marginTop: '16px',
-
     backgroundImage: "url('/gold-card-bg.jpg')",
-
     backgroundSize: 'cover',
-
     backgroundPosition: 'center',
-
     color: '#610515',
-
     padding: '12px 24px',
-
     fontSize: '0.85rem',
-
     border: '2px solid #C2A052',
-
     borderRadius: '6px',
-
     cursor: 'pointer',
-
     fontWeight: '700',
-
     letterSpacing: '1.5px',
-
     textTransform: 'uppercase',
-
     boxShadow: '0 4px 15px rgba(0, 0, 0, 0.5)',
-
     width: '100%',
-
     maxWidth: '300px',
-
   };
 
-
-
   return (
-
     <main
-
       style={{
-
         minHeight: '100dvh',
-
         width: '100%',
-
         position: 'relative',
-
         display: 'flex',
-
         flexDirection: 'column',
-
         alignItems: 'center',
-
         justifyContent: step === 'welcome' ? 'space-between' : 'flex-start',
-
         fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
-
         backgroundColor: '#000000',
-
         padding: step === 'details' ? '32px 16px 60px 16px' : '0px',
-
         boxSizing: 'border-box',
-
         overflowX: 'hidden',
-
         overflowY: step === 'welcome' ? 'hidden' : 'auto',
-
       }}
-
     >
+      {/* 🌟 GLOBAL KEYFRAME ANIMATION FOR SCROLL ARROWS */}
+      <style>{`
+        @keyframes bounceDown {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(8px); }
+        }
+      `}</style>
 
       {/* 1. BACKGROUND VIDEO LAYER */}
-
       {!videoEnded && (
-
         <div
-
           style={{
-
             position: 'fixed',
-
             inset: 0,
-
             zIndex: 0,
-
             backgroundColor: '#000000',
-
             display: 'flex',
-
             alignItems: 'center',
-
             justifyContent: 'center',
-
             width: '100vw',
-
             height: '100dvh',
-
             overflow: 'hidden',
-
           }}
-
         >
-
           <video
-
             ref={videoRef}
-
             src="/envelope.mp4"
-
             autoPlay
-
             playsInline
-
             webkit-playsinline="true"
-
             preload="auto"
-
             onEnded={() => setVideoEnded(true)}
-
             onError={() => setVideoEnded(true)}
-
             style={{
-
               width: '100%',
-
               height: '100%',
-
               objectFit: 'cover',
-
               maxWidth: '500px',
-
             }}
-
           />
-
         </div>
-
       )}
-
-
 
       {/* 🎵 BACKGROUND AUDIO ELEMENT */}
-
       <audio 
-
         ref={audioRef} 
-
         src="/your-wedding-audio-file.mpeg" 
-
         loop 
-
         preload="auto" 
-
       />
 
-
-
       {/* 2. INVISIBLE FULL-SCREEN TAP TRIGGER */}
-
       {!videoStarted && step === 'welcome' && (
-
         <div
-
           onClick={handleStartVideo}
-
           style={{
-
             position: 'fixed',
-
             inset: 0,
-
             zIndex: 10,
-
             cursor: 'pointer',
-
             backgroundColor: 'transparent',
-
           }}
-
         />
-
       )}
-
-
 
       {/* 3. RESPONSIVE DYNAMIC BACKGROUND */}
-
       {videoEnded && (
-
         <div
-
           style={{
-
             position: 'fixed',
-
             top: 0,
-
             left: 0,
-
             width: '100%',
-
             height: '100dvh',
-
             zIndex: 0,
-
             backgroundImage: step === 'welcome' ? welcomeBgImage : 'none',
-
             backgroundColor: step === 'welcome' ? 'transparent' : '#000000',
-
             backgroundSize: isMobile ? 'cover' : 'contain',
-
             backgroundPosition: 'center',
-
             backgroundRepeat: 'no-repeat',
-
             transition: 'background-image 0.8s ease-in-out',
-
           }}
-
         />
-
       )}
-
-
 
       {step === 'welcome' && videoEnded && (
-
         <div
-
           style={{
-
             position: 'fixed',
-
             top: 0,
-
             left: 0,
-
             width: '100%',
-
             height: '100dvh',
-
             zIndex: 0,
-
             pointerEvents: 'none',
-
             background:
-
               'linear-gradient(to right, rgba(0,0,0,0.85) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.85) 100%)',
-
           }}
-
         />
-
       )}
 
-
-
       {/* STEP 1: WELCOME SCREEN */}
-
       {videoEnded && step === 'welcome' && (
-
         <div
-
           style={{
-
             position: 'relative',
-
             zIndex: 20,
-
             width: '100%',
-
             maxWidth: '1200px',
-
             height: '100dvh',
-
             display: 'flex',
-
             flexDirection: 'column',
-
             justifyContent: 'space-between',
-
             alignItems: 'center',
-
             textAlign: 'center',
-
             boxSizing: 'border-box',
-
             paddingTop: 'calc(env(safe-area-inset-top) + 40px)',
-
             paddingBottom: 'calc(env(safe-area-inset-bottom) + 32px)',
-
           }}
-
         >
-
           {/* COMPACT & ELEGANT WELCOME HEADER */}
-
           <div
-
             style={{
-
               padding: '6px 18px',
-
               border: '1px solid #C2A052',
-
               borderRadius: '20px',
-
               backgroundColor: '#000000',
-
               boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
-
               margin: '0 16px',
-
               maxWidth: '90%',
-
               boxSizing: 'border-box',
-
             }}
-
           >
-
             <h1
-
               style={{
-
                 color: '#FAF3E0',
-
                 fontSize: 'clamp(0.75rem, 2.5vw, 1.05rem)',
-
                 fontFamily: "var(--font-cormorant), 'Playfair Display', serif",
-
                 fontWeight: '600',
-
                 letterSpacing: '1.5px',
-
                 margin: 0,
-
                 textTransform: 'uppercase',
-
                 whiteSpace: 'nowrap',
-
               }}
-
             >
-
               Welcome {guest?.family_name || 'Family'}
-
             </h1>
-
           </div>
-
-
 
           {/* BISMILLAH BUTTON & PRESS TO PROCEED */}
           <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -683,13 +385,11 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-
-
       {/* STEP 2: SCROLLABLE CARDS & DETAILS */}
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
           
-          {/* FLOATING DOWN-ARROWS (Fixed to bottom left and right corners of the screen to prompt scrolling) */}
+          {/* FLOATING DOWN-ARROWS */}
           <div
             style={{
               position: 'fixed',
