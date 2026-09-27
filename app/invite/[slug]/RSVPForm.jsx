@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase.js';
 
 export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
+  // Reads max seats reserved for them from the database
   const reservedSeats = guest?.max_guests_shaadi || 4;
 
   const [attending, setAttending] = useState(true);
@@ -28,12 +29,11 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
     setIsSubmitting(true);
 
     try {
-      // Updated with your exact database column names
       const { error } = await supabase
         .from('guests')
         .update({
           has_rsvped: true,
-          rsvp_count_shaadi: attending ? guestCount : 0,
+          rsvp_count_shaadi: attending ? guestCount : 0, // Updates with chosen count, or 0 if declined
           notes: duaNote,
         })
         .eq('id', guest.id);
