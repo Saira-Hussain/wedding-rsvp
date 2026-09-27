@@ -62,27 +62,35 @@ export default function InviteExperience({ guest }) {
   }, []);
 
   // Handles the tap on the envelope image to start video & audio simultaneously
-  const handleStartVideo = () => {
-    if (videoStarted) return; 
-    setVideoStarted(true);
+  const handleStartVideo = async () => {
+  if (videoStarted) return; 
+  setVideoStarted(true);
 
-    // 🎵 Play background audio
-    if (audioRef.current) {
+  // 1. Try playing the video first (muted for 100% mobile compatibility)
+  if (videoRef.current) {
+    try {
+      videoRef.current.muted = true; 
+      await videoRef.current.play();
+    } else {
+      setVideoEnded(true);
+    }
+  } catch (err) {
+    console.warn('Video playback failed, skipping to welcome:', err);
+    setVideoEnded(true);
+  }
+
+  // 2. Try playing background audio separately
+  if (audioRef.current) {
+    try {
       audioRef.current.muted = false;
-      audioRef.current.play()
-        .then(() => setIsPlaying(true))
-        .catch((err) => console.warn('Audio playback prevented:', err));
+      await audioRef.current.play();
+      setIsPlaying(true);
+    } catch (err) {
+      console.warn('Audio autoplay prevented by browser:', err);
+      setIsPlaying(false);
     }
-
-    // ▶️ Play video
-    if (videoRef.current) {
-      videoRef.current.muted = false;
-      videoRef.current.play().catch((err) => {
-        console.warn('Video playback prevented:', err);
-        setVideoEnded(true);
-      });
-    }
-  };
+  }
+};
 
   const handleBismillahClick = (e) => {
     e.stopPropagation();
