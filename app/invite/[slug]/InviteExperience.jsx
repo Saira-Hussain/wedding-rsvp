@@ -222,7 +222,7 @@ export default function InviteExperience({ guest }) {
             // Static image fallback for instant mobile rendering
             <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <img
-                src="/envelope.jpg"
+                src="/envelope.jpeg"
                 alt="Envelope Invitation"
                 style={{
                   width: '100%',
