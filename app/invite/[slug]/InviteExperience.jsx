@@ -430,8 +430,6 @@ export default function InviteExperience({ guest }) {
 
             autoPlay
 
-            muted
-
             playsInline
 
             webkit-playsinline="true"
