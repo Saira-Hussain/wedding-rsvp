@@ -1245,12 +1245,17 @@ export default function InviteExperience({ guest }) {
                 >
               You know you have to while on vacation!
             </p>
-            <ul style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
+            <ul>
               <li><strong>First colony mall</strong></li>
-              <li><strong>For the last minute desi outfit shopping:</strong></li>
-              <li><strong>Farah Taalib </strong></li>
-              <li><strong>Junaid Jamshed</strong></li>
-              <li><strong>Poshak</strong></li>
+              <li><strong>Sugar Land Town Center</strong></li>
+              <li>
+                <strong>For the last minute desi outfit shopping:</strong>
+                <ul>
+                  <li>Farah Taalib</li>
+                  <li>Junaid Jamshed</li>
+                  <li>Poshak</li>
+                </ul>
+              </li>
             </ul>
           </section>
           
