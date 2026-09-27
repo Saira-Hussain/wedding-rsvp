@@ -1234,23 +1234,23 @@ export default function InviteExperience({ guest }) {
            {/* Shopping */}
           <section style={cardContainerStyle}>
             <h2 style={sectionHeadingStyle}>Shop Around!</h2>
-              <p
-                style={{
+            <p
+              style={{
                 fontSize: '0.85rem',
                 color: '#8B6B23',
                 fontWeight: '600',
                 margin: '-8px 0 16px 0',
                 letterSpacing: '0.5px',
-                }}
-                >
+              }}
+            >
               You know you have to while on vacation!
             </p>
-            <ul>
-              <li><strong>First colony mall</strong></li>
+            <ul style={{ textAlign: 'left', paddingLeft: '20px', color: '#3B2414', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <li><strong>First Colony Mall</strong></li>
               <li><strong>Sugar Land Town Center</strong></li>
               <li>
                 <strong>For the last minute desi outfit shopping:</strong>
-                <ul>
+                <ul style={{ textAlign: 'left', paddingLeft: '20px', marginTop: '4px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
                   <li>Farah Taalib</li>
                   <li>Junaid Jamshed</li>
                   <li>Poshak</li>
