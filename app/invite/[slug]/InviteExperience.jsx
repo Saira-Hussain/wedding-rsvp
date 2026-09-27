@@ -396,7 +396,6 @@ export default function InviteExperience({ guest }) {
                 fontWeight: '700',
               }}
             >
-              To Our Beginning
             </p>
           </section>
 
