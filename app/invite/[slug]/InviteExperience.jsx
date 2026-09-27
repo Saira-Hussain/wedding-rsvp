@@ -61,11 +61,11 @@ export default function InviteExperience({ guest }) {
   }, []);
 
   // Handles the tap on the envelope/screen to start video & audio
-  const handleStartVideo = () => {
+ const handleStartVideo = () => {
     if (videoStarted) return; 
     setVideoStarted(true);
 
-    // 🎵 Play background audio
+    // 🎵 Play background audio (this handles the sound)
     if (audioRef.current) {
       audioRef.current.muted = false;
       audioRef.current.play()
@@ -73,16 +73,15 @@ export default function InviteExperience({ guest }) {
         .catch((err) => console.warn('Audio playback prevented:', err));
     }
 
-    // ▶️ Unmute video and play it
+    // ▶️ Play the video (keep it muted so mobile browsers don't choke)
     if (videoRef.current) {
-      videoRef.current.muted = false;
+      videoRef.current.muted = true; // Keep true since envelope has no audio
       videoRef.current.play().catch((err) => {
         console.warn('Video playback prevented:', err);
         setVideoEnded(true);
       });
     }
   };
-
   const handleBismillahClick = (e) => {
     e.stopPropagation();
     if (!videoStarted) {
