@@ -1155,6 +1155,11 @@ export default function InviteExperience({ guest }) {
               <li><strong>Ma's House</strong></li>
               <li><strong>Bundu Khan</strong></li>
               <li><strong>Levant Grill & Bakery</strong></li>
+              <li>Midnight Cravings - for a late night sweet treat<li>
+              <li>Filli - for our desi chai lovers<li>
+              <li>HEB - our favorite local grocery store<li>
+              <li>85 degrees - best boba in town<li>
+              <li>Bakersland - cutest halal cafe!<li>
             </ul>
           </section>
 
