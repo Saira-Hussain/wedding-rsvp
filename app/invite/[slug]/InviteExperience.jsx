@@ -88,22 +88,23 @@ export default function InviteExperience({ guest }) {
 
   const handleBismillahClick = (e) => {
     e.stopPropagation();
-    
-    // Ensure audio plays upon interaction
-    if (audioRef.current && !isPlaying) {
+    e.preventDefault();
+
+    // 1. Play audio
+    if (audioRef.current) {
       audioRef.current.play()
         .then(() => setIsPlaying(true))
         .catch((err) => console.warn('Audio playback prevented:', err));
     }
 
-    // Force video to complete/hide immediately
+    // 2. Force all video flags to closed/ended
     setVideoStarted(true);
     setVideoEnded(true);
 
-    // Switch to details page
+    // 3. Force step to details
     setStep('details');
   };
-
+  
   const handleDownloadCalendar = () => {
     const icsContent = [
       'BEGIN:VCALENDAR',
