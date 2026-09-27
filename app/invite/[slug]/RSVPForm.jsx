@@ -32,6 +32,11 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
+  // KEEP TRACK OF SAVED VALUES FOR THE SUMMARY DISPLAY
+  const [savedShaadiCount, setSavedShaadiCount] = useState(guest?.rsvp_count_shaadi || 0);
+  const [savedValimaCount, setSavedValimaCount] = useState(guest?.rsvp_count_valima || 0);
+  const [savedNotes, setSavedNotes] = useState(guest?.notes || '');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -43,18 +48,15 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
     setIsSubmitting(true);
 
     try {
+      const finalShaadiCount = attendingShaadi ? shaadiCount : 0;
+      const finalValimaCount = attendingValima ? valimaCount : 0;
+
       const updateData = {
         has_rsvped: true,
         notes: duaNote,
+        rsvp_count_shaadi: isInvitedShaadi ? finalShaadiCount : 0,
+        rsvp_count_valima: isInvitedValima ? finalValimaCount : 0,
       };
-
-      if (isInvitedShaadi) {
-        updateData.rsvp_count_shaadi = attendingShaadi ? shaadiCount : 0;
-      }
-
-      if (isInvitedValima) {
-        updateData.rsvp_count_valima = attendingValima ? valimaCount : 0;
-      }
 
       const { error } = await supabase
         .from('guests')
@@ -63,6 +65,11 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
 
       if (error) throw error;
       
+      // Update local saved state so the summary instantly reflects the submission
+      setSavedShaadiCount(updateData.rsvp_count_shaadi);
+      setSavedValimaCount(updateData.rsvp_count_valima);
+      setSavedNotes(duaNote);
+
       setSubmitted(true);
       setIsEditing(false);
       if (onSeatsUpdate) onSeatsUpdate();
@@ -124,17 +131,17 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
             <p style={{ margin: '0 0 6px 0', fontWeight: '700' }}>Your Response Summary:</p>
             {isInvitedShaadi && (
               <p style={{ margin: '0 0 4px 0' }}>
-                • Shaadi: {guest?.rsvp_count_shaadi > 0 ? `${guest.rsvp_count_shaadi} Attending` : 'Declined'}
+                • Shaadi: {savedShaadiCount > 0 ? `${savedShaadiCount} Attending` : 'Declined'}
               </p>
             )}
             {isInvitedValima && (
               <p style={{ margin: '0 0 4px 0' }}>
-                • Valima: {guest?.rsvp_count_valima > 0 ? `${guest.rsvp_count_valima} Attending` : 'Declined'}
+                • Valima: {savedValimaCount > 0 ? `${savedValimaCount} Attending` : 'Declined'}
               </p>
             )}
-            {guest?.notes && (
+            {savedNotes && (
               <p style={{ margin: '4px 0 0 0', fontStyle: 'italic' }}>
-                &quot;{guest.notes}&quot;
+                &quot;{savedNotes}&quot;
               </p>
             )}
           </div>
