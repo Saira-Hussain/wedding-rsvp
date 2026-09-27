@@ -1,18 +1,3 @@
-Here is the cleaned-up, fully corrected `InviteExperience.jsx` file.
-
-The following fixes have been applied:
-
-1. **Added missing state & styles**: Declared `const [openQaIndex, setOpenQaIndex] = useState(null);` and hoisted `subHeadingStyle` to the top of the component so it is globally available across all sections without throwing a `ReferenceError`.
-
-
-2. **Removed duplicate code**: Cleaned up the accidentally duplicated **Valima Card** block.
-
-
-3. **Preserved all logic**: Kept your countdown timer, calendar export, embedded maps, timelines, and RSVP state handling entirely intact.
-
-
-
-```jsx
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -1510,5 +1495,3 @@ export default function InviteExperience({ guest }) {
     </main>
   );
 }
-
-```
