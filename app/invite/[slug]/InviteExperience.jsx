@@ -27,6 +27,15 @@ export default function InviteExperience({ guest }) {
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
+    // Attempt to autoplay audio immediately on mount
+    if (audioRef.current) {
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => {
+          console.warn('Initial autoplay blocked by browser policy, waiting for interaction:', err);
+        });
+    }
+
     const targetDate = new Date('2026-12-26T15:00:00');
     const updateCountdown = () => {
       const now = new Date();
@@ -53,8 +62,8 @@ export default function InviteExperience({ guest }) {
   const handleStartVideo = () => {
     setVideoStarted(true);
 
-    // 🎵 Start background music simultaneously with the video
-    if (audioRef.current) {
+    // Ensure audio plays upon interaction if initial autoplay was restricted
+    if (audioRef.current && !isPlaying) {
       audioRef.current.play()
         .then(() => setIsPlaying(true))
         .catch((err) => console.warn('Audio playback prevented:', err));
@@ -149,12 +158,6 @@ export default function InviteExperience({ guest }) {
     marginBottom: '16px',
     textTransform: 'uppercase',
     fontWeight: '700',
-  };
-
-  const subHeadingStyle = {
-    fontWeight: '700',
-    margin: '12px 0 2px 0',
-    color: '#610515',
   };
 
   const goldButtonStyle = {
@@ -268,22 +271,6 @@ export default function InviteExperience({ guest }) {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             transition: 'background-image 0.8s ease-in-out',
-          }}
-        />
-      )}
-
-      {step === 'welcome' && videoEnded && (
-        <div
-          style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100dvh',
-            zIndex: 0,
-            pointerEvents: 'none',
-            background:
-              'linear-gradient(to right, rgba(0,0,0,0.85) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.85) 100%)',
           }}
         />
       )}
