@@ -63,9 +63,8 @@ export default function InviteExperience({ guest }) {
   // Handles the tap on the envelope/screen to start video & audio
   const handleStartVideo = () => {
     if (videoStarted) return; 
-    setVideoStarted(true);
 
-    // 🎵 Play background audio
+    // 🎵 Play background audio (unlocked via the user tap)
     if (audioRef.current) {
       audioRef.current.muted = false;
       audioRef.current.play()
@@ -73,14 +72,8 @@ export default function InviteExperience({ guest }) {
         .catch((err) => console.warn('Audio playback prevented:', err));
     }
 
-    // ▶️ Play video
-    if (videoRef.current) {
-      videoRef.current.muted = false;
-      videoRef.current.play().catch((err) => {
-        console.warn('Video playback prevented:', err);
-        setVideoEnded(true);
-      });
-    }
+    // Trigger the state change to mount the video
+    setVideoStarted(true);
   };
 
   const handleDownloadCalendar = () => {
@@ -212,7 +205,6 @@ export default function InviteExperience({ guest }) {
             cursor: 'pointer',
           }}
         >
-          {/* Show envelope.jpeg before the user clicks to start the video */}
           {!videoStarted ? (
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
               <img
@@ -249,12 +241,15 @@ export default function InviteExperience({ guest }) {
             <video
               ref={videoRef}
               src="/envelope.mp4"
+              autoPlay
               playsInline
               webkit-playsinline="true"
               preload="auto"
-              muted={false}
               onEnded={() => setVideoEnded(true)}
-              onError={() => setVideoEnded(true)}
+              onError={(e) => {
+                console.error("Video error:", e);
+                setVideoEnded(true);
+              }}
               style={{
                 width: '100%',
                 height: '100%',
