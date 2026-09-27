@@ -283,11 +283,13 @@ export default function InviteExperience({ guest }) {
             ref={videoRef}
             src="/envelope.mp4"
             playsInline
-            webkit-playsinline="true"
+            muted={true} // MUST be true for reliable cross-browser/mobile autoplay
             preload="auto"
-            muted={false}
             onEnded={() => setVideoEnded(true)}
-            onError={() => setVideoEnded(true)}
+            onError={(e) => {
+            console.error("Video error:", e);
+            setVideoEnded(true); // Fallback so users don't get stuck
+            }}
             style={{
               width: '100%',
               height: '100%',
