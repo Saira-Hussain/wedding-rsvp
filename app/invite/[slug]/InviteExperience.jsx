@@ -223,17 +223,10 @@ export default function InviteExperience({ guest }) {
             ref={videoRef}
             src="/envelope.mp4"
             playsInline
-            webkit-playsinline="true"
+            muted
+            autoPlay={false}
             preload="auto"
-            muted={true}
-            onEnded={() => setVideoEnded(true)}
-            onError={() => setVideoEnded(true)}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              maxWidth: '500px',
-            }}
+            className="w-full h-full object-cover"
           />
         </div>
       )}
