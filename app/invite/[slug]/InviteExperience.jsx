@@ -4,29 +4,18 @@ import { useState, useEffect, useRef } from 'react';
 import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
-  // Change initial step or keep 'welcome' but handle the image overlay first
   const [step, setStep] = useState('welcome');
   const [videoStarted, setVideoStarted] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  
-  // State for the Q&A accordion
   const [openQaIndex, setOpenQaIndex] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const videoRef = useRef(null);
   const audioRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-  // Reusable sub-heading style defined at component level
-  const subHeadingStyle = {
-    fontWeight: '700',
-    color: '#610515',
-    margin: 0,
-    fontSize: '0.95rem',
-  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -61,31 +50,38 @@ export default function InviteExperience({ guest }) {
     };
   }, []);
 
-  // Handles the tap on the envelope image to start video & audio simultaneously
   const handleStartVideo = () => {
-    if (videoStarted) return; 
     setVideoStarted(true);
 
-    // 🎵 Play background audio
+    // 🎵 Start background music simultaneously with the video[cite: 3]
     if (audioRef.current) {
-      audioRef.current.muted = false;
       audioRef.current.play()
         .then(() => setIsPlaying(true))
         .catch((err) => console.warn('Audio playback prevented:', err));
     }
 
-    // ▶️ Play video
     if (videoRef.current) {
       videoRef.current.muted = false;
-      videoRef.current.play().catch((err) => {
-        console.warn('Video playback prevented:', err);
-        setVideoEnded(true);
-      });
+      videoRef.current.defaultMuted = false;
+
+      const playPromise = videoRef.current.play();
+
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn('Mobile video playback prevented:', err);
+          setVideoEnded(true);
+        });
+      }
+    } else {
+      setVideoEnded(true);
     }
   };
 
   const handleBismillahClick = (e) => {
     e.stopPropagation();
+    if (!videoStarted) {
+      handleStartVideo();
+    }
     setStep('details');
   };
 
@@ -155,6 +151,12 @@ export default function InviteExperience({ guest }) {
     fontWeight: '700',
   };
 
+  const subHeadingStyle = {
+    fontWeight: '700',
+    margin: '12px 0 2px 0',
+    color: '#610515',
+  };
+
   const goldButtonStyle = {
     marginTop: '16px',
     backgroundImage: "url('/gold-card-bg.jpg')",
@@ -192,84 +194,31 @@ export default function InviteExperience({ guest }) {
         overflowY: step === 'welcome' ? 'hidden' : 'auto',
       }}
     >
-      <style>{`
-        @keyframes bounceDown {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(8px); }
+      {/* CSS KEYFRAMES FOR BOUNCING ARROWS */}
+      <style jsx global>{`
+        @keyframes bounce-down {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+          }
+          40% {
+            transform: translateY(8px);
+          }
+          60% {
+            transform: translateY(4px);
+          }
+        }
+        .bouncy-arrow {
+          animation: bounce-down 2s infinite;
         }
       `}</style>
 
-      {/* 🎵 BACKGROUND AUDIO ELEMENT */}
-      <audio 
-        ref={audioRef} 
-        src="/your-wedding-audio-file.mpeg" 
-        loop 
-        preload="auto" 
-      />
-
-      {/* 1. INITIAL STATIC ENVELOPE IMAGE & BUTTON LAYER (Shown before tap) */}
-      {!videoStarted && (
-        <div
-          onClick={handleStartVideo}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 30,
-            backgroundColor: '#000000',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100vw',
-            height: '100dvh',
-            cursor: 'pointer',
-          }}
-        >
-          {/* Envelope Image */}
-          <img
-            src="/envelope.jpeg"
-            alt="Envelope"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              maxWidth: '500px',
-              position: 'absolute',
-              inset: 0,
-              margin: 'auto',
-            }}
-          />
-
-          {/* Tap to Open Invitation Button on top of the image */}
-          <div
-            style={{
-              position: 'relative',
-              zIndex: 40,
-              bottom: '-30vh',
-              backgroundColor: 'rgba(0, 0, 0, 0.75)',
-              border: '1px solid #C2A052',
-              borderRadius: '25px',
-              padding: '12px 28px',
-              color: '#FAF3E0',
-              fontSize: '0.9rem',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              backdropFilter: 'blur(4px)',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
-            }}
-          >
-            Tap to open invitation ✨
-          </div>
-        </div>
-      )}
-
-      {/* 2. BACKGROUND VIDEO LAYER (Pops up and plays automatically after tap) */}
-      {videoStarted && !videoEnded && (
+      {/* 1. BACKGROUND VIDEO LAYER[cite: 3] */}
+      {!videoEnded && (
         <div
           style={{
             position: 'fixed',
             inset: 0,
-            zIndex: 20,
+            zIndex: 0,
             backgroundColor: '#000000',
             display: 'flex',
             alignItems: 'center',
@@ -282,10 +231,11 @@ export default function InviteExperience({ guest }) {
           <video
             ref={videoRef}
             src="/envelope.mp4"
+            autoPlay
+            muted
             playsInline
             webkit-playsinline="true"
             preload="auto"
-            muted={false}
             onEnded={() => setVideoEnded(true)}
             onError={() => setVideoEnded(true)}
             style={{
@@ -298,7 +248,29 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 3. RESPONSIVE DYNAMIC BACKGROUND */}
+      {/* 🎵 BACKGROUND AUDIO ELEMENT[cite: 3] */}
+      <audio 
+        ref={audioRef} 
+        src="/your-wedding-audio-file.mpeg" 
+        loop 
+        preload="auto" 
+      />
+
+      {/* 2. INVISIBLE FULL-SCREEN TAP TRIGGER[cite: 3] */}
+      {!videoStarted && step === 'welcome' && (
+        <div
+          onClick={handleStartVideo}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 10,
+            cursor: 'pointer',
+            backgroundColor: 'transparent',
+          }}
+        />
+      )}
+
+      {/* 3. RESPONSIVE DYNAMIC BACKGROUND[cite: 3] */}
       {videoEnded && (
         <div
           style={{
@@ -318,7 +290,23 @@ export default function InviteExperience({ guest }) {
         />
       )}
 
-      {/* STEP 1: WELCOME SCREEN (Appears after video finishes) */}
+      {videoEnded && step === 'welcome' && (
+        <div
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100dvh',
+            zIndex: 0,
+            pointerEvents: 'none',
+            background:
+              'linear-gradient(to right, rgba(0,0,0,0.85) 0%, transparent 15%, transparent 85%, rgba(0,0,0,0.85) 100%)',
+          }}
+        />
+      )}
+
+      {/* STEP 1: WELCOME SCREEN[cite: 3] */}
       {videoEnded && step === 'welcome' && (
         <div
           style={{
@@ -337,6 +325,7 @@ export default function InviteExperience({ guest }) {
             paddingBottom: 'calc(env(safe-area-inset-bottom) + 32px)',
           }}
         >
+          {/* COMPACT & ELEGANT WELCOME HEADER[cite: 3] */}
           <div
             style={{
               padding: '6px 18px',
@@ -361,10 +350,11 @@ export default function InviteExperience({ guest }) {
                 whiteSpace: 'nowrap',
               }}
             >
-              Welcome {guest?.family_name || 'Family'}
+              Welcome {guest?.family_name || 'Family'}[cite: 3]
             </h1>
           </div>
 
+          {/* BISMILLAH BUTTON & CLICK TO PROCEED[cite: 3] */}
           <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button
               onClick={handleBismillahClick}
@@ -385,94 +375,66 @@ export default function InviteExperience({ guest }) {
                 maxWidth: '260px',
               }}
             >
-              Bismillah
+              Bismillah[cite: 3]
             </button>
             <span
               style={{
-                marginTop: '8px',
                 color: '#FAF3E0',
                 fontSize: '0.75rem',
                 letterSpacing: '1.5px',
                 textTransform: 'uppercase',
-                textShadow: '0 2px 6px rgba(0,0,0,0.9)',
-                opacity: 0.9,
+                marginTop: '8px',
+                opacity: 0.85,
+                textShadow: '0 2px 4px rgba(0,0,0,0.9)',
               }}
             >
-              Press to proceed
+              Click to proceed[cite: 3]
             </span>
           </div>
         </div>
       )}
 
-      {/* STEP 2: SCROLLABLE CARDS & DETAILS */}
+      {/* STEP 2: SCROLLABLE CARDS & DETAILS[cite: 3] */}
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
           
-          {/* LEFT SCROLL INDICATOR */}
+          {/* BOUNCY SCROLL ARROWS PLACED ON THE SIDES */}
           <div
+            className="bouncy-arrow"
             style={{
-              position: 'absolute',
-              left: isMobile ? '8px' : 'calc(50% - 300px)',
-              top: '40px',
-              height: '80%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
+              position: 'fixed',
+              left: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 99,
+              color: '#C2A052',
+              fontSize: '1.8rem',
               pointerEvents: 'none',
-              zIndex: 50,
+              textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+              display: isMobile ? 'block' : 'none',
             }}
           >
-            <div
-              style={{
-                position: 'sticky',
-                top: '50vh',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                color: '#C2A052',
-                animation: 'bounceDown 1.5s infinite ease-in-out',
-                textShadow: '0 2px 8px rgba(0,0,0,0.9)',
-              }}
-            >
-              <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>│</span>
-              <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>⌄</span>
-            </div>
+            ▼
           </div>
-
-          {/* RIGHT SCROLL INDICATOR */}
           <div
+            className="bouncy-arrow"
             style={{
-              position: 'absolute',
-              right: isMobile ? '8px' : 'calc(50% - 300px)',
-              top: '40px',
-              height: '80%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
+              position: 'fixed',
+              right: '12px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              zIndex: 99,
+              color: '#C2A052',
+              fontSize: '1.8rem',
               pointerEvents: 'none',
-              zIndex: 50,
+              textShadow: '0 2px 8px rgba(0,0,0,0.8)',
+              display: isMobile ? 'block' : 'none',
             }}
           >
-            <div
-              style={{
-                position: 'sticky',
-                top: '50vh',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                color: '#C2A052',
-                animation: 'bounceDown 1.5s infinite ease-in-out',
-                textShadow: '0 2px 8px rgba(0,0,0,0.9)',
-              }}
-            >
-              <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>│</span>
-              <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>⌄</span>
-            </div>
+            ▼
           </div>
 
-          {/* WELCOME HEADER */}
+          {/* WELCOME HEADER[cite: 3] */}
           <section
             style={{
               ...cardContainerStyle,
@@ -489,11 +451,22 @@ export default function InviteExperience({ guest }) {
                 fontWeight: '400',
               }}
             >
-              Welcome {guest?.family_name || 'Family'}
+              Welcome {guest?.family_name || 'Family'}[cite: 3]
             </h2>
+            <p
+              style={{
+                fontSize: '0.9rem',
+                letterSpacing: '2px',
+                textTransform: 'uppercase',
+                color: '#8B6B23',
+                margin: 0,
+                fontWeight: '700',
+              }}
+            >
+            </p>
           </section>
 
-          {/* SHAADI CARD */}
+          {/* SHAADI CARD[cite: 3] */}
           {isShaadiInvited && (
             <div
               style={{
@@ -518,12 +491,12 @@ export default function InviteExperience({ guest }) {
                 }}
               />
               <button onClick={() => setStep('rsvp')} style={goldButtonStyle}>
-                Click to RSVP
+                Click to RSVP[cite: 3]
               </button>
             </div>
           )}
 
-          {/* VALIMA CARD */}
+          {/* VALIMA CARD[cite: 3] */}
           {isValimaInvited && (
             <div
               style={{
@@ -548,14 +521,14 @@ export default function InviteExperience({ guest }) {
                 }}
               />
               <button onClick={() => setStep('rsvp')} style={goldButtonStyle}>
-                Click to RSVP
+                Click to RSVP[cite: 3]
               </button>
             </div>
           )}
 
-          {/* COUNTDOWN & SAVE TO CALENDAR */}
+          {/* COUNTDOWN & SAVE TO CALENDAR[cite: 3] */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Counting Down To Forever</h2>
+            <h2 style={sectionHeadingStyle}>Counting Down To Forever[cite: 3]</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '20px' }}>
               {[
                 { label: 'Days', val: isMounted ? timeLeft.days : 0 },
@@ -600,15 +573,15 @@ export default function InviteExperience({ guest }) {
                 boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
               }}
             >
-              📅 ADD TO CALENDAR (.ICS)
+              📅 ADD TO CALENDAR (.ICS)[cite: 3]
             </button>
           </section>
 
-          {/* SHAADI VENUE MAP */}
+          {/* SHAADI VENUE MAP[cite: 3] */}
           {isShaadiInvited && (
             <section style={cardContainerStyle}>
               <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
-                SHAADI VENUE
+                SHAADI VENUE[cite: 3]
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '16px' }}>
                 <div
@@ -627,10 +600,10 @@ export default function InviteExperience({ guest }) {
                   📍
                 </div>
                 <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#610515', margin: '0 0 4px 0' }}>
-                  Houston Marriott Sugar Land Town Center
+                  Houston Marriott Sugar Land Town Center[cite: 3]
                 </h2>
                 <p style={{ margin: 0, fontSize: '0.85rem', color: '#666' }}>
-                  16090 City Walk, Sugar Land, TX 77479
+                  16090 City Walk, Sugar Land, TX 77479[cite: 3]
                 </p>
               </div>
 
@@ -677,17 +650,17 @@ export default function InviteExperience({ guest }) {
                     gap: '6px',
                   }}
                 >
-                  🗺️ OPEN SHAADI MAPS
+                  🗺️ OPEN SHAADI MAPS[cite: 3]
                 </a>
               </div>
             </section>
           )}
 
-          {/* VALIMA VENUE MAP */}
+          {/* VALIMA VENUE MAP[cite: 3] */}
           {isValimaInvited && (
             <section style={cardContainerStyle}>
               <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
-                VALIMA VENUE
+                VALIMA VENUE[cite: 3]
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '16px' }}>
                 <div
@@ -706,10 +679,10 @@ export default function InviteExperience({ guest }) {
                   📍
                 </div>
                 <h2 style={{ fontSize: '1.2rem', fontWeight: '700', color: '#610515', margin: '0 0 4px 0' }}>
-                  Valima Reception Hall
+                  Valima Reception Hall[cite: 3]
                 </h2>
                 <p style={{ margin: 0, fontSize: '0.85rem', color: '#666' }}>
-                  10505 Cash Rd, Stafford, TX 77477
+                  10505 Cash Rd, Stafford, TX 77477[cite: 3]
                 </p>
               </div>
 
@@ -756,20 +729,20 @@ export default function InviteExperience({ guest }) {
                     gap: '6px',
                   }}
                 >
-                  🗺️ OPEN VALIMA MAPS
+                  🗺️ OPEN VALIMA MAPS[cite: 3]
                 </a>
               </div>
             </section>
           )}
 
-          {/* SHAADI TIMELINE */}
+          {/* SHAADI TIMELINE[cite: 3] */}
           {isShaadiInvited && (
             <section style={cardContainerStyle}>
               <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
-                ITINERARY OF EVENTS
+                ITINERARY OF EVENTS[cite: 3]
               </p>
               <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '16px' }}>
-                Shaadi Timeline
+                Shaadi Timeline[cite: 3]
               </h2>
 
               <div
@@ -789,9 +762,10 @@ export default function InviteExperience({ guest }) {
                   boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                 }}
               >
-                DECEMBER 26, 2026
+                DECEMBER 26, 2026[cite: 3]
               </div>
 
+              {/* Vertical Timeline[cite: 3] */}
               <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
                 <div
                   style={{
@@ -804,6 +778,7 @@ export default function InviteExperience({ guest }) {
                   }}
                 />
 
+                {/* Event 1: Nikah[cite: 3] */}
                 <div style={{ position: 'relative', marginBottom: '20px' }}>
                   <div
                     style={{
@@ -843,12 +818,13 @@ export default function InviteExperience({ guest }) {
                         marginBottom: '6px',
                       }}
                     >
-                      3:00 PM
+                      3:00 PM[cite: 3]
                     </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Nikah Ceremony</h3>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Nikah Ceremony[cite: 3]</h3>
                   </div>
                 </div>
 
+                {/* Event 2: Maghrib[cite: 3] */}
                 <div style={{ position: 'relative', marginBottom: '20px' }}>
                   <div
                     style={{
@@ -888,12 +864,13 @@ export default function InviteExperience({ guest }) {
                         marginBottom: '6px',
                       }}
                     >
-                      5:30 PM
+                      5:30 PM[cite: 3]
                     </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Maghrib Prayer</h3>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Maghrib Prayer[cite: 3]</h3>
                   </div>
                 </div>
 
+                {/* Event 3: Entrances[cite: 3] */}
                 <div style={{ position: 'relative', marginBottom: '20px' }}>
                   <div
                     style={{
@@ -933,12 +910,13 @@ export default function InviteExperience({ guest }) {
                         marginBottom: '6px',
                       }}
                     >
-                      6:00 PM
+                      6:00 PM[cite: 3]
                     </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Grand Entrances</h3>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Grand Entrances[cite: 3]</h3>
                   </div>
                 </div>
 
+                {/* Event 4: Dinner[cite: 3] */}
                 <div style={{ position: 'relative' }}>
                   <div
                     style={{
@@ -978,23 +956,23 @@ export default function InviteExperience({ guest }) {
                         marginBottom: '6px',
                       }}
                     >
-                      7:00 PM
+                      7:00 PM[cite: 3]
                     </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service</h3>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service[cite: 3]</h3>
                   </div>
                 </div>
               </div>
             </section>
           )}
 
-          {/* VALIMA TIMELINE */}
+          {/* VALIMA TIMELINE[cite: 3] */}
           {isValimaInvited && (
             <section style={cardContainerStyle}>
               <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
-                ITINERARY OF EVENTS
+                ITINERARY OF EVENTS[cite: 3]
               </p>
               <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '16px' }}>
-                Valima Timeline
+                Valima Timeline[cite: 3]
               </h2>
 
               <div
@@ -1014,9 +992,10 @@ export default function InviteExperience({ guest }) {
                   boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
                 }}
               >
-                DECEMBER 27, 2026
+                DECEMBER 27, 2026[cite: 3]
               </div>
 
+              {/* Vertical Timeline[cite: 3] */}
               <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
                 <div
                   style={{
@@ -1029,6 +1008,7 @@ export default function InviteExperience({ guest }) {
                   }}
                 />
 
+                {/* Event 1: Maghrib[cite: 3] */}
                 <div style={{ position: 'relative', marginBottom: '20px' }}>
                   <div
                     style={{
@@ -1068,12 +1048,13 @@ export default function InviteExperience({ guest }) {
                         marginBottom: '6px',
                       }}
                     >
-                      5:30 PM
+                      5:30 PM[cite: 3]
                     </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Maghrib Prayer</h3>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Maghrib Prayer[cite: 3]</h3>
                   </div>
                 </div>
 
+                {/* Event 2: Entrances[cite: 3] */}
                 <div style={{ position: 'relative', marginBottom: '20px' }}>
                   <div
                     style={{
@@ -1113,12 +1094,13 @@ export default function InviteExperience({ guest }) {
                         marginBottom: '6px',
                       }}
                     >
-                      6:00 PM
+                      6:00 PM[cite: 3]
                     </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Grand Entrances</h3>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Grand Entrances[cite: 3]</h3>
                   </div>
                 </div>
 
+                {/* Event 3: Dinner[cite: 3] */}
                 <div style={{ position: 'relative' }}>
                   <div
                     style={{
@@ -1158,47 +1140,47 @@ export default function InviteExperience({ guest }) {
                         marginBottom: '6px',
                       }}
                     >
-                      7:00 PM
+                      7:00 PM[cite: 3]
                     </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service</h3>
+                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service[cite: 3]</h3>
                   </div>
                 </div>
               </div>
             </section>
           )}
 
-          {/* Where to Stay */}
+          {/* Where to Stay[cite: 3] */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Where to Stay</h2>
+            <h2 style={sectionHeadingStyle}>Where to Stay[cite: 3]</h2>
             <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', margin: '0 0 12px 0' }}>
-              Below are some great options for hotels!
+              Below are some great options for hotels![cite: 3]
             </p>
             <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
-              <p style={{ ...subHeadingStyle, marginTop: 0 }}>Sugar Land Town Square Area</p>
+              <p style={{ ...subHeadingStyle, marginTop: 0 }}>Sugar Land Town Square Area[cite: 3]</p>
               <ul style={{ margin: '4px 0 0 0', paddingLeft: '20px' }}>
-                <li>Marriott Sugar Land Town Square</li>
-                <li>Hyatt Place Houston / Sugar Land</li>
-                <li>Courtyard by Marriott Houston Sugar Land / Lake Pointe</li>
-                <li>Hilton Garden Inn Houston / Sugar Land</li>
+                <li>Marriott Sugar Land Town Square[cite: 3]</li>
+                <li>Hyatt Place Houston / Sugar Land[cite: 3]</li>
+                <li>Courtyard by Marriott Houston Sugar Land / Lake Pointe[cite: 3]</li>
+                <li>Hilton Garden Inn Houston / Sugar Land[cite: 3]</li>
               </ul>
             </div>
           </section>
 
-          {/* Travel */}
+          {/* Travel[cite: 3] */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Travel</h2>
+            <h2 style={sectionHeadingStyle}>Travel[cite: 3]</h2>
             <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
               <div>
-                <p style={{ ...subHeadingStyle, marginTop: 0 }}>Getting In</p>
+                <p style={{ ...subHeadingStyle, marginTop: 0 }}>Getting In[cite: 3]</p>
                 <p style={{ margin: 0 }}>
-                  We recommend flying into <strong>George Bush Intercontinental Airport (IAH)</strong>! <strong>William P. Hobby Airport (HOU)</strong> is another good option depending on where you’re staying.
+                  We recommend flying into <strong>George Bush Intercontinental Airport (IAH)</strong>! <strong>William P. Hobby Airport (HOU)</strong> is another good option depending on where you’re staying.[cite: 3]
                 </p>
               </div>
 
               <div>
-                <p style={subHeadingStyle}>Getting Downtown</p>
+                <p style={subHeadingStyle}>Getting Downtown[cite: 3]</p>
                 <p style={{ margin: 0 }}>
-                  There are plenty of ways to get around Houston! You’ll find several car rental options, plus taxis and rideshare services. If you plan to explore the city, renting a car is often the easiest option.
+                  There are plenty of ways to get around Houston! You’ll find several car rental options, plus taxis and rideshare services. If you plan to explore the city, renting a car is often the easiest option.[cite: 3]
                 </p>
                 <div style={{ marginTop: '8px' }}>
                   <a
@@ -1207,66 +1189,66 @@ export default function InviteExperience({ guest }) {
                     rel="noopener noreferrer"
                     style={{ color: '#8B6B23', textDecoration: 'underline', fontSize: '0.8rem', fontWeight: '600' }}
                   >
-                    George Bush Intercontinental Airport (IAH) - Ground Transportation Information
+                    George Bush Intercontinental Airport (IAH) - Ground Transportation Information[cite: 3]
                   </a>
                 </div>
               </div>
 
               <div>
-                <p style={subHeadingStyle}>High Season in Houston</p>
+                <p style={subHeadingStyle}>High Season in Houston[cite: 3]</p>
                 <p style={{ margin: 0 }}>
-                  Houston stays busy all year, and hotels fill up fast on wedding weekends. Book your travel early to get the best rates and availability.
+                  Houston stays busy all year, and hotels fill up fast on wedding weekends. Book your travel early to get the best rates and availability.[cite: 3]
                 </p>
               </div>
             </div>
           </section>
 
-          {/* Our Favorite Restaurants */}
+          {/* Our Favorite Restaurants[cite: 3] */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>A Few of Our Favorites!</h2>
-            <p
-              style={{
+            <h2 style={sectionHeadingStyle}>A Few of Our Favorites![cite: 3]</h2>
+              <p
+                style={{
                 fontSize: '0.85rem',
                 color: '#8B6B23',
                 fontWeight: '600',
                 margin: '-8px 0 16px 0',
                 letterSpacing: '0.5px',
-              }}
-            >
-              Hungry in Houston? Here are a few places we love!
+                }}
+                >
+              Hungry in Houston? Here are a few places we love![cite: 3]
             </p>
             <ul style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
-              <li><strong>Aga's Restaurant & Catering</strong></li>
-              <li><strong>Ma's House</strong></li>
-              <li><strong>Bundu Khan</strong></li>
-              <li><strong>Levant Grill & Bakery</strong></li>
-              <li><strong>Midnight Cravings - for a late night sweet treat</strong></li>
-              <li><strong>Filli - for our desi chai lovers</strong></li>
-              <li><strong>HEB - our favorite local grocery store</strong></li>
-              <li><strong>85 degrees - best boba in town</strong></li>
-              <li><strong>Bakersland - cutest halal cafe!</strong></li>
+              <li><strong>Aga's Restaurant & Catering</strong>[cite: 3]</li>
+              <li><strong>Ma's House</strong>[cite: 3]</li>
+              <li><strong>Bundu Khan</strong>[cite: 3]</li>
+              <li><strong>Levant Grill & Bakery</strong>[cite: 3]</li>
+              <li><strong>Midnight Cravings - for a late night sweet treat</strong>[cite: 3]</li>
+              <li><strong>Filli - for our desi chai lovers</strong>[cite: 3]</li>
+              <li><strong>HEB - our favorite local grocery store</strong>[cite: 3]</li>
+              <li><strong>85 degrees - best boba in town</strong>[cite: 3]</li>
+              <li><strong>Bakersland - cutest halal cafe!</strong>[cite: 3]</li>
             </ul>
           </section>
 
-          {/* Things to Do in Houston */}
+          {/* Things to Do in Houston[cite: 3] */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Things to Do in Houston</h2>
+            <h2 style={sectionHeadingStyle}>Things to Do in Houston[cite: 3]</h2>
             <ul style={{ fontSize: '0.85rem', lineHeight: '1.8', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
-              <li>Space Center Houston</li>
-              <li>Museum District</li>
-              <li>Buffalo Bayou Park</li>
-              <li>Houston Zoo</li>
-              <li>The Menil Collection</li>
-              <li>Discovery Green</li>
-              <li>The Galleria</li>
+              <li>Space Center Houston[cite: 3]</li>
+              <li>Museum District[cite: 3]</li>
+              <li>Buffalo Bayou Park[cite: 3]</li>
+              <li>Houston Zoo[cite: 3]</li>
+              <li>The Menil Collection[cite: 3]</li>
+              <li>Discovery Green[cite: 3]</li>
+              <li>The Galleria[cite: 3]</li>
             </ul>
           </section>
 
-          {/* Q&A Section */}
+         {/* Q&A Section[cite: 3] */}
           <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Q & A</h2>
+            <h2 style={sectionHeadingStyle}>Q & A[cite: 3]</h2>
             <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', margin: '0 0 16px 0' }}>
-              If you have questions, please check our Q & A section first!
+              If you have questions, please check our Q & A section first![cite: 3]
             </p>
             <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
               {[
@@ -1296,6 +1278,12 @@ export default function InviteExperience({ guest }) {
                 }
               ].map((item, index, arr) => {
                 const isOpen = openQaIndex === index;
+                const subHeadingStyle = {
+                  fontWeight: '700',
+                  color: '#610515',
+                  margin: 0,
+                  fontSize: '0.95rem',
+                };
 
                 return (
                   <div
@@ -1350,7 +1338,7 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* FINAL CLOSING CARD */}
+          {/* FINAL CLOSING CARD[cite: 3] */}
           <section style={cardContainerStyle}>
             <h2
               style={{
@@ -1365,7 +1353,7 @@ export default function InviteExperience({ guest }) {
               }}
             >
               We can't wait to <br />
-              celebrate with you
+              celebrate with you[cite: 3]
             </h2>
 
             <p
@@ -1378,7 +1366,7 @@ export default function InviteExperience({ guest }) {
                 fontWeight: '600',
               }}
             >
-              December 2026 • Houston, Texas
+              December 2026 • Houston, Texas[cite: 3]
             </p>
 
             <p
@@ -1389,7 +1377,7 @@ export default function InviteExperience({ guest }) {
                 margin: '0 0 16px 0',
               }}
             >
-              JazakAllah Khair for being a part of our special day :)
+              JazakAllah Khair for being a part of our special day :)[cite: 3]
             </p>
 
             <p
@@ -1403,7 +1391,7 @@ export default function InviteExperience({ guest }) {
               }}
             >
               With love, <br />
-              Ayesha & Owais
+              Ayesha & Owais[cite: 3]
             </p>
 
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -1415,7 +1403,7 @@ export default function InviteExperience({ guest }) {
             </div>
           </section>
 
-          {/* RING BOX SECTION */}
+          {/* RING BOX SECTION[cite: 3] */}
           <section
             style={{
               ...cardContainerStyle,
@@ -1441,7 +1429,7 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* STEP 3: RSVP FORM */}
+      {/* STEP 3: RSVP FORM[cite: 3] */}
       {step === 'rsvp' && (
         <div
           style={{
@@ -1460,7 +1448,7 @@ export default function InviteExperience({ guest }) {
           }}
         >
           <h2 style={{ fontSize: '1.3rem', color: '#610515', marginBottom: '8px' }}>
-            RSVP
+            RSVP[cite: 3]
           </h2>
 
           <RSVPForm 
@@ -1472,7 +1460,7 @@ export default function InviteExperience({ guest }) {
         </div>
       )}
 
-      {/* 🎵 FLOATING MUSIC TOGGLE BUTTON */}
+      {/* 🎵 FLOATING MUSIC TOGGLE BUTTON[cite: 3] */}
       {step === 'details' && (
         <button
           onClick={() => {
