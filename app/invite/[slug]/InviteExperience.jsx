@@ -73,7 +73,7 @@ export default function InviteExperience({ guest }) {
         .catch((err) => console.warn('Audio playback prevented:', err));
     }
 
-    // ▶️ Unmute video and play it
+    // ▶️ Play video
     if (videoRef.current) {
       videoRef.current.muted = false;
       videoRef.current.play().catch((err) => {
@@ -81,14 +81,6 @@ export default function InviteExperience({ guest }) {
         setVideoEnded(true);
       });
     }
-  };
-
-  const handleBismillahClick = (e) => {
-    e.stopPropagation();
-    if (!videoStarted) {
-      handleStartVideo();
-    }
-    setStep('details');
   };
 
   const handleDownloadCalendar = () => {
@@ -185,13 +177,13 @@ export default function InviteExperience({ guest }) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: step === 'welcome' ? 'space-between' : 'flex-start',
+        justifyContent: step === 'welcome' && videoEnded ? 'space-between' : 'flex-start',
         fontFamily: "var(--font-cormorant), 'Playfair Display', 'Georgia', serif",
         backgroundColor: '#000000',
         padding: step === 'details' ? '32px 16px 60px 16px' : '0px',
         boxSizing: 'border-box',
         overflowX: 'hidden',
-        overflowY: step === 'welcome' ? 'hidden' : 'auto',
+        overflowY: step === 'welcome' && !videoEnded ? 'hidden' : 'auto',
       }}
     >
       <style>{`
@@ -201,7 +193,7 @@ export default function InviteExperience({ guest }) {
         }
       `}</style>
 
-      {/* 1. BACKGROUND VIDEO LAYER */}
+      {/* 1. INITIAL ENVELOPE IMAGE & VIDEO LAYER */}
       {!videoEnded && (
         <div
           onClick={handleStartVideo}
@@ -211,30 +203,66 @@ export default function InviteExperience({ guest }) {
             zIndex: 0,
             backgroundColor: '#000000',
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
             width: '100vw',
             height: '100dvh',
             overflow: 'hidden',
-            cursor: videoStarted ? 'default' : 'pointer',
+            cursor: 'pointer',
           }}
         >
-          <video
-            ref={videoRef}
-            src="/envelope.mp4"
-            playsInline
-            webkit-playsinline="true"
-            preload="auto"
-            muted={true}
-            onEnded={() => setVideoEnded(true)}
-            onError={() => setVideoEnded(true)}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              maxWidth: '500px',
-            }}
-          />
+          {/* Show envelope.jpeg before the user clicks to start the video */}
+          {!videoStarted ? (
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
+              <img
+                src="/envelope.jpeg"
+                alt="Invitation Envelope"
+                style={{
+                  width: '100%',
+                  maxWidth: '400px',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  borderRadius: '12px',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.8)',
+                }}
+              />
+              <button
+                style={{
+                  backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                  color: '#FFFFFF',
+                  padding: '12px 28px',
+                  fontSize: '0.95rem',
+                  border: '1px solid #C2A052',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  letterSpacing: '1px',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
+                  textTransform: 'uppercase',
+                }}
+              >
+                Press to Open Invitation ✨
+              </button>
+            </div>
+          ) : (
+            <video
+              ref={videoRef}
+              src="/envelope.mp4"
+              playsInline
+              webkit-playsinline="true"
+              preload="auto"
+              muted={false}
+              onEnded={() => setVideoEnded(true)}
+              onError={() => setVideoEnded(true)}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                maxWidth: '500px',
+              }}
+            />
+          )}
         </div>
       )}
 
@@ -245,43 +273,6 @@ export default function InviteExperience({ guest }) {
         loop 
         preload="auto" 
       />
-
-      {/* 2. OVERLAY TAP TO START PROMPT */}
-      {!videoStarted && step === 'welcome' && (
-        <div
-          onClick={handleStartVideo}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 10,
-            cursor: 'pointer',
-            backgroundColor: 'transparent',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '100px',
-              backgroundColor: 'rgba(0, 0, 0, 0.75)',
-              border: '1px solid #C2A052',
-              borderRadius: '25px',
-              padding: '10px 24px',
-              color: '#FAF3E0',
-              fontSize: '0.85rem',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              backdropFilter: 'blur(4px)',
-              pointerEvents: 'none',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
-            }}
-          >
-            Tap to Open Invitation ✨
-          </div>
-        </div>
-      )}
 
       {/* 3. RESPONSIVE DYNAMIC BACKGROUND */}
       {videoEnded && (
@@ -352,7 +343,7 @@ export default function InviteExperience({ guest }) {
 
           <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button
-              onClick={handleBismillahClick}
+              onClick={() => setStep('details')}
               style={{
                 backgroundColor: 'rgba(20, 20, 20, 0.9)',
                 color: '#FFFFFF',
