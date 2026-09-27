@@ -233,7 +233,7 @@ export default function InviteExperience({ guest }) {
       {/* 🎵 BACKGROUND AUDIO ELEMENT */}
       <audio 
         ref={audioRef} 
-        src="/your-wedding-audio-file.mp3" 
+        src="/your-wedding-audio-file.mpeg" 
         loop 
         preload="auto" 
       />
