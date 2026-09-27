@@ -246,7 +246,6 @@
           />
         </div>
       )}
-  
         {/* 🎵 BACKGROUND AUDIO ELEMENT */}
         <audio 
           ref={audioRef} 
