@@ -5,27 +5,18 @@ import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
   const [step, setStep] = useState('welcome');
+  const [showPreview, setShowPreview] = useState(true);
   const [videoStarted, setVideoStarted] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(guest?.has_rsvped || false);
   const [isMounted, setIsMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  
-  // State for the Q&A accordion
   const [openQaIndex, setOpenQaIndex] = useState(null);
 
   const videoRef = useRef(null);
   const audioRef = useRef(null);
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-  // Reusable sub-heading style defined at component level
-  const subHeadingStyle = {
-    fontWeight: '700',
-    color: '#610515',
-    margin: 0,
-    fontSize: '0.95rem',
-  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -61,11 +52,12 @@ export default function InviteExperience({ guest }) {
   }, []);
 
   // Handles the tap on the envelope/screen to start video & audio
- const handleStartVideo = () => {
+  const handleStartExperience = () => {
     if (videoStarted) return; 
+    setShowPreview(false);
     setVideoStarted(true);
 
-    // 🎵 Play background audio (this handles the sound)
+    // 🎵 Play background audio
     if (audioRef.current) {
       audioRef.current.muted = false;
       audioRef.current.play()
@@ -73,19 +65,20 @@ export default function InviteExperience({ guest }) {
         .catch((err) => console.warn('Audio playback prevented:', err));
     }
 
-    // ▶️ Play the video (keep it muted so mobile browsers don't choke)
+    // ▶️ Play video
     if (videoRef.current) {
-      videoRef.current.muted = true; // Keep true since envelope has no audio
+      videoRef.current.muted = true;
       videoRef.current.play().catch((err) => {
         console.warn('Video playback prevented:', err);
         setVideoEnded(true);
       });
     }
   };
+
   const handleBismillahClick = (e) => {
     e.stopPropagation();
     if (!videoStarted) {
-      handleStartVideo();
+      handleStartExperience();
     }
     setStep('details');
   };
@@ -175,6 +168,13 @@ export default function InviteExperience({ guest }) {
     maxWidth: '300px',
   };
 
+  const subHeadingStyle = {
+    fontWeight: '700',
+    color: '#610515',
+    margin: 0,
+    fontSize: '0.95rem',
+  };
+
   return (
     <main
       style={{
@@ -200,10 +200,10 @@ export default function InviteExperience({ guest }) {
         }
       `}</style>
 
-      {/* 1. BACKGROUND VIDEO LAYER */}
+      {/* 1. BACKGROUND / PREVIEW LAYER */}
       {!videoEnded && (
         <div
-          onClick={handleStartVideo}
+          onClick={handleStartExperience}
           style={{
             position: 'fixed',
             inset: 0,
@@ -215,25 +215,60 @@ export default function InviteExperience({ guest }) {
             width: '100vw',
             height: '100dvh',
             overflow: 'hidden',
-            cursor: videoStarted ? 'default' : 'pointer',
+            cursor: 'pointer',
           }}
         >
-          <video
-            ref={videoRef}
-            src="/envelope.mp4"
-            playsInline
-            webkit-playsinline="true"
-            preload="auto"
-            muted={true}
-            onEnded={() => setVideoEnded(true)}
-            onError={() => setVideoEnded(true)}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              maxWidth: '500px',
-            }}
-          />
+          {showPreview ? (
+            // Static image fallback for instant mobile rendering
+            <div style={{ position: 'relative', width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <img
+                src="/envelope.jpg"
+                alt="Envelope Invitation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  maxWidth: '500px',
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  bottom: '100px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.75)',
+                  border: '1px solid #C2A052',
+                  borderRadius: '25px',
+                  padding: '10px 24px',
+                  color: '#FAF3E0',
+                  fontSize: '0.85rem',
+                  letterSpacing: '2px',
+                  textTransform: 'uppercase',
+                  backdropFilter: 'blur(4px)',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
+                }}
+              >
+                Tap to Open Invitation ✨
+              </div>
+            </div>
+          ) : (
+            // Actual Video Element after tap
+            <video
+              ref={videoRef}
+              src="/envelope.mp4"
+              playsInline
+              webkit-playsinline="true"
+              preload="auto"
+              muted={true}
+              onEnded={() => setVideoEnded(true)}
+              onError={() => setVideoEnded(true)}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                maxWidth: '500px',
+              }}
+            />
+          )}
         </div>
       )}
 
@@ -245,44 +280,7 @@ export default function InviteExperience({ guest }) {
         preload="auto" 
       />
 
-      {/* 2. OVERLAY TAP TO START PROMPT */}
-      {!videoStarted && step === 'welcome' && (
-        <div
-          onClick={handleStartVideo}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 10,
-            cursor: 'pointer',
-            backgroundColor: 'transparent',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '100px',
-              backgroundColor: 'rgba(0, 0, 0, 0.75)',
-              border: '1px solid #C2A052',
-              borderRadius: '25px',
-              padding: '10px 24px',
-              color: '#FAF3E0',
-              fontSize: '0.85rem',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              backdropFilter: 'blur(4px)',
-              pointerEvents: 'none',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
-            }}
-          >
-            Tap to Open Invitation ✨
-          </div>
-        </div>
-      )}
-
-      {/* 3. RESPONSIVE DYNAMIC BACKGROUND */}
+      {/* 2. RESPONSIVE DYNAMIC BACKGROUND */}
       {videoEnded && (
         <div
           style={{
@@ -392,70 +390,6 @@ export default function InviteExperience({ guest }) {
       {step === 'details' && (
         <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
           
-          {/* LEFT SCROLL INDICATOR */}
-          <div
-            style={{
-              position: 'absolute',
-              left: isMobile ? '8px' : 'calc(50% - 300px)',
-              top: '40px',
-              height: '80%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              pointerEvents: 'none',
-              zIndex: 50,
-            }}
-          >
-            <div
-              style={{
-                position: 'sticky',
-                top: '50vh',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                color: '#C2A052',
-                animation: 'bounceDown 1.5s infinite ease-in-out',
-                textShadow: '0 2px 8px rgba(0,0,0,0.9)',
-              }}
-            >
-              <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>│</span>
-              <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>⌄</span>
-            </div>
-          </div>
-
-          {/* RIGHT SCROLL INDICATOR */}
-          <div
-            style={{
-              position: 'absolute',
-              right: isMobile ? '8px' : 'calc(50% - 300px)',
-              top: '40px',
-              height: '80%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              pointerEvents: 'none',
-              zIndex: 50,
-            }}
-          >
-            <div
-              style={{
-                position: 'sticky',
-                top: '50vh',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                color: '#C2A052',
-                animation: 'bounceDown 1.5s infinite ease-in-out',
-                textShadow: '0 2px 8px rgba(0,0,0,0.9)',
-              }}
-            >
-              <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>│</span>
-              <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>⌄</span>
-            </div>
-          </div>
-
           {/* WELCOME HEADER */}
           <section
             style={{
@@ -746,506 +680,6 @@ export default function InviteExperience({ guest }) {
             </section>
           )}
 
-          {/* SHAADI TIMELINE */}
-          {isShaadiInvited && (
-            <section style={cardContainerStyle}>
-              <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
-                ITINERARY OF EVENTS
-              </p>
-              <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '16px' }}>
-                Shaadi Timeline
-              </h2>
-
-              <div
-                style={{
-                  backgroundImage: "url('/gold-card-bg.jpg')",
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  border: '1px solid #C2A052',
-                  borderRadius: '20px',
-                  padding: '6px 20px',
-                  display: 'inline-block',
-                  fontWeight: '700',
-                  fontSize: '0.85rem',
-                  color: '#610515',
-                  letterSpacing: '1px',
-                  marginBottom: '28px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                }}
-              >
-                DECEMBER 26, 2026
-              </div>
-
-              <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: '17px',
-                    top: '10px',
-                    bottom: '10px',
-                    width: '2px',
-                    backgroundColor: '#C2A052',
-                  }}
-                />
-
-                <div style={{ position: 'relative', marginBottom: '20px' }}>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-40px',
-                      top: '0',
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FAF3E0',
-                      border: '2px solid #C2A052',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.9rem',
-                    }}
-                  >
-                    📖
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: '#FAF3E0',
-                      borderRadius: '12px',
-                      padding: '14px',
-                      border: '1px solid rgba(194, 160, 82, 0.4)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        backgroundColor: '#F4E4BC',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        color: '#610515',
-                        display: 'inline-block',
-                        marginBottom: '6px',
-                      }}
-                    >
-                      3:00 PM
-                    </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Nikah Ceremony</h3>
-                  </div>
-                </div>
-
-                <div style={{ position: 'relative', marginBottom: '20px' }}>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-40px',
-                      top: '0',
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FAF3E0',
-                      border: '2px solid #C2A052',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.9rem',
-                    }}
-                  >
-                    🕌
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: '#FAF3E0',
-                      borderRadius: '12px',
-                      padding: '14px',
-                      border: '1px solid rgba(194, 160, 82, 0.4)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        backgroundColor: '#F4E4BC',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        color: '#610515',
-                        display: 'inline-block',
-                        marginBottom: '6px',
-                      }}
-                    >
-                      5:30 PM
-                    </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Maghrib Prayer</h3>
-                  </div>
-                </div>
-
-                <div style={{ position: 'relative', marginBottom: '20px' }}>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-40px',
-                      top: '0',
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FAF3E0',
-                      border: '2px solid #C2A052',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.9rem',
-                    }}
-                  >
-                    ✨
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: '#FAF3E0',
-                      borderRadius: '12px',
-                      padding: '14px',
-                      border: '1px solid rgba(194, 160, 82, 0.4)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        backgroundColor: '#F4E4BC',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        color: '#610515',
-                        display: 'inline-block',
-                        marginBottom: '6px',
-                      }}
-                    >
-                      6:00 PM
-                    </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Grand Entrances</h3>
-                  </div>
-                </div>
-
-                <div style={{ position: 'relative' }}>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-40px',
-                      top: '0',
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FAF3E0',
-                      border: '2px solid #C2A052',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.9rem',
-                    }}
-                  >
-                    🍽️
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: '#FAF3E0',
-                      borderRadius: '12px',
-                      padding: '14px',
-                      border: '1px solid rgba(194, 160, 82, 0.4)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        backgroundColor: '#F4E4BC',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        color: '#610515',
-                        display: 'inline-block',
-                        marginBottom: '6px',
-                      }}
-                    >
-                      7:00 PM
-                    </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service</h3>
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* VALIMA TIMELINE */}
-          {isValimaInvited && (
-            <section style={cardContainerStyle}>
-              <p style={{ fontSize: '0.75rem', letterSpacing: '2px', color: '#8B6B23', textTransform: 'uppercase', margin: '0 0 4px 0', fontWeight: '700' }}>
-                ITINERARY OF EVENTS
-              </p>
-              <h2 style={{ ...sectionHeadingStyle, fontSize: '1.4rem', marginBottom: '16px' }}>
-                Valima Timeline
-              </h2>
-
-              <div
-                style={{
-                  backgroundImage: "url('/gold-card-bg.jpg')",
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  border: '1px solid #C2A052',
-                  borderRadius: '20px',
-                  padding: '6px 20px',
-                  display: 'inline-block',
-                  fontWeight: '700',
-                  fontSize: '0.85rem',
-                  color: '#610515',
-                  letterSpacing: '1px',
-                  marginBottom: '28px',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                }}
-              >
-                DECEMBER 27, 2026
-              </div>
-
-              <div style={{ position: 'relative', paddingLeft: '40px', textAlign: 'left' }}>
-                <div
-                  style={{
-                    position: 'absolute',
-                    left: '17px',
-                    top: '10px',
-                    bottom: '10px',
-                    width: '2px',
-                    backgroundColor: '#C2A052',
-                  }}
-                />
-
-                <div style={{ position: 'relative', marginBottom: '20px' }}>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-40px',
-                      top: '0',
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FAF3E0',
-                      border: '2px solid #C2A052',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.9rem',
-                    }}
-                  >
-                    🕌
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: '#FAF3E0',
-                      borderRadius: '12px',
-                      padding: '14px',
-                      border: '1px solid rgba(194, 160, 82, 0.4)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        backgroundColor: '#F4E4BC',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        color: '#610515',
-                        display: 'inline-block',
-                        marginBottom: '6px',
-                      }}
-                    >
-                      5:30 PM
-                    </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Maghrib Prayer</h3>
-                  </div>
-                </div>
-
-                <div style={{ position: 'relative', marginBottom: '20px' }}>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-40px',
-                      top: '0',
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FAF3E0',
-                      border: '2px solid #C2A052',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.9rem',
-                    }}
-                  >
-                    ✨
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: '#FAF3E0',
-                      borderRadius: '12px',
-                      padding: '14px',
-                      border: '1px solid rgba(194, 160, 82, 0.4)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        backgroundColor: '#F4E4BC',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        color: '#610515',
-                        display: 'inline-block',
-                        marginBottom: '6px',
-                      }}
-                    >
-                      6:00 PM
-                    </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Grand Entrances</h3>
-                  </div>
-                </div>
-
-                <div style={{ position: 'relative' }}>
-                  <div
-                    style={{
-                      position: 'absolute',
-                      left: '-40px',
-                      top: '0',
-                      width: '34px',
-                      height: '34px',
-                      borderRadius: '50%',
-                      backgroundColor: '#FAF3E0',
-                      border: '2px solid #C2A052',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.9rem',
-                    }}
-                  >
-                    🍽️
-                  </div>
-                  <div
-                    style={{
-                      backgroundColor: '#FAF3E0',
-                      borderRadius: '12px',
-                      padding: '14px',
-                      border: '1px solid rgba(194, 160, 82, 0.4)',
-                    }}
-                  >
-                    <span
-                      style={{
-                        backgroundColor: '#F4E4BC',
-                        padding: '4px 10px',
-                        borderRadius: '12px',
-                        fontSize: '0.75rem',
-                        fontWeight: '700',
-                        color: '#610515',
-                        display: 'inline-block',
-                        marginBottom: '6px',
-                      }}
-                    >
-                      7:00 PM
-                    </span>
-                    <h3 style={{ margin: '0 0 4px 0', fontSize: '1.05rem', color: '#610515' }}>Dinner Service</h3>
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* Where to Stay */}
-          <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Where to Stay</h2>
-            <p style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', margin: '0 0 12px 0' }}>
-              Below are some great options for hotels!
-            </p>
-            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
-              <p style={{ ...subHeadingStyle, marginTop: 0 }}>Sugar Land Town Square Area</p>
-              <ul style={{ margin: '4px 0 0 0', paddingLeft: '20px' }}>
-                <li>Marriott Sugar Land Town Square</li>
-                <li>Hyatt Place Houston / Sugar Land</li>
-                <li>Courtyard by Marriott Houston Sugar Land / Lake Pointe</li>
-                <li>Hilton Garden Inn Houston / Sugar Land</li>
-              </ul>
-            </div>
-          </section>
-
-          {/* Travel */}
-          <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Travel</h2>
-            <div style={{ fontSize: '0.85rem', lineHeight: '1.6', color: '#3B2414', textAlign: 'left' }}>
-              <div>
-                <p style={{ ...subHeadingStyle, marginTop: 0 }}>Getting In</p>
-                <p style={{ margin: 0 }}>
-                  We recommend flying into <strong>George Bush Intercontinental Airport (IAH)</strong>! <strong>William P. Hobby Airport (HOU)</strong> is another good option depending on where you’re staying.
-                </p>
-              </div>
-
-              <div>
-                <p style={subHeadingStyle}>Getting Downtown</p>
-                <p style={{ margin: 0 }}>
-                  There are plenty of ways to get around Houston! You’ll find several car rental options, plus taxis and rideshare services. If you plan to explore the city, renting a car is often the easiest option.
-                </p>
-                <div style={{ marginTop: '8px' }}>
-                  <a
-                    href="https://www.fly2houston.com/iah/ground-transportation"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ color: '#8B6B23', textDecoration: 'underline', fontSize: '0.8rem', fontWeight: '600' }}
-                  >
-                    George Bush Intercontinental Airport (IAH) - Ground Transportation Information
-                  </a>
-                </div>
-              </div>
-
-              <div>
-                <p style={subHeadingStyle}>High Season in Houston</p>
-                <p style={{ margin: 0 }}>
-                  Houston stays busy all year, and hotels fill up fast on wedding weekends. Book your travel early to get the best rates and availability.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* Our Favorite Restaurants */}
-          <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>A Few of Our Favorites!</h2>
-            <p
-              style={{
-                fontSize: '0.85rem',
-                color: '#8B6B23',
-                fontWeight: '600',
-                margin: '-8px 0 16px 0',
-                letterSpacing: '0.5px',
-              }}
-            >
-              Hungry in Houston? Here are a few places we love!
-            </p>
-            <ul style={{ fontSize: '0.8rem', lineHeight: '1.5', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
-              <li><strong>Aga's Restaurant & Catering</strong></li>
-              <li><strong>Ma's House</strong></li>
-              <li><strong>Bundu Khan</strong></li>
-              <li><strong>Levant Grill & Bakery</strong></li>
-              <li><strong>Midnight Cravings - for a late night sweet treat</strong></li>
-              <li><strong>Filli - for our desi chai lovers</strong></li>
-              <li><strong>HEB - our favorite local grocery store</strong></li>
-              <li><strong>85 degrees - best boba in town</strong></li>
-              <li><strong>Bakersland - cutest halal cafe!</strong></li>
-            </ul>
-          </section>
-
-          {/* Things to Do in Houston */}
-          <section style={cardContainerStyle}>
-            <h2 style={sectionHeadingStyle}>Things to Do in Houston</h2>
-            <ul style={{ fontSize: '0.85rem', lineHeight: '1.8', color: '#3B2414', textAlign: 'left', margin: 0, paddingLeft: '20px' }}>
-              <li>Space Center Houston</li>
-              <li>Museum District</li>
-              <li>Buffalo Bayou Park</li>
-              <li>Houston Zoo</li>
-              <li>The Menil Collection</li>
-              <li>Discovery Green</li>
-              <li>The Galleria</li>
-            </ul>
-          </section>
-
           {/* Q&A Section */}
           <section style={cardContainerStyle}>
             <h2 style={sectionHeadingStyle}>Q & A</h2>
@@ -1389,38 +823,6 @@ export default function InviteExperience({ guest }) {
               With love, <br />
               Ayesha & Owais
             </p>
-
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <svg width="60" height="16" viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M0 8H22" stroke="#C2A052" strokeWidth="1" />
-                <polygon points="30,2 36,8 30,14 24,8" fill="#C2A052" />
-                <path d="M38 8H60" stroke="#C2A052" strokeWidth="1" />
-              </svg>
-            </div>
-          </section>
-
-          {/* RING BOX SECTION */}
-          <section
-            style={{
-              ...cardContainerStyle,
-              padding: '20px',
-              marginBottom: '12px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <img
-              src="/ring box.png"
-              alt="Ring Box"
-              style={{
-                width: '100%',
-                maxHeight: '350px',
-                objectFit: 'contain',
-                borderRadius: '8px',
-                display: 'block',
-              }}
-            />
           </section>
         </div>
       )}
