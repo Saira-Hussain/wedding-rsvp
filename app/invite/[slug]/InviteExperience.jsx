@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import RSVPForm from './RSVPForm';
 
 export default function InviteExperience({ guest }) {
+  // Change initial step or keep 'welcome' but handle the image overlay first
   const [step, setStep] = useState('welcome');
   const [videoStarted, setVideoStarted] = useState(false);
   const [videoEnded, setVideoEnded] = useState(false);
@@ -60,7 +61,7 @@ export default function InviteExperience({ guest }) {
     };
   }, []);
 
-  // Handles the tap on the envelope/screen to start video & audio
+  // Handles the tap on the envelope image to start video & audio simultaneously
   const handleStartVideo = () => {
     if (videoStarted) return; 
     setVideoStarted(true);
@@ -73,7 +74,7 @@ export default function InviteExperience({ guest }) {
         .catch((err) => console.warn('Audio playback prevented:', err));
     }
 
-    // ▶️ Unmute video and play it
+    // ▶️ Play video
     if (videoRef.current) {
       videoRef.current.muted = false;
       videoRef.current.play().catch((err) => {
@@ -85,9 +86,6 @@ export default function InviteExperience({ guest }) {
 
   const handleBismillahClick = (e) => {
     e.stopPropagation();
-    if (!videoStarted) {
-      handleStartVideo();
-    }
     setStep('details');
   };
 
@@ -201,14 +199,77 @@ export default function InviteExperience({ guest }) {
         }
       `}</style>
 
-      {/* 1. BACKGROUND VIDEO LAYER */}
-      {!videoEnded && (
+      {/* 🎵 BACKGROUND AUDIO ELEMENT */}
+      <audio 
+        ref={audioRef} 
+        src="/your-wedding-audio-file.mpeg" 
+        loop 
+        preload="auto" 
+      />
+
+      {/* 1. INITIAL STATIC ENVELOPE IMAGE & BUTTON LAYER (Shown before tap) */}
+      {!videoStarted && (
         <div
           onClick={handleStartVideo}
           style={{
             position: 'fixed',
             inset: 0,
-            zIndex: 0,
+            zIndex: 30,
+            backgroundColor: '#000000',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100vw',
+            height: '100dvh',
+            cursor: 'pointer',
+          }}
+        >
+          {/* Envelope Image */}
+          <img
+            src="/envelope.jpeg"
+            alt="Envelope"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              maxWidth: '500px',
+              position: 'absolute',
+              inset: 0,
+              margin: 'auto',
+            }}
+          />
+
+          {/* Tap to Open Invitation Button on top of the image */}
+          <div
+            style={{
+              position: 'relative',
+              zIndex: 40,
+              bottom: '-30vh',
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+              border: '1px solid #C2A052',
+              borderRadius: '25px',
+              padding: '12px 28px',
+              color: '#FAF3E0',
+              fontSize: '0.9rem',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              backdropFilter: 'blur(4px)',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
+            }}
+          >
+            Tap to open invitation ✨
+          </div>
+        </div>
+      )}
+
+      {/* 2. BACKGROUND VIDEO LAYER (Pops up and plays automatically after tap) */}
+      {videoStarted && !videoEnded && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 20,
             backgroundColor: '#000000',
             display: 'flex',
             alignItems: 'center',
@@ -216,7 +277,6 @@ export default function InviteExperience({ guest }) {
             width: '100vw',
             height: '100dvh',
             overflow: 'hidden',
-            cursor: videoStarted ? 'default' : 'pointer',
           }}
         >
           <video
@@ -225,7 +285,7 @@ export default function InviteExperience({ guest }) {
             playsInline
             webkit-playsinline="true"
             preload="auto"
-            muted={true}
+            muted={false}
             onEnded={() => setVideoEnded(true)}
             onError={() => setVideoEnded(true)}
             style={{
@@ -235,51 +295,6 @@ export default function InviteExperience({ guest }) {
               maxWidth: '500px',
             }}
           />
-        </div>
-      )}
-
-      {/* 🎵 BACKGROUND AUDIO ELEMENT */}
-      <audio 
-        ref={audioRef} 
-        src="/your-wedding-audio-file.mpeg" 
-        loop 
-        preload="auto" 
-      />
-
-      {/* 2. OVERLAY TAP TO START PROMPT */}
-      {!videoStarted && step === 'welcome' && (
-        <div
-          onClick={handleStartVideo}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 10,
-            cursor: 'pointer',
-            backgroundColor: 'transparent',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <div
-            style={{
-              position: 'absolute',
-              bottom: '100px',
-              backgroundColor: 'rgba(0, 0, 0, 0.75)',
-              border: '1px solid #C2A052',
-              borderRadius: '25px',
-              padding: '10px 24px',
-              color: '#FAF3E0',
-              fontSize: '0.85rem',
-              letterSpacing: '2px',
-              textTransform: 'uppercase',
-              backdropFilter: 'blur(4px)',
-              pointerEvents: 'none',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
-            }}
-          >
-            Tap to Open Invitation ✨
-          </div>
         </div>
       )}
 
@@ -303,7 +318,7 @@ export default function InviteExperience({ guest }) {
         />
       )}
 
-      {/* STEP 1: WELCOME SCREEN */}
+      {/* STEP 1: WELCOME SCREEN (Appears after video finishes) */}
       {videoEnded && step === 'welcome' && (
         <div
           style={{
