@@ -88,9 +88,19 @@ export default function InviteExperience({ guest }) {
 
   const handleBismillahClick = (e) => {
     e.stopPropagation();
-    if (!videoStarted) {
-      handleStartVideo();
+    
+    // 1. Play audio immediately
+    if (audioRef.current && !isPlaying) {
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.warn('Audio playback prevented:', err));
     }
+
+    // 2. Force video states to complete/end immediately so content shows
+    setVideoStarted(true);
+    setVideoEnded(true);
+
+    // 3. Navigate to details
     setStep('details');
   };
 
