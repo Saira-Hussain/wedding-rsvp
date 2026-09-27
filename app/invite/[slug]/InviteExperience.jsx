@@ -62,35 +62,27 @@ export default function InviteExperience({ guest }) {
   }, []);
 
   // Handles the tap on the envelope image to start video & audio simultaneously
-  const handleStartVideo = async () => {
-  if (videoStarted) return; 
-  setVideoStarted(true);
+  const handleStartVideo = () => {
+    if (videoStarted) return; 
+    setVideoStarted(true);
 
-  // 1. Try playing the video first (muted for 100% mobile compatibility)
-  if (videoRef.current) {
-    try {
-      videoRef.current.muted = true; 
-      await videoRef.current.play();
-    } else {
-      setVideoEnded(true);
-    }
-  } catch (err) {
-    console.warn('Video playback failed, skipping to welcome:', err);
-    setVideoEnded(true);
-  }
-
-  // 2. Try playing background audio separately
-  if (audioRef.current) {
-    try {
+    // 🎵 Play background audio
+    if (audioRef.current) {
       audioRef.current.muted = false;
-      await audioRef.current.play();
-      setIsPlaying(true);
-    } catch (err) {
-      console.warn('Audio autoplay prevented by browser:', err);
-      setIsPlaying(false);
+      audioRef.current.play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.warn('Audio playback prevented:', err));
     }
-  }
-};
+
+    // ▶️ Play video
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.play().catch((err) => {
+        console.warn('Video playback prevented:', err);
+        setVideoEnded(true);
+      });
+    }
+  };
 
   const handleBismillahClick = (e) => {
     e.stopPropagation();
@@ -291,13 +283,11 @@ export default function InviteExperience({ guest }) {
             ref={videoRef}
             src="/envelope.mp4"
             playsInline
-            muted={true} // MUST be true for reliable cross-browser/mobile autoplay
+            webkit-playsinline="true"
             preload="auto"
+            muted={false}
             onEnded={() => setVideoEnded(true)}
-            onError={(e) => {
-            console.error("Video error:", e);
-            setVideoEnded(true); // Fallback so users don't get stuck
-            }}
+            onError={() => setVideoEnded(true)}
             style={{
               width: '100%',
               height: '100%',
