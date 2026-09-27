@@ -103,71 +103,42 @@ export default function InviteExperience({ guest }) {
 
 
   const handleStartVideo = () => {
-
     setVideoStarted(true);
 
-
-
-    // 🎵 Start background music simultaneously with the video
-
+    // 🎵 Unmute and play background music explicitly on user interaction
     if (audioRef.current) {
-
+      audioRef.current.muted = false;
+      audioRef.current.defaultMuted = false;
       audioRef.current.play()
-
         .then(() => setIsPlaying(true))
-
         .catch((err) => console.warn('Audio playback prevented:', err));
-
     }
 
-
-
     if (videoRef.current) {
-
       videoRef.current.muted = false;
-
       videoRef.current.defaultMuted = false;
-
-
 
       const playPromise = videoRef.current.play();
 
-
-
       if (playPromise !== undefined) {
-
         playPromise.catch((err) => {
-
           console.warn('Mobile video playback prevented:', err);
-
           setVideoEnded(true);
-
         });
-
       }
-
     } else {
-
       setVideoEnded(true);
-
     }
-
   };
 
 
 
   const handleBismillahClick = (e) => {
-
     e.stopPropagation();
-
     if (!videoStarted) {
-
       handleStartVideo();
-
     }
-
     setStep('details');
-
   };
 
 
@@ -672,67 +643,83 @@ export default function InviteExperience({ guest }) {
 
 
 
-          {/* BISMILLAH BUTTON */}
-
-          <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box', display: 'flex', justifyContent: 'center' }}>
-
+          {/* BISMILLAH BUTTON & PRESS TO PROCEED */}
+          <div style={{ width: '100%', padding: '0 16px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <button
-
               onClick={handleBismillahClick}
-
               style={{
-
                 backgroundColor: 'rgba(20, 20, 20, 0.9)',
-
                 color: '#FFFFFF',
-
                 padding: '12px 24px',
-
                 fontSize: 'clamp(0.85rem, 1.2vw, 1.05rem)',
-
                 border: '1px solid #C2A052',
-
                 borderRadius: '8px',
-
                 cursor: 'pointer',
-
                 fontWeight: '600',
-
                 letterSpacing: '1px',
-
                 boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
-
                 fontFamily: 'serif',
-
                 backdropFilter: 'blur(6px)',
-
                 width: '100%',
-
                 maxWidth: '260px',
-
               }}
-
             >
-
               Bismillah
-
             </button>
-
+            <span
+              style={{
+                marginTop: '8px',
+                color: '#FAF3E0',
+                fontSize: '0.75rem',
+                letterSpacing: '1.5px',
+                textTransform: 'uppercase',
+                textShadow: '0 2px 6px rgba(0,0,0,0.9)',
+                opacity: 0.9,
+              }}
+            >
+              Press to proceed
+            </span>
           </div>
-
         </div>
-
       )}
 
 
 
       {/* STEP 2: SCROLLABLE CARDS & DETAILS */}
-
       {step === 'details' && (
-
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', position: 'relative' }}>
           
+          {/* FLOATING DOWN-ARROWS (Fixed to bottom left and right corners of the screen to prompt scrolling) */}
+          <div
+            style={{
+              position: 'fixed',
+              bottom: '24px',
+              left: '20px',
+              color: '#C2A052',
+              fontSize: '1.8rem',
+              animation: 'bounceDown 1.5s infinite ease-in-out',
+              pointerEvents: 'none',
+              zIndex: 50,
+              textShadow: '0 2px 8px rgba(0,0,0,0.9)',
+            }}
+          >
+            ⌄
+          </div>
+          <div
+            style={{
+              position: 'fixed',
+              bottom: '24px',
+              right: '20px',
+              color: '#C2A052',
+              fontSize: '1.8rem',
+              animation: 'bounceDown 1.5s infinite ease-in-out',
+              pointerEvents: 'none',
+              zIndex: 50,
+              textShadow: '0 2px 8px rgba(0,0,0,0.9)',
+            }}
+          >
+            ⌄
+          </div>
 
           {/* WELCOME HEADER */}
 
