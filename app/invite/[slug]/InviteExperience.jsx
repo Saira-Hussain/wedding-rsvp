@@ -189,77 +189,55 @@ export default function InviteExperience({ guest }) {
      {/* 1. INITIAL ENVELOPE IMAGE & VIDEO LAYER */}
       {!videoEnded && (
         <div
+          onClick={handleStartVideo}
           style={{
             position: 'fixed',
             inset: 0,
             zIndex: 0,
             backgroundColor: '#000000',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
             width: '100vw',
             height: '100dvh',
             overflow: 'hidden',
+            cursor: 'pointer',
           }}
         >
           {!videoStarted ? (
-            /* Wrapper to hold both the background image and the button on top */
-            <div
-              onClick={handleStartVideo}
-              style={{
-                position: 'relative',
-                width: '100%',
-                height: '100%',
-                cursor: 'pointer',
-              }}
-            >
-              {/* Full-screen expanded background image */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
               <img
                 src="/envelope.jpeg"
                 alt="Invitation Envelope"
                 style={{
-                  position: 'absolute',
-                  inset: 0,
                   width: '100%',
-                  height: '100%',
-                  objectFit: 'cover', // Ensures it fills the screen completely without distortion
+                  maxWidth: '400px',
+                  height: 'auto',
+                  objectFit: 'contain',
+                  borderRadius: '12px',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.8)',
                 }}
               />
-
-              {/* Button overlaid on top of the photo (positioned towards the bottom center) */}
-              <div
+              <button
                 style={{
-                  position: 'absolute',
-                  bottom: '12%',
-                  left: '50%',
-                  transform: 'translateX(-50%)',
-                  zIndex: 2,
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  padding: '0 16px',
-                  boxSizing: 'border-box',
+                  backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                  color: '#FFFFFF',
+                  padding: '12px 28px',
+                  fontSize: '0.95rem',
+                  border: '1px solid #C2A052',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  letterSpacing: '1px',
+                  boxShadow: '0 4px 16px rgba(0,0,0,0.8)',
+                  textTransform: 'uppercase',
                 }}
               >
-                <button
-                  style={{
-                    backgroundColor: 'rgba(20, 20, 20, 0.85)',
-                    color: '#FFFFFF',
-                    padding: '14px 28px',
-                    fontSize: '0.95rem',
-                    border: '1px solid #C2A052',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    fontWeight: '600',
-                    letterSpacing: '1px',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.8)',
-                    textTransform: 'uppercase',
-                    backdropFilter: 'blur(4px)',
-                  }}
-                >
-                  Press to Open Invitation ✨
-                </button>
-              </div>
+                Press to Open Invitation ✨
+              </button>
             </div>
           ) : (
-            /* Video fills the screen once triggered */
             <video
               ref={videoRef}
               src="/envelope.mp4"
@@ -275,6 +253,7 @@ export default function InviteExperience({ guest }) {
                 width: '100%',
                 height: '100%',
                 objectFit: 'cover',
+                maxWidth: '500px',
               }}
             />
           )}
