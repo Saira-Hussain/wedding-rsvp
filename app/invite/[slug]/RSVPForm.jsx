@@ -261,7 +261,7 @@ export default function RSVPForm({ guest, onSeatsUpdate, onBack }) {
 
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: '700', color: '#610515', marginBottom: '8px' }}>
-                  Will you be attending the Valima?
+                  Will you be attending the Valima (5PM)?
                 </label>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <button
